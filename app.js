@@ -12,7 +12,7 @@ const products = {
     name: "Sérum facial",
     price: 6000,
     category: "Rostro",
-    image: "https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?auto=format&fit=crop&w=240&q=70",
+    image: "assets/products/serum-facial-catalogo.jpg",
     detail: "Sérum facial con proteína de seda que ayuda a hidratar y nutrir la piel, ideal para sumar a tu rutina diaria de cuidado.",
   },
   cafe: {
