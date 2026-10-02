@@ -80,6 +80,14 @@ const products = {
     image: "assets/products/pomada-calendula-catalogo.jpg",
     detail: "Especial para calmar irritaciones e hidratar las pieles resecas.",
   },
+  "aceite-contracturas": {
+    id: "aceite-contracturas",
+    name: "Aceite para contracturas",
+    price: 9500,
+    category: "Cuerpo",
+    image: "assets/products/aceite-contracturas-catalogo.jpg",
+    detail: "Aplicar frotando la zona 1 o 2 veces por semana. Contiene aceite de jojoba, aceite de caléndula y aceites esenciales de canela, manzanilla y lavanda. Envase de 30 ml.",
+  },
   "roll-on-antiestres": {
     id: "roll-on-antiestres",
     name: "Roll on antiestrés",
