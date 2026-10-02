@@ -5,6 +5,7 @@ const products = {
     price: 5000,
     category: "Rostro",
     image: "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=240&q=70",
+    detail: "Crema facial con maqui, manteca de karité y aceite de maqui. Una fórmula pensada para hidratar y acompañar la reparación de la piel.",
   },
   serum: {
     id: "serum",
@@ -12,6 +13,7 @@ const products = {
     price: 6000,
     category: "Rostro",
     image: "https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?auto=format&fit=crop&w=240&q=70",
+    detail: "Sérum facial con proteína de seda que ayuda a hidratar y nutrir la piel, ideal para sumar a tu rutina diaria de cuidado.",
   },
   cafe: {
     id: "cafe",
@@ -19,6 +21,7 @@ const products = {
     price: 5000,
     category: "Cuerpo",
     image: "https://images.unsplash.com/photo-1600428853876-fb5a850b444f?auto=format&fit=crop&w=240&q=70",
+    detail: "Exfoliante para rostro y cuerpo elaborado con aceites de coco, almendras y zanahoria. Un momento de cuidado para renovar tu rutina.",
   },
   jabones: {
     id: "jabones",
@@ -26,6 +29,47 @@ const products = {
     price: 3500,
     category: "Jabones",
     image: "https://images.unsplash.com/photo-1600857544200-b2f666a9a2ec?auto=format&fit=crop&w=240&q=70",
+    detail: "Jabones orgánicos artesanales, naturales e hidratantes. Puedes elegir la variedad que prefieras al preparar tu pedido.",
+  },
+  "aceite-maqui": {
+    id: "aceite-maqui",
+    name: "Aceite de maqui",
+    price: null,
+    category: "Botánica",
+    image: "assets/products/aceite-maqui-catalogo.jpg",
+    detail: "Aceite natural de maqui prensado en frío, elaborado en la Araucanía. Un cuidado botánico de origen sureño para integrar a tu ritual.",
+  },
+  "agua-rosas": {
+    id: "agua-rosas",
+    name: "Agua de rosas",
+    price: null,
+    category: "Rostro",
+    image: "assets/products/agua-rosas-catalogo.jpg",
+    detail: "Agua de rosas de 60 ml. Amankay la presenta como hidratante, refrescante y purificante para la piel.",
+  },
+  "shampoo-seco": {
+    id: "shampoo-seco",
+    name: "Shampoo sólido · cabello seco",
+    price: null,
+    category: "Cabello",
+    image: "assets/instagram/shampoo-cabello-seco-romero-ortiga.webp",
+    detail: "Shampoo sólido para cabello seco, con romero y ortiga. Formato de 60 g.",
+  },
+  "shampoo-normal": {
+    id: "shampoo-normal",
+    name: "Shampoo sólido · cabello normal",
+    price: null,
+    category: "Cabello",
+    image: "assets/instagram/shampoo-02.webp",
+    detail: "Una alternativa sólida de la línea capilar Amankay para cabello normal. Formato de 60 g.",
+  },
+  "shampoo-hidratante": {
+    id: "shampoo-hidratante",
+    name: "Shampoo hidratante",
+    price: null,
+    category: "Cabello",
+    image: "assets/instagram/shampoo-03.webp",
+    detail: "Shampoo sólido hidratante con caléndula y jojoba. Formato de 60 g.",
   },
 };
 
@@ -41,6 +85,14 @@ const cartItems = document.querySelector(".cart-items");
 const emptyCart = document.querySelector(".cart-empty");
 const drawerFooter = document.querySelector(".drawer-footer");
 const toast = document.querySelector(".toast");
+const productDialog = document.querySelector(".product-dialog");
+const productDialogImage = productDialog.querySelector(".product-dialog-image img");
+const productDialogCategory = productDialog.querySelector(".product-dialog-category");
+const productDialogTitle = productDialog.querySelector("#product-dialog-title");
+const productDialogPrice = productDialog.querySelector(".product-dialog-price");
+const productDialogDescription = productDialog.querySelector(".product-dialog-description");
+const productDialogAdd = productDialog.querySelector(".product-dialog-add");
+let productDialogTrigger = null;
 let cart = loadCart();
 let toastTimer;
 
@@ -76,25 +128,34 @@ function formatPrice(price) {
 function updateCart() {
   const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   const subtotal = cart.reduce(
-    (sum, item) => sum + products[item.id].price * item.quantity,
+    (sum, item) => sum + (products[item.id].price || 0) * item.quantity,
     0,
   );
+  const hasUnpricedItems = cart.some((item) => products[item.id].price === null);
   document.querySelector(".cart-count").textContent = itemCount;
   document.querySelector(".drawer-count").textContent = `(${itemCount})`;
-  document.querySelector(".cart-subtotal").textContent = formatPrice(subtotal);
+  document.querySelector(".cart-subtotal").textContent = hasUnpricedItems
+    ? "Por confirmar"
+    : formatPrice(subtotal);
   emptyCart.hidden = cart.length > 0;
   drawerFooter.hidden = cart.length === 0;
   cartItems.replaceChildren();
 
   for (const item of cart) {
     const product = products[item.id];
+    const unitPrice = product.price === null
+      ? "Precio por confirmar"
+      : formatPrice(product.price);
+    const linePrice = product.price === null
+      ? "Por confirmar"
+      : formatPrice(product.price * item.quantity);
     const row = document.createElement("article");
     row.className = "cart-line";
     row.innerHTML = `
       <img class="cart-thumb" src="${product.image}" alt="" loading="lazy">
       <div class="cart-line-details">
         <h3>${product.name}</h3>
-        <span>${formatPrice(product.price)}</span>
+        <span>${unitPrice}</span>
         <div class="quantity-control" aria-label="Cantidad de ${product.name}">
           <button type="button" data-quantity="-1" data-id="${product.id}" aria-label="Quitar una unidad">−</button>
           <span>${item.quantity}</span>
@@ -102,7 +163,7 @@ function updateCart() {
         </div>
       </div>
       <div class="cart-line-end">
-        <span class="cart-line-price">${formatPrice(product.price * item.quantity)}</span>
+        <span class="cart-line-price">${linePrice}</span>
         <button class="remove-item" type="button" data-remove="${product.id}">Quitar</button>
       </div>`;
     cartItems.append(row);
@@ -148,6 +209,54 @@ function addToCart(id) {
   showToast(`${products[id].name} se agregó a tu bolsa.`);
 }
 
+function openProductDialog(id, trigger) {
+  const product = products[id];
+  const card = document.querySelector(`[data-product="${id}"]`);
+  if (!product || !card) {
+    console.error(`No se encontró la ficha del producto "${id}".`);
+    return;
+  }
+  const image = card.querySelector(".product-image img");
+  productDialogImage.src = image.src;
+  productDialogImage.alt = image.alt;
+  productDialogImage.classList.toggle(
+    "is-botanical",
+    card.querySelector(".product-image-botanical") !== null,
+  );
+  productDialogCategory.textContent = card.querySelector(".product-meta > span").textContent;
+  productDialogTitle.textContent = product.name;
+  productDialogPrice.textContent = product.price === null
+    ? "Precio por confirmar"
+    : formatPrice(product.price);
+  productDialogDescription.textContent = product.detail;
+  productDialogAdd.dataset.add = id;
+  productDialogTrigger = trigger;
+  productDialog.showModal();
+  productDialog.querySelector(".product-dialog-close").focus();
+}
+
+document.querySelectorAll("[data-detail]").forEach((button) => {
+  button.addEventListener("click", () => {
+    openProductDialog(button.dataset.detail, button);
+  });
+});
+
+productDialog.querySelector(".product-dialog-close").addEventListener("click", () => {
+  productDialog.close();
+});
+productDialog.addEventListener("click", (event) => {
+  if (event.target === productDialog) productDialog.close();
+});
+productDialog.addEventListener("close", () => {
+  productDialogTrigger?.focus();
+  productDialogTrigger = null;
+});
+productDialogAdd.addEventListener("click", () => {
+  addToCart(productDialogAdd.dataset.add);
+  productDialog.close();
+  openDrawer();
+});
+
 document.querySelectorAll("[data-add]").forEach((button) => {
   button.addEventListener("click", () => addToCart(button.dataset.add));
 });
@@ -184,19 +293,24 @@ document.querySelector(".checkout-button").addEventListener("click", () => {
   if (cart.length === 0) return;
   const lines = cart.map(({ id, quantity }) => {
     const product = products[id];
-    return `• ${product.name} x${quantity}: ${formatPrice(product.price * quantity)}`;
+    const linePrice = product.price === null
+      ? "valor por confirmar"
+      : formatPrice(product.price * quantity);
+    return `• ${product.name} x${quantity}: ${linePrice}`;
   });
+  const hasUnpricedItems = cart.some((item) => products[item.id].price === null);
   const subtotal = cart.reduce(
-    (sum, item) => sum + products[item.id].price * item.quantity,
+    (sum, item) => sum + (products[item.id].price || 0) * item.quantity,
     0,
   );
   const message = [
-    "Hola, Amankay. Quiero consultar por este pedido:",
+    "Hola, Amankay. Quiero realizar este pedido:",
     "",
     ...lines,
     "",
-    `Subtotal referencial: ${formatPrice(subtotal)}`,
-    "Entiendo que el valor final y la entrega se confirman por este medio.",
+    hasUnpricedItems
+      ? "El valor final y la entrega quedan por confirmar."
+      : `Subtotal referencial: ${formatPrice(subtotal)}`,
   ].join("\n");
   window.open(
     `https://wa.me/56953750504?text=${encodeURIComponent(message)}`,
