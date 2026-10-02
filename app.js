@@ -63,6 +63,15 @@ const products = {
     image: "assets/products/aceite-calmar-irritaciones-catalogo.jpg",
     detail: "Aplicar en el rostro todos los días. Contiene aceite de caléndula y aceite esencial de manzanilla. Envase de 30 ml.",
   },
+  "aceite-rosa-mosqueta": {
+    id: "aceite-rosa-mosqueta",
+    name: "Aceite de rosa mosqueta",
+    price: 9000,
+    wholesale: { minimumQuantity: 6, price: 8000 },
+    category: "Rostro",
+    image: "assets/products/aceite-rosa-mosqueta-catalogo.jpg",
+    detail: "Regenera y ayuda a atenuar las manchas de la piel. 100% natural, prensado en frío. Envase de 30 ml.",
+  },
   "shampoo-seco": {
     id: "shampoo-seco",
     name: "Shampoo sólido · cabello seco",
