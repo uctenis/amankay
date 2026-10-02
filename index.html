@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f8f6f0">
+    <meta name="description" content="Cosmética natural hecha con dedicación en Villarrica. Descubre el cuidado botánico de Amankay, inspirado en el sur de Chile.">
+    <title>Amankay — Botánica viva del sur</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <div class="announcement">
+      <span>Hecho con amor en Villarrica, Chile</span>
+      <span class="announcement-note">La naturaleza del sur, en tu ritual de cada día</span>
+      <a href="#coleccion">Descubre Amankay <span aria-hidden="true">↗</span></a>
+    </div>
+
+    <header class="site-header">
+      <button class="icon-button menu-toggle" type="button" aria-label="Abrir menú" aria-expanded="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg>
+      </button>
+      <a class="wordmark" href="#" aria-label="Amankay, inicio">
+        <span class="wordmark-name">amankay<span class="wordmark-dot">.</span></span>
+        <span class="wordmark-caption">BOTÁNICA DEL SUR</span>
+      </a>
+      <nav class="main-nav" aria-label="Navegación principal">
+        <a href="#coleccion">La colección</a>
+        <a href="#filosofia">Nuestra esencia</a>
+        <a href="#ritual">Rituales</a>
+      </nav>
+      <div class="header-actions">
+        <a class="header-contact" href="https://www.instagram.com/amankayorganic/" target="_blank" rel="noreferrer">Hablemos</a>
+        <button class="cart-trigger" type="button" aria-label="Abrir bolsa de compras">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l1 12H4L5 8Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></svg>
+          <span class="cart-label">Bolsa</span>
+          <span class="cart-count" aria-live="polite">0</span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="eyebrow-line"></span> CUIDADO NATURAL · VILLARRICA</p>
+          <h1 id="hero-title">La calma del sur,<br>en tu <em>piel.</em></h1>
+          <p class="hero-description">Cosmética natural creada con cariño, inspirada en los paisajes y las plantas que hacen único al sur de Chile.</p>
+          <a class="button button-dark" href="#coleccion">Explorar la colección <span aria-hidden="true">↗</span></a>
+          <div class="hero-signature">
+            <span class="signature-mark" aria-hidden="true">a</span>
+            <span>Pequeños rituales.<br>Una conexión más natural.</span>
+          </div>
+          <span class="hero-index">01 — 04</span>
+        </div>
+        <div class="hero-visual">
+          <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=1600&q=85" alt="Bosque nativo del sur de Chile envuelto en luz suave">
+          <div class="hero-image-wash"></div>
+          <div class="hero-note"><span class="note-sparkle">✳</span><span>La naturaleza,<br>sin apuro.</span></div>
+          <div class="hero-vertical">COSMÉTICA CON RAÍCES</div>
+        </div>
+        <div class="hero-bottom"><span>01</span><span class="bottom-rule"></span><span>DESLIZA PARA DESCUBRIR</span></div>
+      </section>
+
+      <section class="values-strip" aria-label="Los valores de Amankay">
+        <div><span class="value-icon">✳</span><span>Inspirado en el sur de Chile</span></div>
+        <span class="values-separator" aria-hidden="true">✳</span>
+        <div><span class="value-icon">✳</span><span>Hecho con dedicación y amor</span></div>
+        <span class="values-separator" aria-hidden="true">✳</span>
+        <div><span class="value-icon">✳</span><span>Un gesto amable con tu piel</span></div>
+      </section>
+
+      <section class="collection section-wrap" id="coleccion">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow"><span class="eyebrow-line"></span> CUIDARNOS TAMBIÉN ES VOLVER</p>
+            <h2>Encuentra tu <em>ritual.</em></h2>
+          </div>
+          <p class="section-intro">Fórmulas artesanales para acompañar tus momentos de cuidado, con la esencia natural de nuestra tierra.</p>
+        </div>
+        <div class="collection-toolbar">
+          <div class="category-filters" role="group" aria-label="Filtrar productos">
+            <button class="filter-button is-active" type="button" data-filter="todos" aria-pressed="true">Todo <span>04</span></button>
+            <button class="filter-button" type="button" data-filter="rostro" aria-pressed="false">Rostro</button>
+            <button class="filter-button" type="button" data-filter="cuerpo" aria-pressed="false">Cuerpo</button>
+            <button class="filter-button" type="button" data-filter="jabones" aria-pressed="false">Jabones</button>
+          </div>
+          <label class="search-box">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.5"/><path d="m16 16 4 4"/></svg>
+            <input id="product-search" type="search" placeholder="Buscar en la colección" aria-label="Buscar productos">
+          </label>
+        </div>
+
+        <div class="product-grid" id="product-grid">
+          <article class="product-card" data-category="rostro" data-name="crema facial de maqui">
+            <div class="product-image product-image-maqui">
+              <img src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=900&q=80" alt="Imagen referencial de cuidado facial natural" loading="lazy">
+              <span class="product-tag">Favorito del sur</span>
+              <button class="quick-add" type="button" data-add="maqui" aria-label="Agregar Crema facial de maqui a la bolsa">+</button>
+            </div>
+            <div class="product-meta"><span>ROSTRO · MAQUI</span><span class="product-number">01</span></div>
+            <div class="product-title-row"><h3>Crema facial de maqui</h3><span class="product-price">$5.000</span></div>
+            <p class="product-description">Maqui antioxidante; hidrata y repara. Con karité y aceite de maqui.</p>
+            <button class="text-add" type="button" data-add="maqui">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
+          </article>
+
+          <article class="product-card" data-category="rostro" data-name="serum facial">
+            <div class="product-image product-image-serum">
+              <img src="https://images.unsplash.com/photo-1601049541289-9b1b7bbbfe19?auto=format&fit=crop&w=900&q=80" alt="Imagen referencial de un sérum de cuidado para el rostro" loading="lazy">
+              <span class="product-tag product-tag-light">Ritual esencial</span>
+              <button class="quick-add" type="button" data-add="serum" aria-label="Agregar Sérum facial a la bolsa">+</button>
+            </div>
+            <div class="product-meta"><span>ROSTRO · 30 G</span><span class="product-number">02</span></div>
+            <div class="product-title-row"><h3>Sérum facial</h3><span class="product-price">$6.000</span></div>
+            <p class="product-description">Hidrata y nutre la piel. Con proteína de seda.</p>
+            <button class="text-add" type="button" data-add="serum">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
+          </article>
+
+          <article class="product-card" data-category="cuerpo" data-name="exfoliante de café">
+            <div class="product-image product-image-cafe">
+              <img src="https://images.unsplash.com/photo-1600428853876-fb5a850b444f?auto=format&fit=crop&w=900&q=80" alt="Imagen referencial de exfoliación y cuidado corporal" loading="lazy">
+              <span class="product-tag">Pausa para ti</span>
+              <button class="quick-add" type="button" data-add="cafe" aria-label="Agregar Exfoliante de café a la bolsa">+</button>
+            </div>
+            <div class="product-meta"><span>ROSTRO Y CUERPO · 100 G</span><span class="product-number">03</span></div>
+            <div class="product-title-row"><h3>Exfoliante de café</h3><span class="product-price">$5.000</span></div>
+            <p class="product-description">Con aceites de coco, almendras y zanahoria.</p>
+            <button class="text-add" type="button" data-add="cafe">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
+          </article>
+
+          <article class="product-card" data-category="jabones" data-name="jabones orgánicos">
+            <div class="product-image product-image-jabon">
+              <img src="https://images.unsplash.com/photo-1600857544200-b2f666a9a2ec?auto=format&fit=crop&w=900&q=80" alt="Imagen referencial de jabones artesanales" loading="lazy">
+              <span class="product-tag product-tag-light">Hecho a mano</span>
+              <button class="quick-add" type="button" data-add="jabones" aria-label="Agregar Jabones orgánicos a la bolsa">+</button>
+            </div>
+            <div class="product-meta"><span>JABONES · 150 G</span><span class="product-number">04</span></div>
+            <div class="product-title-row"><h3>Jabones orgánicos</h3><span class="product-price">$3.500</span></div>
+            <p class="product-description">Naturales, hidratantes y nutritivos. Elige entre sus variedades.</p>
+            <button class="text-add" type="button" data-add="jabones">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
+          </article>
+          <p class="empty-search" hidden>No encontramos productos con esa búsqueda.</p>
+        </div>
+        <p class="catalog-note">Imágenes referenciales de maqueta. Pronto podrás ver aquí las fotografías de nuestros propios productos.</p>
+      </section>
+
+      <section class="story" id="filosofia">
+        <div class="story-image">
+          <img src="https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=1400&q=85" alt="Paisaje natural entre árboles en el sur de Chile" loading="lazy">
+          <span class="story-image-caption">VILLARRICA · ARAUCANÍA</span>
+        </div>
+        <div class="story-copy">
+          <p class="eyebrow"><span class="eyebrow-line"></span> NUESTRA ESENCIA</p>
+          <h2>Un poco de sur.<br>Un mundo de <em>cuidado.</em></h2>
+          <p>Amankay nace para rescatar el uso de los recursos que nos ofrece generosamente el entorno del sur de Chile. Creamos cosmética natural con dedicación, inspirada en sus plantas, sus aromas y su manera de invitarnos a bajar el ritmo.</p>
+          <p>Elaboramos jabones artesanales y cremas con cariño, buscando que cada pequeño ritual te acerque un poquito más a la naturaleza.</p>
+          <a class="underlined-link" href="https://www.instagram.com/amankayorganic/" target="_blank" rel="noreferrer">Conoce más de Amankay <span aria-hidden="true">↗</span></a>
+          <span class="story-seal" aria-hidden="true"><span>DESDE EL SUR<br>CON AMOR</span><b>✳</b></span>
+        </div>
+      </section>
+
+      <section class="ritual section-wrap" id="ritual">
+        <div class="ritual-heading">
+          <p class="eyebrow"><span class="eyebrow-line"></span> UN RESPIRO EN TU DÍA</p>
+          <h2>Tu tiempo.<br><em>Tu manera.</em></h2>
+          <p>El cuidado no tiene que ser complicado. Solo necesita un momento para ti.</p>
+          <a class="button button-outline" href="#coleccion">Encuentra tu favorito <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="ritual-steps">
+          <article><span class="step-number">01</span><span class="step-icon">✳</span><h3>Haz una pausa</h3><p>Deja afuera el ruido. Este momento es tuyo.</p></article>
+          <article><span class="step-number">02</span><span class="step-icon">❋</span><h3>Elige lo natural</h3><p>Conecta con texturas y aromas de nuestra tierra.</p></article>
+          <article><span class="step-number">03</span><span class="step-icon">✿</span><h3>Disfruta el ahora</h3><p>Un pequeño gesto también puede cambiar tu día.</p></article>
+        </div>
+      </section>
+
+      <section class="closing-banner">
+        <img src="https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=1800&q=85" alt="" loading="lazy">
+        <div class="closing-overlay"></div>
+        <div class="closing-content"><p class="eyebrow">AMANKAY · COSMÉTICA NATURAL</p><h2>Vuelve a lo <em>esencial.</em></h2><a class="button button-light" href="#coleccion">Descubrir la colección <span aria-hidden="true">↗</span></a></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-main">
+        <div class="footer-brand">
+          <a class="wordmark wordmark-footer" href="#" aria-label="Amankay, inicio"><span class="wordmark-name">amankay<span class="wordmark-dot">.</span></span><span class="wordmark-caption">BOTÁNICA DEL SUR</span></a>
+          <p>Pequeños rituales inspirados<br>en la naturaleza del sur.</p>
+          <a class="footer-instagram" href="https://www.instagram.com/amankayorganic/" target="_blank" rel="noreferrer">Instagram <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="footer-column"><h3>Explora</h3><a href="#coleccion">La colección</a><a href="#filosofia">Nuestra esencia</a><a href="#ritual">Rituales</a></div>
+        <div class="footer-column"><h3>Visítanos</h3><span>Galería Artesanal Huimpay</span><span>Local 37 · Villarrica</span><span>Todos los días · 11:00–23:00</span><a href="mailto:patriciarocoaraya@gmail.com">Escríbenos</a><a href="tel:+56953750504">+56 9 5375 0504</a></div>
+        <div class="footer-note"><span class="footer-flower">✳</span><p>Hecho con dedicación<br>y cariño en el sur de Chile.</p><span class="footer-place">38° 44' S · 72° 13' O</span></div>
+      </div>
+      <div class="footer-bottom"><span>© 2026 Amankay Organic</span><span>Cosmética natural con esencias del sur de Chile.</span><a href="#">Volver arriba ↑</a></div>
+    </footer>
+
+    <div class="drawer-backdrop" hidden></div>
+    <aside class="cart-drawer" aria-label="Bolsa de compras" aria-hidden="true" inert>
+      <div class="drawer-header"><div><p class="eyebrow">TU RITUAL EMPIEZA AQUÍ</p><h2>Tu bolsa <span class="drawer-count">(0)</span></h2></div><button class="icon-button close-drawer" type="button" aria-label="Cerrar bolsa"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+      <div class="cart-items"></div>
+      <div class="cart-empty"><span class="empty-flower">✳</span><h3>Tu bolsa está esperando.</h3><p>Descubre un pequeño ritual hecho en el sur.</p><button class="button button-dark continue-shopping" type="button">Explorar la colección <span aria-hidden="true">↗</span></button></div>
+      <div class="drawer-footer" hidden>
+        <div class="subtotal-row"><span>Subtotal</span><strong class="cart-subtotal">$0</strong></div>
+        <p class="checkout-note">El valor y la coordinación de entrega se confirman al realizar tu pedido.</p>
+        <button class="button button-dark checkout-button" type="button">Continuar por WhatsApp <span aria-hidden="true">↗</span></button>
+        <p class="checkout-caption">Pedido de muestra · sin pago en línea</p>
+      </div>
+    </aside>
+    <div class="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
