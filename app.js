@@ -20,7 +20,7 @@ const products = {
     name: "Exfoliante de café",
     price: 5000,
     category: "Cuerpo",
-    image: "https://images.unsplash.com/photo-1600428853876-fb5a850b444f?auto=format&fit=crop&w=240&q=70",
+    image: "assets/products/exfoliante-cafe-catalogo.jpg",
     detail: "Exfoliante para rostro y cuerpo elaborado con aceites de coco, almendras y zanahoria. Un momento de cuidado para renovar tu rutina.",
   },
   jabones: {
