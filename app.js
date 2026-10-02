@@ -34,10 +34,11 @@ const products = {
   "aceite-maqui": {
     id: "aceite-maqui",
     name: "Aceite de maqui",
-    price: null,
+    price: 8000,
+    wholesale: { minimumQuantity: 6, price: 7000 },
     category: "Botánica",
     image: "assets/products/aceite-maqui-catalogo.jpg",
-    detail: "Aceite natural de maqui prensado en frío, elaborado en la Araucanía. Un cuidado botánico de origen sureño para integrar a tu ritual.",
+    detail: "Potente antioxidante especial para pieles maduras.",
   },
   "aceite-oregano": {
     id: "aceite-oregano",
