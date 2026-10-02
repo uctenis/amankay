@@ -47,6 +47,14 @@ const products = {
     image: "assets/products/agua-rosas-catalogo.jpg",
     detail: "Agua de rosas de 60 ml. Amankay la presenta como hidratante, refrescante y purificante para la piel.",
   },
+  "aceite-calmar-irritaciones": {
+    id: "aceite-calmar-irritaciones",
+    name: "Aceite para calmar irritaciones",
+    price: 9500,
+    category: "Rostro",
+    image: "assets/products/aceite-calmar-irritaciones-catalogo.jpg",
+    detail: "Aplicar en el rostro todos los días. Contiene aceite de caléndula y aceite esencial de manzanilla. Envase de 30 ml.",
+  },
   "shampoo-seco": {
     id: "shampoo-seco",
     name: "Shampoo sólido · cabello seco",
