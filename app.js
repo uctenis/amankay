@@ -90,9 +90,12 @@ const productDialogImage = productDialog.querySelector(".product-dialog-image im
 const productDialogCategory = productDialog.querySelector(".product-dialog-category");
 const productDialogTitle = productDialog.querySelector("#product-dialog-title");
 const productDialogPrice = productDialog.querySelector(".product-dialog-price");
-const productDialogDescription = productDialog.querySelector(".product-dialog-description");
+const productDialogFormat = productDialog.querySelector(".product-dialog-format strong");
+const productDialogLongDescription = productDialog.querySelector(".product-dialog-long-description");
 const productDialogAdd = productDialog.querySelector(".product-dialog-add");
+const productDialogQuantity = productDialog.querySelector(".product-quantity");
 let productDialogTrigger = null;
+let selectedProductQuantity = 1;
 let cart = loadCart();
 let toastTimer;
 
@@ -128,7 +131,7 @@ function formatPrice(price) {
 function updateCart() {
   const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   const subtotal = cart.reduce(
-    (sum, item) => sum + (products[item.id].price || 0) * item.quantity,
+    (sum, item) => sum + (products[item.id].price ?? 0) * item.quantity,
     0,
   );
   const hasUnpricedItems = cart.some((item) => products[item.id].price === null);
@@ -200,10 +203,10 @@ function showToast(message) {
   toastTimer = window.setTimeout(() => toast.classList.remove("is-visible"), 2200);
 }
 
-function addToCart(id) {
+function addToCart(id, quantity = 1) {
   const existing = cart.find((item) => item.id === id);
-  if (existing) existing.quantity += 1;
-  else cart.push({ id, quantity: 1 });
+  if (existing) existing.quantity += quantity;
+  else cart.push({ id, quantity });
   saveCart();
   updateCart();
   showToast(`${products[id].name} se agregó a tu bolsa.`);
@@ -228,8 +231,16 @@ function openProductDialog(id, trigger) {
   productDialogPrice.textContent = product.price === null
     ? "Precio por confirmar"
     : formatPrice(product.price);
-  productDialogDescription.textContent = product.detail;
+  productDialogLongDescription.textContent = product.detail;
+  productDialogFormat.textContent = card.querySelector(".product-meta > span").textContent
+    .replace(" · ", " / ");
   productDialogAdd.dataset.add = id;
+  selectedProductQuantity = 1;
+  productDialogQuantity.value = "1";
+  productDialog.querySelector('[data-step="-1"]').disabled = true;
+  const accordions = productDialog.querySelectorAll(".product-detail-accordions details");
+  accordions[0].open = true;
+  accordions[1].open = false;
   productDialogTrigger = trigger;
   productDialog.showModal();
   productDialog.querySelector(".product-dialog-close").focus();
@@ -244,6 +255,16 @@ document.querySelectorAll("[data-detail]").forEach((button) => {
 productDialog.querySelector(".product-dialog-close").addEventListener("click", () => {
   productDialog.close();
 });
+productDialog.querySelectorAll(".product-quantity-change").forEach((button) => {
+  button.addEventListener("click", () => {
+    selectedProductQuantity = Math.max(
+      1,
+      selectedProductQuantity + Number(button.dataset.step),
+    );
+    productDialogQuantity.value = String(selectedProductQuantity);
+    productDialog.querySelector('[data-step="-1"]').disabled = selectedProductQuantity === 1;
+  });
+});
 productDialog.addEventListener("click", (event) => {
   if (event.target === productDialog) productDialog.close();
 });
@@ -252,7 +273,8 @@ productDialog.addEventListener("close", () => {
   productDialogTrigger = null;
 });
 productDialogAdd.addEventListener("click", () => {
-  addToCart(productDialogAdd.dataset.add);
+  addToCart(productDialogAdd.dataset.add, selectedProductQuantity);
+  productDialogTrigger = null;
   productDialog.close();
   openDrawer();
 });
@@ -269,7 +291,12 @@ document.querySelector(".close-drawer").addEventListener("click", closeDrawer);
 document.querySelector(".continue-shopping").addEventListener("click", closeDrawer);
 backdrop.addEventListener("click", closeDrawer);
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && drawer.classList.contains("is-open")) closeDrawer();
+  if (event.key !== "Escape") return;
+  if (productDialog.open) {
+    productDialog.close();
+  } else if (drawer.classList.contains("is-open")) {
+    closeDrawer();
+  }
 });
 
 cartItems.addEventListener("click", (event) => {
@@ -300,7 +327,7 @@ document.querySelector(".checkout-button").addEventListener("click", () => {
   });
   const hasUnpricedItems = cart.some((item) => products[item.id].price === null);
   const subtotal = cart.reduce(
-    (sum, item) => sum + (products[item.id].price || 0) * item.quantity,
+    (sum, item) => sum + (products[item.id].price ?? 0) * item.quantity,
     0,
   );
   const message = [

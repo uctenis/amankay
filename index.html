@@ -18,8 +18,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20261002-2">
-    <script src="app.js" defer></script>
+    <link rel="stylesheet" href="styles.css?v=20261002-3">
+    <script src="app.js?v=20261002-3" defer></script>
   </head>
   <body>
     <div class="announcement">
@@ -31,7 +31,7 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg>
       </button>
       <a class="wordmark" href="#" aria-label="Amankay Organic, inicio">
-        <img class="brand-logo" src="assets/branding/amankay-logo-plum.png?v=20261002-2" alt="">
+        <img class="brand-logo" src="assets/branding/amankay-logo-plum.png?v=20261002-3" alt="">
       </a>
       <nav class="main-nav" aria-label="Navegación principal">
         <a href="#coleccion">La colección</a>
@@ -236,7 +236,7 @@
     <footer class="site-footer">
       <div class="footer-main">
         <div class="footer-brand">
-          <a class="wordmark wordmark-footer" href="#" aria-label="Amankay Organic, inicio"><img class="brand-logo" src="assets/branding/amankay-logo-light.png?v=20261002-2" alt=""></a>
+          <a class="wordmark wordmark-footer" href="#" aria-label="Amankay Organic, inicio"><img class="brand-logo" src="assets/branding/amankay-logo-light.png?v=20261002-3" alt=""></a>
           <p>Pequeños rituales inspirados<br>en la naturaleza del sur.</p>
           <a class="footer-instagram" href="https://www.instagram.com/amankayorganic/" target="_blank" rel="noreferrer">Instagram <span aria-hidden="true">↗</span></a>
         </div>
@@ -251,15 +251,34 @@
       <button class="icon-button product-dialog-close" type="button" aria-label="Cerrar detalles del producto">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
       </button>
-      <div class="product-dialog-content">
-        <div class="product-dialog-image"><img src="" alt=""></div>
-        <div class="product-dialog-copy">
-          <p class="product-dialog-category"></p>
-          <h2 id="product-dialog-title"></h2>
-          <p class="product-dialog-price"></p>
-          <p class="product-dialog-description"></p>
-          <button class="button button-dark product-dialog-add" type="button">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
-          <p class="product-dialog-note">Tu pedido se coordina directamente con Amankay.</p>
+      <div class="product-detail-page">
+        <div class="product-dialog-content">
+          <div class="product-dialog-image"><img src="" alt=""></div>
+          <div class="product-dialog-copy">
+            <p class="product-dialog-category"></p>
+            <h2 id="product-dialog-title"></h2>
+            <p class="product-dialog-price"></p>
+            <div class="product-dialog-format"><span>COLECCIÓN Y FORMATO</span><strong></strong></div>
+            <div class="product-purchase-row">
+              <div class="quantity-picker" aria-label="Cantidad">
+                <button class="product-quantity-change" type="button" data-step="-1" aria-label="Disminuir cantidad" disabled>−</button>
+                <output class="product-quantity" aria-live="polite">1</output>
+                <button class="product-quantity-change" type="button" data-step="1" aria-label="Aumentar cantidad">+</button>
+              </div>
+              <button class="button button-dark product-dialog-add" type="button">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
+            </div>
+            <p class="product-dialog-note">Disponibilidad y valor final se confirman al coordinar el pedido.</p>
+          </div>
+        </div>
+        <div class="product-detail-accordions">
+          <details open>
+            <summary>Descripción del producto <span aria-hidden="true">+</span></summary>
+            <p class="product-dialog-long-description"></p>
+          </details>
+          <details>
+            <summary>Pedido y entrega <span aria-hidden="true">+</span></summary>
+            <p>Al continuar con tu pedido, Amankay confirma disponibilidad, valor final y coordinación de entrega directamente contigo por WhatsApp.</p>
+          </details>
         </div>
       </div>
     </dialog>
