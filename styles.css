@@ -104,6 +104,7 @@ h1 em, h2 em { color: var(--moss); font-weight: 400; }
 .product-title-trigger { padding: 0; border: 0; background: transparent; color: inherit; font: inherit; text-align: left; cursor: pointer; transition: color .2s; }
 .product-title-trigger:hover { color: #927d93; }
 .product-price { flex-shrink: 0; font-size: 11px; }
+.product-wholesale-note { margin: 5px 0 0; color: #79677b; font-size: 9px; line-height: 1.5; }
 .product-description { margin: 8px 0 0; color: #77736f; font-size: 11px; line-height: 1.65; }
 .text-add { margin-top: 13px; padding: 0 0 4px; border: 0; border-bottom: 1px solid #9a9c8d; background: none; font-size: 10px; cursor: pointer; transition: color .2s, border .2s; }
 .text-add span { margin-left: 7px; color: var(--clay); }
@@ -120,6 +121,7 @@ h1 em, h2 em { color: var(--moss); font-weight: 400; }
 .product-dialog-category { margin: 0 0 21px; color: #8b788d; font-size: 9px; letter-spacing: .16em; }
 .product-dialog-copy h2 { margin: 0; font-family: var(--serif); font-size: clamp(33px, 4vw, 48px); font-weight: 400; line-height: 1.08; }
 .product-dialog-price { margin: 18px 0 0; font-size: 15px; }
+.product-dialog-wholesale { margin: 7px 0 0; color: #79677b; font-size: 10px; line-height: 1.5; }
 .product-dialog-format { width: 100%; padding: 13px 0; display: flex; flex-direction: column; gap: 6px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .product-dialog-format > span { color: #8c8c81; font-size: 8px; letter-spacing: .13em; }
 .product-dialog-format strong { font-size: 10px; font-weight: 500; }
@@ -217,6 +219,7 @@ h1 em, h2 em { color: var(--moss); font-weight: 400; }
 .cart-line-details { min-width: 0; display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 7px; }
 .cart-line-details h3 { margin: 0; font-family: var(--serif); font-size: 15px; font-weight: 400; }
 .cart-line-details > span { font-size: 10px; }
+.cart-wholesale-note { color: #79677b; font-size: 8px; line-height: 1.4; }
 .quantity-control { display: flex; align-items: center; border: 1px solid var(--line); }
 .quantity-control button { width: 26px; height: 26px; border: 0; background: transparent; cursor: pointer; }
 .quantity-control span { min-width: 22px; text-align: center; font-size: 10px; }

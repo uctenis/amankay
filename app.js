@@ -71,6 +71,24 @@ const products = {
     image: "assets/instagram/shampoo-03.webp",
     detail: "Shampoo sólido hidratante con caléndula y jojoba. Formato de 60 g.",
   },
+  "pomada-calendula": {
+    id: "pomada-calendula",
+    name: "Pomada de caléndula",
+    price: 7000,
+    wholesale: { minimumQuantity: 6, price: 4500 },
+    category: "Cuerpo",
+    image: "assets/products/pomada-calendula-catalogo.jpg",
+    detail: "Especial para calmar irritaciones e hidratar las pieles resecas.",
+  },
+  "roll-on-antiestres": {
+    id: "roll-on-antiestres",
+    name: "Roll on antiestrés",
+    price: 8000,
+    wholesale: { minimumQuantity: 6, price: 7000 },
+    category: "Botánica",
+    image: "assets/products/roll-on-antiestres-catalogo.jpg",
+    detail: "Especial para calmar estados de estrés. Contiene una mezcla de aceites esenciales de lavanda, melisa y menta.",
+  },
 };
 
 const currency = new Intl.NumberFormat("es-CL", {
@@ -90,6 +108,7 @@ const productDialogImage = productDialog.querySelector(".product-dialog-image im
 const productDialogCategory = productDialog.querySelector(".product-dialog-category");
 const productDialogTitle = productDialog.querySelector("#product-dialog-title");
 const productDialogPrice = productDialog.querySelector(".product-dialog-price");
+const productDialogWholesale = productDialog.querySelector(".product-dialog-wholesale");
 const productDialogFormat = productDialog.querySelector(".product-dialog-format strong");
 const productDialogLongDescription = productDialog.querySelector(".product-dialog-long-description");
 const productDialogAdd = productDialog.querySelector(".product-dialog-add");
@@ -128,10 +147,26 @@ function formatPrice(price) {
   return currency.format(price).replace(/\s/g, "");
 }
 
+function getUnitPrice(product, quantity) {
+  if (product.price === null) return null;
+  if (product.wholesale && quantity >= product.wholesale.minimumQuantity) {
+    return product.wholesale.price;
+  }
+  return product.price;
+}
+
+function getWholesaleNote(product, quantity) {
+  if (!product.wholesale) return "";
+  if (quantity >= product.wholesale.minimumQuantity) {
+    return `Precio mayorista aplicado: ${formatPrice(product.wholesale.price)} c/u.`;
+  }
+  return `Mayorista desde ${product.wholesale.minimumQuantity}: ${formatPrice(product.wholesale.price)} c/u.`;
+}
+
 function updateCart() {
   const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   const subtotal = cart.reduce(
-    (sum, item) => sum + (products[item.id].price ?? 0) * item.quantity,
+    (sum, item) => sum + (getUnitPrice(products[item.id], item.quantity) ?? 0) * item.quantity,
     0,
   );
   const hasUnpricedItems = cart.some((item) => products[item.id].price === null);
@@ -146,12 +181,14 @@ function updateCart() {
 
   for (const item of cart) {
     const product = products[item.id];
-    const unitPrice = product.price === null
+    const currentUnitPrice = getUnitPrice(product, item.quantity);
+    const unitPrice = currentUnitPrice === null
       ? "Precio por confirmar"
-      : formatPrice(product.price);
-    const linePrice = product.price === null
+      : `${formatPrice(currentUnitPrice)}${product.wholesale ? " c/u" : ""}`;
+    const linePrice = currentUnitPrice === null
       ? "Por confirmar"
-      : formatPrice(product.price * item.quantity);
+      : formatPrice(currentUnitPrice * item.quantity);
+    const wholesaleNote = getWholesaleNote(product, item.quantity);
     const row = document.createElement("article");
     row.className = "cart-line";
     row.innerHTML = `
@@ -159,6 +196,7 @@ function updateCart() {
       <div class="cart-line-details">
         <h3>${product.name}</h3>
         <span>${unitPrice}</span>
+        ${wholesaleNote ? `<small class="cart-wholesale-note">${wholesaleNote}</small>` : ""}
         <div class="quantity-control" aria-label="Cantidad de ${product.name}">
           <button type="button" data-quantity="-1" data-id="${product.id}" aria-label="Quitar una unidad">−</button>
           <span>${item.quantity}</span>
@@ -220,7 +258,7 @@ function openProductDialog(id, trigger) {
     return;
   }
   const image = card.querySelector(".product-image img");
-  productDialogImage.src = image.src;
+  productDialogImage.src = product.image;
   productDialogImage.alt = image.alt;
   productDialogImage.classList.toggle(
     "is-botanical",
@@ -231,6 +269,8 @@ function openProductDialog(id, trigger) {
   productDialogPrice.textContent = product.price === null
     ? "Precio por confirmar"
     : formatPrice(product.price);
+  productDialogWholesale.textContent = getWholesaleNote(product, 1);
+  productDialogWholesale.hidden = !product.wholesale;
   productDialogLongDescription.textContent = product.detail;
   productDialogFormat.textContent = card.querySelector(".product-meta > span").textContent
     .replace(" · ", " / ");
@@ -263,6 +303,8 @@ productDialog.querySelectorAll(".product-quantity-change").forEach((button) => {
     );
     productDialogQuantity.value = String(selectedProductQuantity);
     productDialog.querySelector('[data-step="-1"]').disabled = selectedProductQuantity === 1;
+    const product = products[productDialogAdd.dataset.add];
+    productDialogWholesale.textContent = getWholesaleNote(product, selectedProductQuantity);
   });
 });
 productDialog.addEventListener("click", (event) => {
@@ -320,14 +362,20 @@ document.querySelector(".checkout-button").addEventListener("click", () => {
   if (cart.length === 0) return;
   const lines = cart.map(({ id, quantity }) => {
     const product = products[id];
-    const linePrice = product.price === null
+    const unitPrice = getUnitPrice(product, quantity);
+    const linePrice = unitPrice === null
       ? "valor por confirmar"
-      : formatPrice(product.price * quantity);
-    return `• ${product.name} x${quantity}: ${linePrice}`;
+      : formatPrice(unitPrice * quantity);
+    const wholesaleNote = product.wholesale
+      ? quantity >= product.wholesale.minimumQuantity
+        ? ` (${formatPrice(unitPrice)} c/u, precio mayorista)`
+        : ` (${formatPrice(unitPrice)} c/u; mayorista desde ${product.wholesale.minimumQuantity}: ${formatPrice(product.wholesale.price)} c/u)`
+      : "";
+    return `• ${product.name} x${quantity}: ${linePrice}${wholesaleNote}`;
   });
   const hasUnpricedItems = cart.some((item) => products[item.id].price === null);
   const subtotal = cart.reduce(
-    (sum, item) => sum + (products[item.id].price ?? 0) * item.quantity,
+    (sum, item) => sum + (getUnitPrice(products[item.id], item.quantity) ?? 0) * item.quantity,
     0,
   );
   const message = [
