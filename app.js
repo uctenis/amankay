@@ -122,6 +122,15 @@ const products = {
     image: "assets/products/roll-on-eucalipto-catalogo.jpg",
     detail: "Aroma fresco, penetrante y estimulante. Aumenta la energía y despeja las vías respiratorias.",
   },
+  "roll-on-romero": {
+    id: "roll-on-romero",
+    name: "Roll on de romero",
+    price: 8000,
+    wholesale: { minimumQuantity: 6, price: 6000 },
+    category: "Botánica",
+    image: "assets/products/roll-on-romero-catalogo.jpg",
+    detail: "Ayuda a mejorar la memoria y la concentración, y a evitar la somnolencia.",
+  },
 };
 
 const currency = new Intl.NumberFormat("es-CL", {
