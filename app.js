@@ -4,7 +4,7 @@ const products = {
     name: "Crema facial de maqui",
     price: 5000,
     category: "Rostro",
-    image: "https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?auto=format&fit=crop&w=240&q=70",
+    image: "assets/products/crema-maqui-catalogo.jpg",
     detail: "Crema facial con maqui, manteca de karité y aceite de maqui. Una fórmula pensada para hidratar y acompañar la reparación de la piel.",
   },
   serum: {
