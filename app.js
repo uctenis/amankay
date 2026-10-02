@@ -5,7 +5,7 @@ const products = {
     price: 5000,
     category: "Rostro",
     image: "assets/products/crema-maqui-catalogo.jpg",
-    detail: "Crema facial con maqui, manteca de karité y aceite de maqui. Una fórmula pensada para hidratar y acompañar la reparación de la piel.",
+    detail: "Un cuidado facial inspirado en los frutos del sur. Su fórmula reúne maqui, manteca de karité y aceite de maqui para hidratar y acompañar la reparación de la piel.",
   },
   serum: {
     id: "serum",
@@ -13,7 +13,7 @@ const products = {
     price: 6000,
     category: "Rostro",
     image: "assets/products/serum-facial-catalogo.jpg",
-    detail: "Sérum facial con proteína de seda que ayuda a hidratar y nutrir la piel, ideal para sumar a tu rutina diaria de cuidado.",
+    detail: "Un gesto ligero para tu rutina diaria. La proteína de seda ayuda a hidratar y nutrir la piel.",
   },
   cafe: {
     id: "cafe",
@@ -21,7 +21,7 @@ const products = {
     price: 5000,
     category: "Cuerpo",
     image: "assets/products/exfoliante-cafe-catalogo.jpg",
-    detail: "Exfoliante para rostro y cuerpo elaborado con aceites de coco, almendras y zanahoria. Un momento de cuidado para renovar tu rutina.",
+    detail: "Una pausa exfoliante para rostro y cuerpo, elaborada con aceites de coco, almendras y zanahoria.",
   },
   jabones: {
     id: "jabones",
@@ -29,7 +29,7 @@ const products = {
     price: 3500,
     category: "Jabones",
     image: "https://images.unsplash.com/photo-1600857544200-b2f666a9a2ec?auto=format&fit=crop&w=240&q=70",
-    detail: "Jabones orgánicos artesanales, naturales e hidratantes. Puedes elegir la variedad que prefieras al preparar tu pedido.",
+    detail: "Jabones orgánicos y artesanales, naturales e hidratantes. Elige la variedad que acompañará tu ritual cotidiano al preparar tu pedido.",
   },
   "aceite-maqui": {
     id: "aceite-maqui",
@@ -38,7 +38,7 @@ const products = {
     wholesale: { minimumQuantity: 6, price: 7000 },
     category: "Botánica",
     image: "assets/products/aceite-maqui-catalogo.jpg",
-    detail: "Potente antioxidante especial para pieles maduras.",
+    detail: "Aceite de maqui, potente antioxidante especialmente pensado para pieles maduras.",
   },
   "aceite-oregano": {
     id: "aceite-oregano",
@@ -46,7 +46,7 @@ const products = {
     price: 9000,
     category: "Botánica",
     image: "assets/products/aceite-oregano-catalogo.jpg",
-    detail: "Para el cuidado de la piel por sus propiedades terapéuticas. Envase de 30 ml.",
+    detail: "Un aceite botánico para el cuidado de la piel, apreciado por sus propiedades terapéuticas. Envase de 30 ml.",
   },
   "agua-rosas": {
     id: "agua-rosas",
@@ -54,7 +54,7 @@ const products = {
     price: null,
     category: "Rostro",
     image: "assets/products/agua-rosas-catalogo.jpg",
-    detail: "Agua de rosas de 60 ml. Amankay la presenta como hidratante, refrescante y purificante para la piel.",
+    detail: "Rosas en un gesto de frescura para tu rutina facial: hidratante, refrescante y purificante. Envase de 60 ml.",
   },
   "aceite-calmar-irritaciones": {
     id: "aceite-calmar-irritaciones",
@@ -62,7 +62,7 @@ const products = {
     price: 9500,
     category: "Rostro",
     image: "assets/products/aceite-calmar-irritaciones-catalogo.jpg",
-    detail: "Aplicar en el rostro todos los días. Contiene aceite de caléndula y aceite esencial de manzanilla. Envase de 30 ml.",
+    detail: "Caléndula y aceite esencial de manzanilla se unen en un cuidado para el rostro. Aplicar a diario. Envase de 30 ml.",
   },
   "macerado-calendula": {
     id: "macerado-calendula",
@@ -71,7 +71,7 @@ const products = {
     wholesale: { minimumQuantity: 6, price: 8000 },
     category: "Rostro",
     image: "assets/products/macerado-calendula-catalogo.jpg",
-    detail: "Aceite especial para calmar las irritaciones de la piel.",
+    detail: "Caléndula macerada en aceite vegetal, pensada para ayudar a calmar las irritaciones de la piel.",
   },
   "aceite-almendras": {
     id: "aceite-almendras",
@@ -80,7 +80,7 @@ const products = {
     wholesale: { minimumQuantity: 6, price: 7000 },
     category: "Rostro",
     image: "assets/products/aceite-almendras-catalogo.jpg",
-    detail: "Aceite 100% natural, rico en vitamina E y apto para todo tipo de pieles.",
+    detail: "Un aceite 100% natural, rico en vitamina E y adecuado para todo tipo de pieles.",
   },
   "aceite-rosa-mosqueta": {
     id: "aceite-rosa-mosqueta",
@@ -89,7 +89,7 @@ const products = {
     wholesale: { minimumQuantity: 6, price: 8000 },
     category: "Rostro",
     image: "assets/products/aceite-rosa-mosqueta-catalogo.jpg",
-    detail: "Regenera y ayuda a atenuar las manchas de la piel. 100% natural, prensado en frío. Envase de 30 ml.",
+    detail: "Un cuidado botánico 100% natural y prensado en frío. Ayuda a regenerar y atenuar las manchas de la piel. Envase de 30 ml.",
   },
   "shampoo-seco": {
     id: "shampoo-seco",
@@ -97,7 +97,7 @@ const products = {
     price: null,
     category: "Cabello",
     image: "assets/instagram/shampoo-cabello-seco-romero-ortiga.webp",
-    detail: "Shampoo sólido para cabello seco, con romero y ortiga. Formato de 60 g.",
+    detail: "Romero y ortiga en un shampoo sólido para cabello seco, inspirado en la botánica del sur. Formato de 60 g.",
   },
   "shampoo-normal": {
     id: "shampoo-normal",
@@ -105,7 +105,7 @@ const products = {
     price: null,
     category: "Cabello",
     image: "assets/instagram/shampoo-02.webp",
-    detail: "Una alternativa sólida de la línea capilar Amankay para cabello normal. Formato de 60 g.",
+    detail: "Una alternativa sólida de Amankay para acompañar el cuidado del cabello normal. Formato de 60 g.",
   },
   "shampoo-hidratante": {
     id: "shampoo-hidratante",
@@ -113,7 +113,7 @@ const products = {
     price: null,
     category: "Cabello",
     image: "assets/instagram/shampoo-03.webp",
-    detail: "Shampoo sólido hidratante con caléndula y jojoba. Formato de 60 g.",
+    detail: "Caléndula y jojoba en un shampoo sólido hidratante para sumar a tu rutina capilar. Formato de 60 g.",
   },
   "pomada-calendula": {
     id: "pomada-calendula",
@@ -122,7 +122,7 @@ const products = {
     wholesale: { minimumQuantity: 6, price: 4500 },
     category: "Cuerpo",
     image: "assets/products/pomada-calendula-catalogo.jpg",
-    detail: "Especial para calmar irritaciones e hidratar las pieles resecas.",
+    detail: "Un cuidado reconfortante con caléndula, pensado para calmar irritaciones e hidratar las pieles resecas.",
   },
   "aceite-contracturas": {
     id: "aceite-contracturas",
@@ -130,7 +130,7 @@ const products = {
     price: 9500,
     category: "Cuerpo",
     image: "assets/products/aceite-contracturas-catalogo.jpg",
-    detail: "Aplicar frotando la zona 1 o 2 veces por semana. Contiene aceite de jojoba, aceite de caléndula y aceites esenciales de canela, manzanilla y lavanda. Envase de 30 ml.",
+    detail: "Un masaje de cuidado con jojoba, caléndula y aceites esenciales de canela, manzanilla y lavanda. Frotar en la zona una o dos veces por semana. Envase de 30 ml.",
   },
   "aceite-masaje-muscular": {
     id: "aceite-masaje-muscular",
@@ -138,7 +138,7 @@ const products = {
     price: 9500,
     category: "Cuerpo",
     image: "assets/products/aceite-masaje-muscular-catalogo.jpg",
-    detail: "Aplicar en la zona de dolor hasta producir calor. Contiene aceite de almendras y aceites esenciales de lavanda, manzanilla y romero. Envase de 30 ml.",
+    detail: "Aceite de almendras con aceites esenciales de lavanda, manzanilla y romero, pensado para acompañar el masaje muscular. Aplicar en la zona hasta producir calor. Envase de 30 ml.",
   },
   "unguento-masaje": {
     id: "unguento-masaje",
@@ -146,7 +146,7 @@ const products = {
     price: 5000,
     category: "Cuerpo",
     image: "assets/products/unguento-masaje-catalogo.jpg",
-    detail: "Frotar la zona afectada. Contiene aceite de coco, cera vegetal y aceites esenciales de manzanilla, lavanda y melisa. Envase de 20 g.",
+    detail: "Un bálsamo para el masaje con aceite de coco, cera vegetal y aceites esenciales de manzanilla, lavanda y melisa. Frotar en la zona deseada. Envase de 20 g.",
   },
   "roll-on-antiestres": {
     id: "roll-on-antiestres",
@@ -155,7 +155,7 @@ const products = {
     wholesale: { minimumQuantity: 6, price: 7000 },
     category: "Aromaterapia",
     image: "assets/products/roll-on-antiestres-catalogo.jpg",
-    detail: "Especial para calmar estados de estrés. Contiene una mezcla de aceites esenciales de lavanda, melisa y menta.",
+    detail: "Una pausa aromática para acompañar momentos de estrés, con aceites esenciales de lavanda, melisa y menta.",
   },
   "roll-on-eucalipto": {
     id: "roll-on-eucalipto",
@@ -164,7 +164,7 @@ const products = {
     wholesale: { minimumQuantity: 6, price: 6500 },
     category: "Aromaterapia",
     image: "assets/products/roll-on-eucalipto-catalogo.jpg",
-    detail: "Aroma fresco, penetrante y estimulante. Aumenta la energía y despeja las vías respiratorias.",
+    detail: "Una nota fresca, penetrante y estimulante de eucalipto, para acompañar tu día y ayudar a despejar las vías respiratorias.",
   },
   "roll-on-romero": {
     id: "roll-on-romero",
@@ -173,7 +173,7 @@ const products = {
     wholesale: { minimumQuantity: 6, price: 6000 },
     category: "Aromaterapia",
     image: "assets/products/roll-on-romero-catalogo.jpg",
-    detail: "Ayuda a mejorar la memoria y la concentración, y a evitar la somnolencia.",
+    detail: "El aroma herbal del romero acompaña la memoria, la concentración y el estado de alerta.",
   },
 };
 
