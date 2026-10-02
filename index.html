@@ -19,7 +19,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css?v=20261002-4">
-    <script src="app.js?v=20261002-10" defer></script>
+    <script src="app.js?v=20261002-12" defer></script>
   </head>
   <body>
     <div class="announcement">
@@ -85,7 +85,7 @@
         </div>
         <div class="collection-toolbar">
           <div class="category-filters" role="group" aria-label="Filtrar productos">
-            <button class="filter-button is-active" type="button" data-filter="todos" aria-pressed="true">Todo <span>13</span></button>
+            <button class="filter-button is-active" type="button" data-filter="todos" aria-pressed="true">Todo <span>15</span></button>
             <button class="filter-button" type="button" data-filter="rostro" aria-pressed="false">Rostro</button>
             <button class="filter-button" type="button" data-filter="cuerpo" aria-pressed="false">Cuerpo</button>
             <button class="filter-button" type="button" data-filter="cabello" aria-pressed="false">Cabello</button>
@@ -144,12 +144,23 @@
             <button class="text-add" type="button" data-add="roll-on-antiestres">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
           </article>
 
+          <article class="product-card" data-product="roll-on-eucalipto" data-category="botanica" data-name="roll on eucalipto">
+            <div class="product-image product-image-botanical">
+              <button class="product-detail-trigger" type="button" data-detail="roll-on-eucalipto" aria-label="Ver detalles de Roll on de eucalipto"><img src="assets/products/roll-on-eucalipto-catalogo.jpg" alt="Roll on de eucalipto Amankay de 10 ml junto a hojas de eucalipto" loading="lazy"></button>
+            </div>
+            <div class="product-meta"><span>AROMATERAPIA · 10 ML</span><span class="product-number">05</span></div>
+            <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="roll-on-eucalipto">Roll on de eucalipto</button></h3><span class="product-price">$7.500</span></div>
+            <p class="product-wholesale-note">Mayorista desde 6 unidades · $6.500 c/u</p>
+            <p class="product-description">Aroma fresco y estimulante; ayuda a aumentar la energía y despejar las vías respiratorias.</p>
+            <button class="text-add" type="button" data-add="roll-on-eucalipto">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
+          </article>
+
           <article class="product-card" data-product="pomada-calendula" data-category="cuerpo" data-name="pomada de caléndula">
             <div class="product-image product-image-botanical">
               <button class="product-detail-trigger" type="button" data-detail="pomada-calendula" aria-label="Ver detalles de Pomada de caléndula"><img src="assets/products/pomada-calendula-catalogo.jpg" alt="Pomada de caléndula Amankay de 30 gramos junto a flores de caléndula" loading="lazy"></button>
               <span class="product-tag product-tag-light">Cuidado botánico</span>
             </div>
-            <div class="product-meta"><span>CUERPO · 30 G</span><span class="product-number">05</span></div>
+            <div class="product-meta"><span>CUERPO · 30 G</span><span class="product-number">06</span></div>
             <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="pomada-calendula">Pomada de caléndula</button></h3><span class="product-price">$7.000</span></div>
             <p class="product-wholesale-note">Mayorista desde 6 unidades · $4.500 c/u</p>
             <p class="product-description">Especial para calmar irritaciones e hidratar las pieles resecas.</p>
@@ -160,17 +171,27 @@
             <div class="product-image product-image-botanical">
               <button class="product-detail-trigger" type="button" data-detail="aceite-contracturas" aria-label="Ver detalles de Aceite para contracturas"><img src="assets/products/aceite-contracturas-catalogo.jpg" alt="Aceite Amankay para contracturas en frasco de 30 ml con gotero y flores de lavanda" loading="lazy"></button>
             </div>
-            <div class="product-meta"><span>CUERPO · 30 ML</span><span class="product-number">06</span></div>
+            <div class="product-meta"><span>CUERPO · 30 ML</span><span class="product-number">07</span></div>
             <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="aceite-contracturas">Aceite para contracturas</button></h3><span class="product-price">$9.500</span></div>
             <p class="product-description">Jojoba, caléndula y aceites esenciales de canela, manzanilla y lavanda.</p>
             <button class="text-add" type="button" data-add="aceite-contracturas">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
+          </article>
+
+          <article class="product-card" data-product="aceite-masaje-muscular" data-category="cuerpo" data-name="aceite masaje muscular">
+            <div class="product-image product-image-botanical">
+              <button class="product-detail-trigger" type="button" data-detail="aceite-masaje-muscular" aria-label="Ver detalles de Aceite masaje muscular"><img src="assets/products/aceite-masaje-muscular-catalogo.jpg" alt="Aceite Amankay para masaje muscular en frasco con gotero y lavanda" loading="lazy"></button>
+            </div>
+            <div class="product-meta"><span>CUERPO · 30 ML</span><span class="product-number">08</span></div>
+            <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="aceite-masaje-muscular">Aceite masaje muscular</button></h3><span class="product-price">$9.500</span></div>
+            <p class="product-description">Aceite de almendras y aceites esenciales de lavanda, manzanilla y romero.</p>
+            <button class="text-add" type="button" data-add="aceite-masaje-muscular">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
           </article>
 
           <article class="product-card" data-product="unguento-masaje" data-category="cuerpo" data-name="ungüento para masaje">
             <div class="product-image product-image-botanical">
               <button class="product-detail-trigger" type="button" data-detail="unguento-masaje" aria-label="Ver detalles de Ungüento para masaje"><img src="assets/products/unguento-masaje-catalogo.jpg" alt="Ungüento para masaje Amankay de 20 gramos con lavanda y manzanilla" loading="lazy"></button>
             </div>
-            <div class="product-meta"><span>CUERPO · 20 G</span><span class="product-number">07</span></div>
+            <div class="product-meta"><span>CUERPO · 20 G</span><span class="product-number">09</span></div>
             <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="unguento-masaje">Ungüento para masaje</button></h3><span class="product-price">$5.000</span></div>
             <p class="product-description">Coco, cera vegetal y aceites esenciales de manzanilla, lavanda y melisa.</p>
             <button class="text-add" type="button" data-add="unguento-masaje">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
@@ -181,7 +202,7 @@
               <button class="product-detail-trigger" type="button" data-detail="jabones" aria-label="Ver detalles de Jabones orgánicos"><img src="https://images.unsplash.com/photo-1600857544200-b2f666a9a2ec?auto=format&fit=crop&w=900&q=80" alt="Imagen referencial de jabones artesanales" loading="lazy"></button>
               <span class="product-tag product-tag-light">Hecho a mano</span>
             </div>
-            <div class="product-meta"><span>JABONES · 150 G</span><span class="product-number">08</span></div>
+            <div class="product-meta"><span>JABONES · 150 G</span><span class="product-number">10</span></div>
             <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="jabones">Jabones orgánicos</button></h3><span class="product-price">$3.500</span></div>
             <p class="product-description">Naturales, hidratantes y nutritivos. Elige entre sus variedades.</p>
             <button class="text-add" type="button" data-add="jabones">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
@@ -191,7 +212,7 @@
             <div class="product-image product-image-botanical">
               <button class="product-detail-trigger" type="button" data-detail="aceite-maqui" aria-label="Ver detalles de Aceite de maqui"><img src="assets/products/aceite-maqui-catalogo.jpg" alt="Frasco original de aceite natural de maqui Amankay junto a frutos de maqui" loading="lazy"></button>
             </div>
-            <div class="product-meta"><span>BOTÁNICA · 30 ML</span><span class="product-number">09</span></div>
+            <div class="product-meta"><span>BOTÁNICA · 30 ML</span><span class="product-number">11</span></div>
             <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="aceite-maqui">Aceite de maqui</button></h3><span class="product-price">Precio por confirmar</span></div>
             <p class="product-description">Aceite natural de maqui prensado en frío.</p>
             <button class="text-add" type="button" data-add="aceite-maqui">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
@@ -201,7 +222,7 @@
             <div class="product-image product-image-botanical">
               <button class="product-detail-trigger" type="button" data-detail="agua-rosas" aria-label="Ver detalles de Agua de rosas"><img src="assets/products/agua-rosas-catalogo.jpg" alt="Frasco original de agua de rosas Amankay acompañado de rosas blancas" loading="lazy"></button>
             </div>
-            <div class="product-meta"><span>ROSTRO · AGUA BOTÁNICA</span><span class="product-number">10</span></div>
+            <div class="product-meta"><span>ROSTRO · AGUA BOTÁNICA</span><span class="product-number">12</span></div>
             <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="agua-rosas">Agua de rosas</button></h3><span class="product-price">Precio por confirmar</span></div>
             <p class="product-description">La publicación la presenta como hidratante, refrescante y purificante.</p>
             <button class="text-add" type="button" data-add="agua-rosas">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
@@ -211,7 +232,7 @@
             <div class="product-image product-image-instagram">
               <button class="product-detail-trigger" type="button" data-detail="shampoo-seco" aria-label="Ver detalles de Shampoo sólido para cabello seco"><img src="assets/instagram/shampoo-cabello-seco-romero-ortiga.webp" alt="Shampoo sólido Amankay para cabello seco con romero y ortiga, 60 gramos" loading="lazy"></button>
             </div>
-            <div class="product-meta"><span>CABELLO · 60 G</span><span class="product-number">11</span></div>
+            <div class="product-meta"><span>CABELLO · 60 G</span><span class="product-number">13</span></div>
             <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="shampoo-seco">Shampoo sólido · cabello seco</button></h3><span class="product-price">Precio por confirmar</span></div>
             <p class="product-description">Romero y ortiga. Formato indicado en el envase: 60 g.</p>
             <button class="text-add" type="button" data-add="shampoo-seco">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
@@ -221,7 +242,7 @@
             <div class="product-image product-image-instagram">
               <button class="product-detail-trigger" type="button" data-detail="shampoo-normal" aria-label="Ver detalles de Shampoo sólido para cabello normal"><img src="assets/instagram/shampoo-02.webp" alt="Shampoo sólido Amankay para cabello normal, 60 gramos, con flores violetas" loading="lazy"></button>
             </div>
-            <div class="product-meta"><span>CABELLO · 60 G</span><span class="product-number">12</span></div>
+            <div class="product-meta"><span>CABELLO · 60 G</span><span class="product-number">14</span></div>
             <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="shampoo-normal">Shampoo sólido · cabello normal</button></h3><span class="product-price">Precio por confirmar</span></div>
             <p class="product-description">Una de las variedades de la línea de shampoo sólido.</p>
             <button class="text-add" type="button" data-add="shampoo-normal">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
@@ -231,7 +252,7 @@
             <div class="product-image product-image-instagram">
               <button class="product-detail-trigger" type="button" data-detail="shampoo-hidratante" aria-label="Ver detalles de Shampoo hidratante"><img src="assets/instagram/shampoo-03.webp" alt="Shampoo hidratante Amankay de caléndula y jojoba, 60 gramos" loading="lazy"></button>
             </div>
-            <div class="product-meta"><span>CABELLO · 60 G</span><span class="product-number">13</span></div>
+            <div class="product-meta"><span>CABELLO · 60 G</span><span class="product-number">15</span></div>
             <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="shampoo-hidratante">Shampoo hidratante</button></h3><span class="product-price">Precio por confirmar</span></div>
             <p class="product-description">Caléndula y jojoba. Formato indicado en el envase: 60 g.</p>
             <button class="text-add" type="button" data-add="shampoo-hidratante">Agregar a la bolsa <span aria-hidden="true">↗</span></button>

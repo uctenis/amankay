@@ -88,6 +88,14 @@ const products = {
     image: "assets/products/aceite-contracturas-catalogo.jpg",
     detail: "Aplicar frotando la zona 1 o 2 veces por semana. Contiene aceite de jojoba, aceite de caléndula y aceites esenciales de canela, manzanilla y lavanda. Envase de 30 ml.",
   },
+  "aceite-masaje-muscular": {
+    id: "aceite-masaje-muscular",
+    name: "Aceite masaje muscular",
+    price: 9500,
+    category: "Cuerpo",
+    image: "assets/products/aceite-masaje-muscular-catalogo.jpg",
+    detail: "Aplicar en la zona de dolor hasta producir calor. Contiene aceite de almendras y aceites esenciales de lavanda, manzanilla y romero. Envase de 30 ml.",
+  },
   "unguento-masaje": {
     id: "unguento-masaje",
     name: "Ungüento para masaje",
@@ -104,6 +112,15 @@ const products = {
     category: "Botánica",
     image: "assets/products/roll-on-antiestres-catalogo.jpg",
     detail: "Especial para calmar estados de estrés. Contiene una mezcla de aceites esenciales de lavanda, melisa y menta.",
+  },
+  "roll-on-eucalipto": {
+    id: "roll-on-eucalipto",
+    name: "Roll on de eucalipto",
+    price: 7500,
+    wholesale: { minimumQuantity: 6, price: 6500 },
+    category: "Botánica",
+    image: "assets/products/roll-on-eucalipto-catalogo.jpg",
+    detail: "Aroma fresco, penetrante y estimulante. Aumenta la energía y despeja las vías respiratorias.",
   },
 };
 
