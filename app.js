@@ -113,11 +113,10 @@ function openDrawer() {
   backdrop.hidden = false;
   drawer.inert = false;
   drawer.setAttribute("aria-hidden", "false");
-  requestAnimationFrame(() => {
-    backdrop.classList.add("is-visible");
-    drawer.classList.add("is-open");
-    drawer.querySelector(".close-drawer").focus();
-  });
+  backdrop.getBoundingClientRect();
+  backdrop.classList.add("is-visible");
+  drawer.classList.add("is-open");
+  drawer.querySelector(".close-drawer").focus();
   document.body.classList.add("drawer-open");
 }
 
@@ -240,6 +239,12 @@ function filterProducts() {
 
 const menuToggle = document.querySelector(".menu-toggle");
 const mainNav = document.querySelector(".main-nav");
+document.querySelector(".header-search").addEventListener("click", () => {
+  const search = document.querySelector("#product-search");
+  search.focus({ preventScroll: true });
+  search.scrollIntoView({ behavior: "smooth", block: "center" });
+});
+
 menuToggle.addEventListener("click", () => {
   const isOpen = mainNav.classList.toggle("is-open");
   menuToggle.setAttribute("aria-expanded", String(isOpen));
