@@ -62,7 +62,7 @@ const products = {
     price: 9500,
     category: "Rostro",
     image: "assets/products/aceite-calmar-irritaciones-catalogo.jpg",
-    detail: "Caléndula y aceite esencial de manzanilla se unen en un cuidado para el rostro. Aplicar a diario. Envase de 30 ml.",
+    detail: "Un cuidado botánico para el rostro, con aceite de caléndula y aceite esencial de manzanilla. Aplicar todos los días. Envase de 30 ml.",
   },
   "macerado-calendula": {
     id: "macerado-calendula",
