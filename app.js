@@ -63,6 +63,15 @@ const products = {
     image: "assets/products/aceite-calmar-irritaciones-catalogo.jpg",
     detail: "Aplicar en el rostro todos los días. Contiene aceite de caléndula y aceite esencial de manzanilla. Envase de 30 ml.",
   },
+  "macerado-calendula": {
+    id: "macerado-calendula",
+    name: "Macerado de caléndula",
+    price: 9000,
+    wholesale: { minimumQuantity: 6, price: 8000 },
+    category: "Rostro",
+    image: "assets/products/macerado-calendula-catalogo.jpg",
+    detail: "Aceite especial para calmar las irritaciones de la piel.",
+  },
   "aceite-rosa-mosqueta": {
     id: "aceite-rosa-mosqueta",
     name: "Aceite de rosa mosqueta",
