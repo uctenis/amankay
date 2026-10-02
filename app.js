@@ -88,6 +88,14 @@ const products = {
     image: "assets/products/aceite-contracturas-catalogo.jpg",
     detail: "Aplicar frotando la zona 1 o 2 veces por semana. Contiene aceite de jojoba, aceite de caléndula y aceites esenciales de canela, manzanilla y lavanda. Envase de 30 ml.",
   },
+  "unguento-masaje": {
+    id: "unguento-masaje",
+    name: "Ungüento para masaje",
+    price: 5000,
+    category: "Cuerpo",
+    image: "assets/products/unguento-masaje-catalogo.jpg",
+    detail: "Frotar la zona afectada. Contiene aceite de coco, cera vegetal y aceites esenciales de manzanilla, lavanda y melisa. Envase de 20 g.",
+  },
   "roll-on-antiestres": {
     id: "roll-on-antiestres",
     name: "Roll on antiestrés",
