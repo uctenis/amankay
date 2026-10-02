@@ -72,6 +72,15 @@ const products = {
     image: "assets/products/macerado-calendula-catalogo.jpg",
     detail: "Aceite especial para calmar las irritaciones de la piel.",
   },
+  "aceite-almendras": {
+    id: "aceite-almendras",
+    name: "Aceite de almendras",
+    price: 9000,
+    wholesale: { minimumQuantity: 6, price: 7000 },
+    category: "Rostro",
+    image: "assets/products/aceite-almendras-catalogo.jpg",
+    detail: "Aceite 100% natural, rico en vitamina E y apto para todo tipo de pieles.",
+  },
   "aceite-rosa-mosqueta": {
     id: "aceite-rosa-mosqueta",
     name: "Aceite de rosa mosqueta",
