@@ -610,7 +610,9 @@ document.querySelector("#admin-invite-form").addEventListener("submit", async (e
     showAdminFeedback("Solo la propietaria puede administrar los perfiles.", true);
     return;
   }
-  const values = new FormData(event.currentTarget);
+  // Se guarda el formulario antes del await: después event.currentTarget ya no existe.
+  const form = event.currentTarget;
+  const values = new FormData(form);
   const name = String(values.get("name") || "").trim();
   const email = String(values.get("email") || "").trim().toLowerCase();
   if (!name || !/^[^\s@/]+@[^\s@/]+\.[^\s@/]+$/.test(email)) {
@@ -629,7 +631,7 @@ document.querySelector("#admin-invite-form").addEventListener("submit", async (e
       createdAt: serverTimestamp(),
       createdBy: currentUser.uid,
     });
-    event.currentTarget.reset();
+    form.reset();
     showAdminFeedback(`Perfil de ${name} autorizado. Ya puede entrar con “Continuar con Google”.`);
   } catch (error) {
     console.error("No se pudo autorizar el perfil administrador.", error);
