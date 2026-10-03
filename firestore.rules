@@ -41,6 +41,12 @@ service cloud.firestore {
       allow read, write: if isAdmin();
     }
 
+    match /testimonials/{testimonialId} {
+      // Only published testimonials are visible in the shop; drafts stay with admins.
+      allow read: if resource.data.published == true || isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
     match /adminUsers/{email} {
       allow get: if isOwner()
         || (

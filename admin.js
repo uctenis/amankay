@@ -14,10 +14,12 @@ import {
   getDoc,
   getFirestore,
   onSnapshot,
+  query,
   runTransaction,
   serverTimestamp,
   setDoc,
   updateDoc,
+  where,
 } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 import { ownerEmail, firebaseConfig } from "./firebase-config.js";
 
@@ -39,7 +41,7 @@ const moneyFormat = new Intl.NumberFormat("es-CL", {
   currency: "CLP",
   maximumFractionDigits: 0,
 });
-const data = { catalog: [], inventory: [], orders: [], customers: [], expenses: [], stockMovements: [], adminUsers: [] };
+const data = { catalog: [], inventory: [], orders: [], customers: [], expenses: [], stockMovements: [], testimonials: [], adminUsers: [] };
 let stopSubscriptions = [];
 let currentUser;
 let initialSnapshots = new Set();
@@ -172,6 +174,7 @@ function refreshViews() {
   renderInventory();
   renderStockMovements();
   renderExpenses();
+  renderTestimonials();
   renderReports();
   renderAdminUsers();
   refreshOrderProductOptions();
@@ -181,7 +184,7 @@ function subscribeToBusinessData() {
   clearSubscriptions();
   initialSnapshots = new Set();
   seededSession = false;
-  const collections = ["catalog", "inventory", "orders", "expenses", "stockMovements"];
+  const collections = ["catalog", "inventory", "orders", "expenses", "stockMovements", "testimonials"];
   if (requireAdminEmail(currentUser.email)) collections.push("adminUsers");
   for (const name of collections) {
     const unsubscribe = onSnapshot(collection(db, name), (snapshot) => {
@@ -238,6 +241,15 @@ function initializeCatalogSync() {
 }
 
 initializeCatalogSync();
+
+onSnapshot(query(collection(db, "testimonials"), where("published", "==", true)), (snapshot) => {
+  const list = snapshot.docs.map((item) => ({ id: item.id, ...item.data() }))
+    .sort((a, b) => asDate(b.createdAt) - asDate(a.createdAt));
+  window.amankayTestimonials = list;
+  window.amankayRenderTestimonials?.(list);
+}, (error) => {
+  console.warn("No se pudieron cargar los testimonios de la tienda.", error);
+});
 
 async function seedBusinessData() {
   const existing = new Set(data.catalog.map((item) => item.id));
@@ -934,6 +946,68 @@ document.querySelector("#expenses-table").addEventListener("click", async (event
   }
 });
 
+const testimonialForm = document.querySelector("#testimonial-form");
+
+function renderTestimonials() {
+  const productSelect = testimonialForm.elements.productId;
+  if (productSelect.options.length === 1) {
+    [...(window.amankayProducts || [])]
+      .sort((a, b) => a.name.localeCompare(b.name, "es"))
+      .forEach((product) => productSelect.add(new Option(product.name, product.id)));
+  }
+  const productName = (id) => (window.amankayProducts || []).find((product) => product.id === id)?.name || "General";
+  document.querySelector("#testimonials-table").innerHTML = [...data.testimonials]
+    .sort((a, b) => asDate(b.createdAt) - asDate(a.createdAt))
+    .map((item) => `<tr><td>${escapeHtml(asDate(item.createdAt).toLocaleDateString("es-CL"))}</td><td><strong>${escapeHtml([item.name, item.city].filter(Boolean).join(" · "))}</strong><small>${escapeHtml(item.text)}</small></td><td>${escapeHtml(productName(item.productId))}</td><td>${item.published ? "Publicado" : "Oculto"}</td><td><button class="admin-text-button" type="button" data-toggle-testimonial="${escapeHtml(item.id)}">${item.published ? "Ocultar" : "Publicar"}</button> <button class="admin-text-button" type="button" data-delete-testimonial="${escapeHtml(item.id)}">Eliminar</button></td></tr>`)
+    .join("") || '<tr><td colspan="5">Aún no hay testimonios. Agrega el primero para que aparezca la sección en la tienda.</td></tr>';
+}
+
+testimonialForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const values = new FormData(testimonialForm);
+  const text = String(values.get("text")).trim();
+  const name = String(values.get("name")).trim();
+  if (!text || !name) {
+    showAdminFeedback("El testimonio necesita un nombre y un texto.", true);
+    return;
+  }
+  try {
+    await addDoc(collection(db, "testimonials"), {
+      name,
+      city: String(values.get("city") || "").trim(),
+      productId: String(values.get("productId") || ""),
+      text,
+      published: values.get("published") === "on",
+      createdAt: serverTimestamp(),
+      createdBy: currentUser.uid,
+    });
+    testimonialForm.reset();
+    showAdminFeedback("Testimonio guardado.");
+  } catch (error) {
+    console.error("No se pudo guardar el testimonio.", error);
+    showAdminFeedback(friendlyError(error), true);
+  }
+});
+
+document.querySelector("#testimonials-table").addEventListener("click", async (event) => {
+  const toggleButton = event.target.closest("[data-toggle-testimonial]");
+  const deleteButton = event.target.closest("[data-delete-testimonial]");
+  try {
+    if (toggleButton) {
+      const item = data.testimonials.find((entry) => entry.id === toggleButton.dataset.toggleTestimonial);
+      if (!item) return;
+      await updateDoc(doc(db, "testimonials", item.id), { published: !item.published, updatedAt: serverTimestamp() });
+      showAdminFeedback(item.published ? "Testimonio oculto en la tienda." : "Testimonio publicado en la tienda.");
+    } else if (deleteButton && window.confirm("¿Eliminar este testimonio?")) {
+      await deleteDoc(doc(db, "testimonials", deleteButton.dataset.deleteTestimonial));
+      showAdminFeedback("Testimonio eliminado.");
+    }
+  } catch (error) {
+    console.error("No se pudo actualizar el testimonio.", error);
+    showAdminFeedback(friendlyError(error), true);
+  }
+});
+
 document.querySelector("#admin-export-data").addEventListener("click", () => {
   const exportData = {
     exportedAt: new Date().toISOString(),
@@ -942,6 +1016,7 @@ document.querySelector("#admin-export-data").addEventListener("click", () => {
     inventory: data.inventory,
     orders: data.orders,
     expenses: data.expenses,
+    testimonials: data.testimonials,
   };
   const url = URL.createObjectURL(new Blob([JSON.stringify(exportData, null, 2)], {
     type: "application/json",

@@ -6,7 +6,8 @@ const products = {
     wholesale: { minimumQuantity: 6, price: 8000 },
     category: "Rostro",
     image: "assets/products/crema-facial-maqui-catalogo.jpg",
-    detail: "Aceite de maqui y manteca de karité se unen en esta crema facial, pensada para acompañar el cuidado de las líneas de expresión. Envase de 50 g.",
+    format: "50 G",
+    detail: "El maqui es uno de los frutos con más antocianinas, antioxidantes que ayudan a proteger la piel del estrés ambiental que acentúa las líneas de expresión. La manteca de karité aporta ácidos grasos que nutren, suavizan y refuerzan la barrera natural de la piel. Recomendada para pieles normales, secas o maduras. Aplica una pequeña cantidad sobre el rostro limpio, de día o de noche. Envase de 50 g.",
   },
   "crema-leche-avena": {
     id: "crema-leche-avena",
@@ -15,7 +16,8 @@ const products = {
     wholesale: { minimumQuantity: 6, price: 8000 },
     category: "Rostro",
     image: "assets/products/crema-leche-avena-catalogo.jpg",
-    detail: "De textura ligera, combina avena y aceite de caléndula. Ideal para sumar a tu rutina de día. Envase de 50 g.",
+    format: "50 G",
+    detail: "La avena aporta betaglucanos y avenantramidas, reconocidos por calmar, hidratar y aliviar la sensación de tirantez; el aceite de caléndula suma su efecto suavizante. De textura ligera y rápida absorción, es una buena opción para pieles sensibles, mixtas o que se enrojecen con facilidad. Aplícala por la mañana sobre el rostro limpio. Envase de 50 g.",
   },
   "crema-rosa-mosqueta": {
     id: "crema-rosa-mosqueta",
@@ -24,7 +26,8 @@ const products = {
     wholesale: { minimumQuantity: 6, price: 8000 },
     category: "Rostro",
     image: "assets/products/crema-rosa-mosqueta-catalogo.jpg",
-    detail: "Para tu rutina nocturna, con rosa mosqueta, manteca de karité y vitamina E. Aporta hidratación y ayuda a cuidar la piel. Envase de 50 g.",
+    format: "50 G",
+    detail: "El aceite de rosa mosqueta es rico en ácidos grasos esenciales (omega 3 y 6) y provitamina A, que favorecen la renovación de la piel y ayudan a atenuar la apariencia de marcas, manchas y líneas finas. La manteca de karité nutre en profundidad y la vitamina E aporta protección antioxidante. Pensada para la noche, cuando la piel se repara. Aplica sobre el rostro limpio antes de dormir y usa protector solar durante el día. Envase de 50 g.",
   },
   serum: {
     id: "serum",
@@ -32,7 +35,8 @@ const products = {
     price: 6000,
     category: "Rostro",
     image: "assets/products/serum-facial-catalogo.jpg",
-    detail: "Una textura ligera con proteína de seda para acompañar la hidratación y nutrición de tu piel.",
+    format: "30 G",
+    detail: "La proteína de seda forma una película fina que ayuda a retener el agua en la piel, mejorando su suavidad, elasticidad y luminosidad sin dejar sensación grasa. Apto para todo tipo de piel. Aplica unas gotas sobre el rostro limpio, antes de tu crema, para potenciar la hidratación. Envase de 30 g.",
   },
   cafe: {
     id: "cafe",
@@ -40,7 +44,8 @@ const products = {
     price: 5000,
     category: "Cuerpo",
     image: "assets/products/exfoliante-cafe-catalogo.jpg",
-    detail: "Un momento de cuidado para rostro y cuerpo, elaborado con aceites de coco, almendras y zanahoria.",
+    format: "100 G",
+    detail: "El café molido exfolia de forma mecánica, retirando células muertas y activando la circulación con el masaje, mientras los aceites de coco, almendras y zanahoria nutren la piel para que quede suave y sin tirantez. Úsalo 1 o 2 veces por semana sobre la piel húmeda, con movimientos circulares suaves, y enjuaga. En el rostro, masajea con delicadeza y evita el contorno de ojos. Envase de 100 g.",
   },
   "jabon-cafe": {
     id: "jabon-cafe",
@@ -49,7 +54,8 @@ const products = {
     wholesale: { minimumQuantity: 10, price: 4000 },
     category: "Jabones",
     image: "assets/products/jabon-cafe-catalogo.jpg",
-    detail: "Hecho artesanalmente con café, aceites y mantecas vegetales.",
+    format: "BARRA",
+    detail: "Elaborado artesanalmente con café, aceites y mantecas vegetales. El café molido aporta una exfoliación suave que retira células muertas y es conocido por ayudar a neutralizar olores, por lo que resulta ideal para manos y cuerpo. Humedece, haz espuma entre las manos, masajea y enjuaga. Déjalo secar entre usos para que dure más.",
   },
   "jabon-carbon-activado": {
     id: "jabon-carbon-activado",
@@ -58,7 +64,8 @@ const products = {
     wholesale: { minimumQuantity: 10, price: 4000 },
     category: "Jabones",
     image: "assets/products/jabon-carbon-activado-catalogo.jpg",
-    detail: "Una barra con carbón activado para una limpieza profunda, pensada para pieles con tendencia al acné.",
+    format: "BARRA",
+    detail: "El carbón activado es muy poroso y atrapa impurezas y exceso de sebo, dejando una sensación de limpieza profunda. Por eso es una buena opción para pieles mixtas, grasas o con tendencia a imperfecciones. Úsalo una vez al día y complementa con una crema hidratante, ya que puede resecar las pieles secas o sensibles. Humedece, haz espuma entre las manos, masajea y enjuaga. Déjalo secar entre usos para que dure más.",
   },
   "jabon-maqui": {
     id: "jabon-maqui",
@@ -67,7 +74,8 @@ const products = {
     wholesale: { minimumQuantity: 10, price: 4000 },
     category: "Jabones",
     image: "assets/products/jabon-maqui-catalogo.jpg",
-    detail: "Con maqui, para aportar hidratación y cuidado antioxidante a tu rutina.",
+    format: "BARRA",
+    detail: "El maqui aporta antocianinas, antioxidantes naturales, a una barra de limpieza suave que no deja la piel tirante. Apto para todo tipo de piel, en rostro y cuerpo. Humedece, haz espuma entre las manos, masajea y enjuaga. Déjalo secar entre usos para que dure más.",
   },
   "jabon-calendula": {
     id: "jabon-calendula",
@@ -76,7 +84,8 @@ const products = {
     wholesale: { minimumQuantity: 10, price: 4000 },
     category: "Jabones",
     image: "assets/products/jabon-calendula-catalogo.jpg",
-    detail: "La caléndula acompaña este jabón pensado para el cuidado de las pieles irritadas.",
+    format: "BARRA",
+    detail: "La caléndula es reconocida por calmar y suavizar, lo que hace de este jabón una opción delicada para pieles sensibles, secas o que se irritan con facilidad. Limpia sin resecar, en rostro y cuerpo. Humedece, haz espuma entre las manos, masajea y enjuaga. Déjalo secar entre usos para que dure más.",
   },
   "jabon-romero": {
     id: "jabon-romero",
@@ -85,7 +94,8 @@ const products = {
     wholesale: { minimumQuantity: 10, price: 4000 },
     category: "Jabones",
     image: "assets/products/jabon-romero-catalogo.jpg",
-    detail: "Jabón de romero con propiedades antibacterianas e hidratantes.",
+    format: "BARRA",
+    detail: "El romero es una planta aromática valorada por sus propiedades purificantes y tonificantes. Este jabón limpia en profundidad sin resecar y deja una sensación fresca, especialmente agradable para pieles normales a grasas. Humedece, haz espuma entre las manos, masajea y enjuaga. Déjalo secar entre usos para que dure más.",
   },
   "jabon-arroz": {
     id: "jabon-arroz",
@@ -93,7 +103,8 @@ const products = {
     price: 6000,
     category: "Jabones",
     image: "assets/products/jabon-arroz-catalogo.jpg",
-    detail: "Elaborado con finos aceites, este jabón natural ayuda a aclarar y dar elasticidad a la piel.",
+    format: "BARRA",
+    detail: "El arroz se usa desde hace siglos en la cosmética asiática para suavizar la piel y darle un aspecto más luminoso y uniforme. Elaborado con finos aceites, este jabón limpia con suavidad y ayuda a mantener la elasticidad de la piel. Apto para todo tipo de piel. Humedece, haz espuma entre las manos, masajea y enjuaga. Déjalo secar entre usos para que dure más.",
   },
   "jabon-canelo-cacao": {
     id: "jabon-canelo-cacao",
@@ -102,7 +113,8 @@ const products = {
     wholesale: { minimumQuantity: 10, price: 4000 },
     category: "Jabones",
     image: "assets/products/jabon-canelo-cacao-catalogo.jpg",
-    detail: "Jabón de canelo y cacao con propiedades antioxidantes.",
+    format: "BARRA",
+    detail: "El canelo es el árbol sagrado del pueblo mapuche y forma parte de la tradición botánica del sur de Chile; el cacao aporta polifenoles, antioxidantes naturales. Una barra de aroma cálido para el cuidado diario del cuerpo. Humedece, haz espuma entre las manos, masajea y enjuaga. Déjalo secar entre usos para que dure más.",
   },
   "jabon-rosa-mosqueta": {
     id: "jabon-rosa-mosqueta",
@@ -111,7 +123,8 @@ const products = {
     wholesale: { minimumQuantity: 10, price: 4000 },
     category: "Jabones",
     image: "assets/products/jabon-rosa-mosqueta-catalogo.jpg",
-    detail: "Con rosa mosqueta, para acompañar la regeneración e hidratación de la piel.",
+    format: "BARRA",
+    detail: "La rosa mosqueta aporta ácidos grasos esenciales que acompañan la regeneración natural de la piel y ayudan a mantenerla hidratada y flexible. Recomendado para pieles secas, maduras o con marcas. Humedece, haz espuma entre las manos, masajea y enjuaga. Déjalo secar entre usos para que dure más.",
   },
   "jabon-avena-miel": {
     id: "jabon-avena-miel",
@@ -120,24 +133,27 @@ const products = {
     wholesale: { minimumQuantity: 10, price: 4000 },
     category: "Jabones",
     image: "assets/products/jabon-avena-miel-catalogo.jpg",
-    detail: "Elaborado con finos aceites, limpia en profundidad y ayuda a dar elasticidad a la piel.",
+    format: "BARRA",
+    detail: "La avena es reconocida por calmar la piel y aliviar la sensación de tirantez, y la miel es un humectante natural que ayuda a retener la humedad. Elaborado con finos aceites, limpia en profundidad sin resecar y ayuda a mantener la elasticidad de la piel. Ideal para pieles sensibles o secas. Humedece, haz espuma entre las manos, masajea y enjuaga. Déjalo secar entre usos para que dure más.",
   },
   "aceite-maqui": {
     id: "aceite-maqui",
     name: "Aceite de maqui",
     price: 8000,
     wholesale: { minimumQuantity: 6, price: 7000 },
-    category: "Botánica",
+    category: "Aceites",
     image: "assets/products/aceite-maqui-catalogo.jpg",
-    detail: "Aceite de maqui, apreciado por su perfil antioxidante y pensado especialmente para pieles maduras.",
+    format: "30 ML",
+    detail: "El maqui concentra antocianinas, antioxidantes que ayudan a proteger la piel del estrés oxidativo asociado al envejecimiento. Este aceite nutre, aporta elasticidad y deja la piel luminosa; se recomienda especialmente para pieles maduras o secas. Aplica 2 a 3 gotas sobre el rostro limpio y ligeramente húmedo, de preferencia por la noche. Envase de 30 ml.",
   },
   "aceite-oregano": {
     id: "aceite-oregano",
     name: "Aceite de orégano",
     price: 9000,
-    category: "Botánica",
+    category: "Aceites",
     image: "assets/products/aceite-oregano-catalogo.jpg",
-    detail: "Aceite botánico de orégano para sumar a tu rutina de cuidado de la piel. Envase de 30 ml.",
+    format: "30 ML",
+    detail: "El orégano contiene carvacrol y timol, compuestos estudiados por su acción purificante, por lo que se usa tradicionalmente en el cuidado de pieles con imperfecciones. Es un aceite potente: aplícalo en poca cantidad y solo sobre la zona que quieras cuidar, evitando ojos, mucosas y piel irritada. Haz una prueba en el antebrazo antes del primer uso. Envase de 30 ml.",
   },
   "agua-rosas": {
     id: "agua-rosas",
@@ -146,69 +162,47 @@ const products = {
     wholesale: { minimumQuantity: 6, price: 4500 },
     category: "Rostro",
     image: "assets/products/agua-rosas-catalogo.jpg",
-    detail: "Agua de rosas para limpiar y refrescar la piel como parte de tu rutina diaria.",
+    format: "SPRAY",
+    detail: "El agua de rosas es un tónico tradicional que refresca, suaviza y ayuda a calmar la piel, dejándola lista para absorber mejor los productos que apliques después. Apta para todo tipo de piel, incluidas las sensibles. Rocíala sobre el rostro limpio, mañana y noche, o durante el día cuando necesites un respiro.",
   },
   "aceite-calmar-irritaciones": {
     id: "aceite-calmar-irritaciones",
     name: "Aceite para calmar irritaciones",
     price: 9500,
-    category: "Rostro",
+    category: "Aceites",
     image: "assets/products/aceite-calmar-irritaciones-catalogo.jpg",
-    detail: "Con aceite de caléndula y aceite esencial de manzanilla, para un cuidado botánico diario del rostro. Envase de 30 ml.",
+    format: "30 ML",
+    detail: "La caléndula es una de las plantas más usadas para calmar y suavizar la piel, y el aceite esencial de manzanilla aporta compuestos como el bisabolol, reconocido por su efecto calmante. Juntos acompañan a las pieles sensibles, reactivas o enrojecidas por el frío, el sol o el afeitado. Aplica unas gotas con un masaje suave sobre la piel limpia. Envase de 30 ml.",
   },
   "macerado-calendula": {
     id: "macerado-calendula",
     name: "Macerado de caléndula",
     price: 9000,
     wholesale: { minimumQuantity: 6, price: 8000 },
-    category: "Rostro",
+    category: "Aceites",
     image: "assets/products/macerado-calendula-catalogo.jpg",
-    detail: "Caléndula macerada en aceite vegetal para acompañar el cuidado de la piel irritada.",
+    format: "GOTERO",
+    detail: "La maceración traspasa al aceite los compuestos calmantes de la flor de caléndula, usada desde siempre para aliviar la piel seca, agrietada o sensible. Es suave y versátil: úsalo en rostro, manos, codos o después del sol. Aplica unas gotas sobre la piel limpia y masajea hasta que se absorba.",
   },
   "aceite-almendras": {
     id: "aceite-almendras",
     name: "Aceite de almendras",
     price: 9000,
     wholesale: { minimumQuantity: 6, price: 7000 },
-    category: "Rostro",
+    category: "Aceites",
     image: "assets/products/aceite-almendras-catalogo.jpg",
-    detail: "Aceite de almendras, rico en vitamina E, una opción sencilla para sumar a tu rutina de cuidado.",
+    format: "GOTERO",
+    detail: "El aceite de almendras es rico en ácido oleico y vitamina E, por lo que suaviza, nutre y aporta elasticidad a la piel seca. Es muy versátil: sirve para el rostro, el cuerpo, los masajes e incluso para retirar el maquillaje. Aplícalo sobre la piel ligeramente húmeda para sellar la hidratación. No recomendado para personas alérgicas a los frutos secos.",
   },
   "aceite-rosa-mosqueta": {
     id: "aceite-rosa-mosqueta",
     name: "Aceite de rosa mosqueta",
     price: 9000,
     wholesale: { minimumQuantity: 6, price: 8000 },
-    category: "Rostro",
+    category: "Aceites",
     image: "assets/products/aceite-rosa-mosqueta-catalogo.jpg",
-    detail: "Prensado en frío, con rosa mosqueta para acompañar la hidratación y ayudar a cuidar la apariencia de las manchas. Envase de 30 ml.",
-  },
-  "shampoo-seco": {
-    id: "shampoo-seco",
-    name: "Shampoo sólido · cabello seco",
-    price: 7000,
-    wholesale: { minimumQuantity: 6, price: 6000 },
-    category: "Cabello",
-    image: "assets/instagram/shampoo-cabello-seco-romero-ortiga.webp",
-    detail: "Una barra sólida con romero y ortiga, creada para acompañar el cuidado del cabello seco. Formato de 60 g.",
-  },
-  "shampoo-normal": {
-    id: "shampoo-normal",
-    name: "Shampoo sólido · cabello normal",
-    price: 7000,
-    wholesale: { minimumQuantity: 6, price: 6000 },
-    category: "Cabello",
-    image: "assets/instagram/shampoo-02.webp",
-    detail: "Una barra sólida de Amankay pensada para sumar sencillez a la rutina del cabello normal. Formato de 60 g.",
-  },
-  "shampoo-hidratante": {
-    id: "shampoo-hidratante",
-    name: "Shampoo hidratante",
-    price: 7000,
-    wholesale: { minimumQuantity: 6, price: 6000 },
-    category: "Cabello",
-    image: "assets/instagram/shampoo-03.webp",
-    detail: "Una fórmula sólida con caléndula y jojoba para acompañar una rutina capilar hidratante. Formato de 60 g.",
+    format: "30 ML",
+    detail: "Prensado en frío para conservar sus ácidos grasos esenciales (omega 3 y 6) y su provitamina A, el aceite de rosa mosqueta favorece la renovación de la piel y ayuda a mejorar la apariencia de cicatrices, estrías, manchas y líneas finas. Aplica 2 a 3 gotas por la noche sobre la piel limpia, con un masaje suave, y usa protector solar durante el día. Envase de 30 ml.",
   },
   "shampoo-ortiga": {
     id: "shampoo-ortiga",
@@ -217,7 +211,8 @@ const products = {
     wholesale: { minimumQuantity: 6, price: 6000 },
     category: "Cabello",
     image: "assets/products/shampoo-ortiga-catalogo.jpg",
-    detail: "Shampoo anticaída elaborado con derivado del aceite de coco y polvo de ortiga. Peso aproximado: 60 g.",
+    format: "60 G",
+    detail: "La ortiga es rica en minerales y se usa tradicionalmente para fortalecer el cabello, equilibrar el cuero cabelludo graso y acompañar los cuidados frente a la caída. Su base limpiadora, derivada del aceite de coco, hace una espuma suave que no reseca. Humedece la barra, frótala sobre el cabello mojado hasta hacer espuma, masajea el cuero cabelludo y enjuaga. Déjala secar entre usos para que dure más. Peso aproximado: 60 g.",
   },
   "pack-shampoo-acondicionador": {
     id: "pack-shampoo-acondicionador",
@@ -226,16 +221,18 @@ const products = {
     wholesale: { minimumQuantity: 6, price: 11000 },
     category: "Cabello",
     image: "assets/products/pack-shampoo-acondicionador-catalogo.jpg",
-    detail: "Un dúo para tu rutina capilar: shampoo de maqui y acondicionador de aceite de coco.",
+    format: "PACK",
+    detail: "Una rutina capilar completa en formato sólido. El shampoo de maqui, rico en antioxidantes, está indicado para el cuidado de los cabellos tinturados. El acondicionador de aceite de coco suaviza, desenreda y ayuda a reducir el quiebre. Lava con el shampoo, enjuaga y luego desliza el acondicionador de medios a puntas. Deja secar ambas barras entre usos para que duren más.",
   },
   "pack-shampoo-rosa-mosqueta-acondicionador": {
     id: "pack-shampoo-rosa-mosqueta-acondicionador",
-    name: "Pack shampoo y acondicionador",
+    name: "Pack shampoo de rosa mosqueta y acondicionador",
     price: 13000,
     wholesale: { minimumQuantity: 6, price: 11000 },
     category: "Cabello",
     image: "assets/products/pack-shampoo-rosa-mosqueta-acondicionador-catalogo.jpg",
-    detail: "Pack shampoo rosa mosqueta y acondicionador aceite de coco.",
+    format: "PACK",
+    detail: "Una rutina capilar completa en formato sólido. El shampoo de rosa mosqueta aporta ácidos grasos esenciales que hidratan y ayudan a reparar el cabello seco o dañado. El acondicionador de aceite de coco suaviza, desenreda y ayuda a reducir el quiebre. Lava con el shampoo, enjuaga y luego desliza el acondicionador de medios a puntas. Deja secar ambas barras entre usos para que duren más.",
   },
   "shampoo-romero": {
     id: "shampoo-romero",
@@ -244,7 +241,8 @@ const products = {
     wholesale: { minimumQuantity: 6, price: 6000 },
     category: "Cabello",
     image: "assets/products/shampoo-romero-catalogo.jpg",
-    detail: "Shampoo sólido de romero que ayuda a reparar el cabello dañado y a devolverle su brillo. Peso aproximado: 50 g.",
+    format: "50 G",
+    detail: "El romero es uno de los ingredientes capilares más estudiados: se asocia a la estimulación de la circulación del cuero cabelludo y aporta brillo y vitalidad al cabello opaco o dañado. Humedece la barra, frótala sobre el cabello mojado hasta hacer espuma, masajea el cuero cabelludo y enjuaga. Déjala secar entre usos para que dure más. Peso aproximado: 50 g.",
   },
   "pack-shampoo-ortiga-acondicionador": {
     id: "pack-shampoo-ortiga-acondicionador",
@@ -252,8 +250,9 @@ const products = {
     price: 13000,
     wholesale: { minimumQuantity: 6, price: 11000 },
     category: "Cabello",
-    image: "assets/products/pack-shampoo-ortiga-acondicionador-catalogo.png",
-    detail: "Un dúo para tu rutina capilar: shampoo de ortiga y acondicionador de aceite de coco.",
+    image: "assets/products/pack-shampoo-ortiga-acondicionador-catalogo.jpg",
+    format: "PACK",
+    detail: "Una rutina capilar completa en formato sólido. El shampoo de ortiga, planta usada tradicionalmente para fortalecer el cabello, ayuda a equilibrar el cuero cabelludo. El acondicionador de aceite de coco suaviza, desenreda y ayuda a reducir el quiebre. Lava con el shampoo, enjuaga y luego desliza el acondicionador de medios a puntas. Deja secar ambas barras entre usos para que duren más.",
   },
   "shampoo-rosa-mosqueta": {
     id: "shampoo-rosa-mosqueta",
@@ -261,8 +260,9 @@ const products = {
     price: 7000,
     wholesale: { minimumQuantity: 6, price: 6000 },
     category: "Cabello",
-    image: "assets/products/shampoo-rosa-mosqueta-catalogo.png",
-    detail: "Shampoo sólido de rosa mosqueta que hidrata y ayuda a reparar el cabello dañado. Peso aproximado: 60 g.",
+    image: "assets/products/shampoo-rosa-mosqueta-catalogo.jpg",
+    format: "60 G",
+    detail: "La rosa mosqueta aporta ácidos grasos esenciales que nutren la fibra capilar y devuelven suavidad y flexibilidad al cabello seco, quebradizo o castigado por el calor y las tinturas. Humedece la barra, frótala sobre el cabello mojado hasta hacer espuma, masajea el cuero cabelludo y enjuaga. Déjala secar entre usos para que dure más. Peso aproximado: 60 g.",
   },
   "shampoo-manzanilla": {
     id: "shampoo-manzanilla",
@@ -271,7 +271,8 @@ const products = {
     wholesale: { minimumQuantity: 6, price: 6000 },
     category: "Cabello",
     image: "assets/products/shampoo-manzanilla-catalogo.jpg",
-    detail: "Shampoo sólido de manzanilla que da brillo y ayuda a reparar el cabello dañado.",
+    format: "BARRA",
+    detail: "La manzanilla es conocida por calmar el cuero cabelludo sensible y aportar brillo; con el uso continuo realza los reflejos dorados de los cabellos claros. Ayuda además a suavizar el cabello dañado. Humedece la barra, frótala sobre el cabello mojado hasta hacer espuma, masajea el cuero cabelludo y enjuaga. Déjala secar entre usos para que dure más.",
   },
   "pack-shampoo-manzanilla-acondicionador": {
     id: "pack-shampoo-manzanilla-acondicionador",
@@ -280,7 +281,68 @@ const products = {
     wholesale: { minimumQuantity: 6, price: 11000 },
     category: "Cabello",
     image: "assets/products/pack-shampoo-manzanilla-acondicionador-catalogo.jpg",
-    detail: "Un dúo para tu rutina capilar: shampoo de manzanilla y acondicionador de aceite de coco.",
+    format: "PACK",
+    detail: "Una rutina capilar completa en formato sólido. El shampoo de manzanilla calma el cuero cabelludo, da brillo y realza los reflejos de los cabellos claros. El acondicionador de aceite de coco suaviza, desenreda y ayuda a reducir el quiebre. Lava con el shampoo, enjuaga y luego desliza el acondicionador de medios a puntas. Deja secar ambas barras entre usos para que duren más.",
+  },
+  "shampoo-palta": {
+    id: "shampoo-palta",
+    name: "Shampoo palta",
+    price: 7000,
+    wholesale: { minimumQuantity: 6, price: 6000 },
+    category: "Cabello",
+    image: "assets/products/shampoo-palta-catalogo.jpg",
+    format: "60 G",
+    detail: "La palta es rica en ácido oleico y vitamina E, nutrientes que suavizan la fibra capilar y ayudan a recuperar el cabello seco, opaco o dañado. Recomendado para cabellos secos o con frizz. Humedece la barra, frótala sobre el cabello mojado hasta hacer espuma, masajea el cuero cabelludo y enjuaga. Déjala secar entre usos para que dure más. Peso aproximado: 60 g.",
+  },
+  "shampoo-avena": {
+    id: "shampoo-avena",
+    name: "Shampoo avena",
+    price: 7000,
+    wholesale: { minimumQuantity: 6, price: 6000 },
+    category: "Cabello",
+    image: "assets/products/shampoo-avena-catalogo.jpg",
+    format: "60 G",
+    detail: "La avena es reconocida por su efecto calmante e hidratante: este shampoo limpia con suavidad, cuida el cuero cabelludo sensible y deja el cabello suave, fuerte y con brillo. Una barra muy durable y ecológica. Humedece la barra, frótala sobre el cabello mojado hasta hacer espuma, masajea el cuero cabelludo y enjuaga. Déjala secar entre usos para que dure más. Peso: 60 g.",
+  },
+  "shampoo-maqui": {
+    id: "shampoo-maqui",
+    name: "Shampoo sólido maqui",
+    price: 7000,
+    wholesale: { minimumQuantity: 6, price: 6000 },
+    category: "Cabello",
+    image: "assets/products/shampoo-maqui-catalogo.jpg",
+    format: "BARRA",
+    detail: "El maqui es rico en antocianinas, antioxidantes que ayudan a proteger la fibra capilar, por lo que este shampoo está indicado para el cuidado de los cabellos tinturados. Es una barra concentrada y muy durable. Humedece la barra, frótala sobre el cabello mojado hasta hacer espuma, masajea el cuero cabelludo y enjuaga. Déjala secar entre usos para que dure más.",
+  },
+  "pack-shampoo-palta-acondicionador": {
+    id: "pack-shampoo-palta-acondicionador",
+    name: "Pack shampoo de palta y acondicionador",
+    price: 13000,
+    wholesale: { minimumQuantity: 6, price: 11000 },
+    category: "Cabello",
+    image: "assets/products/pack-shampoo-palta-acondicionador-catalogo.jpg",
+    format: "PACK",
+    detail: "Una rutina capilar completa en formato sólido. El shampoo de palta, rica en vitamina E y ácido oleico, nutre y ayuda a reparar el cabello seco o dañado. El acondicionador de aceite de coco suaviza, desenreda y ayuda a reducir el quiebre. Lava con el shampoo, enjuaga y luego desliza el acondicionador de medios a puntas. Deja secar ambas barras entre usos para que duren más.",
+  },
+  "acondicionador-solido": {
+    id: "acondicionador-solido",
+    name: "Acondicionador sólido",
+    price: 7000,
+    wholesale: { minimumQuantity: 6, price: 6000 },
+    category: "Cabello",
+    image: "assets/products/acondicionador-solido-catalogo.jpg",
+    format: "60 G",
+    detail: "El aceite de coco es uno de los pocos aceites que penetra en la fibra capilar y ayuda a reducir la pérdida de proteínas, dejando el cabello más suave, fuerte y fácil de desenredar. Después del shampoo, desliza la barra húmeda de medios a puntas, deja actuar un minuto y enjuaga. Déjala secar entre usos para que dure más. Peso aproximado: 60 g.",
+  },
+  "pack-shampoo-romero-acondicionador": {
+    id: "pack-shampoo-romero-acondicionador",
+    name: "Pack shampoo de romero y acondicionador",
+    price: 13000,
+    wholesale: { minimumQuantity: 6, price: 11000 },
+    category: "Cabello",
+    image: "assets/products/pack-shampoo-romero-acondicionador-catalogo.jpg",
+    format: "PACK",
+    detail: "Una rutina capilar completa en formato sólido. El shampoo de romero, conocido por estimular el cuero cabelludo, aporta brillo y vitalidad al cabello opaco o dañado. El acondicionador de aceite de coco suaviza, desenreda y ayuda a reducir el quiebre. Lava con el shampoo, enjuaga y luego desliza el acondicionador de medios a puntas. Deja secar ambas barras entre usos para que duren más.",
   },
   "pomada-calendula": {
     id: "pomada-calendula",
@@ -289,7 +351,8 @@ const products = {
     wholesale: { minimumQuantity: 6, price: 4500 },
     category: "Cuerpo",
     image: "assets/products/pomada-calendula-catalogo.jpg",
-    detail: "Un cuidado reconfortante con caléndula para acompañar la hidratación de la piel reseca y el cuidado de las irritaciones.",
+    format: "30 G",
+    detail: "La caléndula es reconocida por su efecto calmante y suavizante. En formato de pomada forma una capa protectora que evita la pérdida de humedad, ideal para manos, codos, talones y zonas resecas o rozadas. Aplica una pequeña cantidad sobre la piel limpia las veces que necesites. Envase de 30 g.",
   },
   "aceite-contracturas": {
     id: "aceite-contracturas",
@@ -297,7 +360,8 @@ const products = {
     price: 9500,
     category: "Cuerpo",
     image: "assets/products/aceite-contracturas-catalogo.jpg",
-    detail: "Masajea la zona con una mezcla de jojoba, caléndula y aceites esenciales de canela, manzanilla y lavanda. Envase de 30 ml.",
+    format: "30 ML",
+    detail: "La jojoba es una cera líquida muy afín a la piel, que se absorbe bien y facilita el masaje, y la caléndula suaviza. El aceite esencial de canela aporta una sensación de calor, mientras la manzanilla y la lavanda acompañan la relajación. Aplica unas gotas sobre cuello, hombros o espalda y masajea con presión suave. Solo uso externo: evita la piel irritada, los ojos y las mucosas, y prueba antes en una zona pequeña. Envase de 30 ml.",
   },
   "aceite-masaje-muscular": {
     id: "aceite-masaje-muscular",
@@ -305,7 +369,8 @@ const products = {
     price: 9500,
     category: "Cuerpo",
     image: "assets/products/aceite-masaje-muscular-catalogo.jpg",
-    detail: "Aceite de almendras con lavanda, manzanilla y romero para acompañar el masaje muscular. Envase de 30 ml.",
+    format: "30 ML",
+    detail: "El aceite de almendras se desliza con facilidad y nutre la piel mientras masajeas. El aceite esencial de romero aporta una sensación tonificante, y la lavanda y la manzanilla invitan a la relajación. Ideal después del ejercicio o de una jornada larga. Entibia unas gotas entre las manos y masajea la zona. Solo uso externo. Envase de 30 ml.",
   },
   "unguento-masaje": {
     id: "unguento-masaje",
@@ -313,7 +378,8 @@ const products = {
     price: 5000,
     category: "Cuerpo",
     image: "assets/products/unguento-masaje-catalogo.jpg",
-    detail: "Bálsamo de masaje con aceite de coco, cera vegetal y aceites esenciales de manzanilla, lavanda y melisa. Envase de 20 g.",
+    format: "20 G",
+    detail: "Un bálsamo que se funde con el calor de la piel: el aceite de coco y la cera vegetal nutren y protegen, y los aceites esenciales de manzanilla, lavanda y melisa aportan un aroma que invita a soltar la tensión. Práctico para llevar contigo. Toma una pequeña cantidad y masajea cuello, sienes, hombros o manos, evitando los ojos. Envase de 20 g.",
   },
   "roll-on-antiestres": {
     id: "roll-on-antiestres",
@@ -322,7 +388,8 @@ const products = {
     wholesale: { minimumQuantity: 6, price: 7000 },
     category: "Aromaterapia",
     image: "assets/products/roll-on-antiestres-catalogo.jpg",
-    detail: "Lavanda, melisa y menta se encuentran en esta mezcla aromática para acompañar tus pausas.",
+    format: "ROLL ON",
+    detail: "La lavanda es el aroma más estudiado por su efecto relajante; la melisa se usa tradicionalmente para acompañar los momentos de nerviosismo y la menta aporta una sensación de frescor. Aplica en muñecas, nuca o sienes, respira profundo y tómate un minuto. Solo uso externo: evita los ojos y las mucosas.",
   },
   "roll-on-eucalipto": {
     id: "roll-on-eucalipto",
@@ -331,7 +398,8 @@ const products = {
     wholesale: { minimumQuantity: 6, price: 6500 },
     category: "Aromaterapia",
     image: "assets/products/roll-on-eucalipto-catalogo.jpg",
-    detail: "Una mezcla aromática de eucalipto con notas frescas y estimulantes para acompañar tu día.",
+    format: "10 ML",
+    detail: "El eucalipto es rico en eucaliptol, responsable de su aroma fresco y de esa sensación de respirar más despejado. Aplica en muñecas, pecho o nuca e inhala profundamente cuando necesites un impulso de frescura. Solo uso externo: evita los ojos y las mucosas, y no lo uses en niños pequeños. Envase de 10 ml.",
   },
   "roll-on-romero": {
     id: "roll-on-romero",
@@ -340,7 +408,8 @@ const products = {
     wholesale: { minimumQuantity: 6, price: 6000 },
     category: "Aromaterapia",
     image: "assets/products/roll-on-romero-catalogo.jpg",
-    detail: "Una nota herbal de romero para acompañar tus momentos de enfoque y concentración.",
+    format: "10 ML",
+    detail: "El aroma del romero se asocia tradicionalmente a la memoria y la concentración, y algunos estudios lo vinculan con un mayor estado de alerta. Aplica en muñecas, nuca o sienes antes de estudiar o trabajar y respira profundo. Solo uso externo: evita los ojos y las mucosas. Envase de 10 ml.",
   },
 };
 
@@ -379,9 +448,21 @@ let visibleProductLimit = 6;
 let cart = loadCart();
 let toastTimer;
 const productGroups = {
+  cabello: {
+    title: "Shampoos y cabello",
+    description: "Shampoos sólidos, acondicionador y packs para tu rutina capilar.",
+  },
+  jabones: {
+    title: "Jabones artesanales",
+    description: "Hechos a mano con aceites y mantecas vegetales, en variedades botánicas.",
+  },
   rostro: {
     title: "Rostro",
     description: "Fórmulas botánicas para acompañar tu rutina facial, de día y de noche.",
+  },
+  aceites: {
+    title: "Aceites",
+    description: "Aceites y macerados botánicos inspirados en la naturaleza del sur.",
   },
   cuerpo: {
     title: "Cuerpo",
@@ -390,18 +471,6 @@ const productGroups = {
   aromaterapia: {
     title: "Aromaterapia",
     description: "Mezclas aromáticas para acompañar distintos momentos de tu día.",
-  },
-  jabones: {
-    title: "Jabones artesanales",
-    description: "La mayoría de las variedades cuesta $6.000; revisa cada ficha para conocer su precio mayorista.",
-  },
-  cabello: {
-    title: "Cabello",
-    description: "Opciones sólidas y botánicas para sumar a tu rutina capilar.",
-  },
-  botanica: {
-    title: "Botánica",
-    description: "Aceites y preparados botánicos inspirados en la naturaleza del sur.",
   },
 };
 
@@ -657,6 +726,13 @@ function openProductDialog(id, trigger) {
   const accordions = productDialog.querySelectorAll(".product-detail-accordions details");
   accordions[0].open = true;
   accordions[1].open = false;
+  const productReviews = testimonials.filter((item) => item.productId === id);
+  const reviewsPanel = productDialog.querySelector(".product-dialog-reviews");
+  reviewsPanel.hidden = productReviews.length === 0;
+  reviewsPanel.open = false;
+  reviewsPanel.querySelector("summary b").textContent = `(${productReviews.length})`;
+  reviewsPanel.querySelector(".product-dialog-reviews-list").innerHTML =
+    productReviews.map((item) => testimonialCard(item, false)).join("");
   productDialogTrigger = trigger;
   productDialog.showModal();
   productDialog.querySelector(".product-dialog-close").focus();
@@ -817,6 +893,9 @@ document.querySelectorAll(".filter-button").forEach((button) => {
       filter.setAttribute("aria-pressed", String(active));
     });
     filterProducts();
+    if (button.classList.contains("category-tile")) {
+      document.querySelector("#product-grid").scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   });
 });
 
@@ -922,6 +1001,264 @@ mainNav.querySelectorAll("a").forEach((link) => {
   });
 });
 
+// Selección de inicio: cámbiala por los más vendidos cuando quieras.
+const favoriteProducts = ["maqui", "shampoo-romero", "aceite-rosa-mosqueta", "roll-on-antiestres"];
+const advisorGuide = {
+  piel: {
+    label: "Piel",
+    needs: [
+      {
+        id: "seca",
+        label: "Seca o tirante",
+        advice: "La piel seca produce pocos lípidos y pierde agua con facilidad. La clave es limpiar sin resecar y luego reponer grasas nobles que sellen la hidratación, idealmente sobre la piel aún húmeda.",
+        picks: [
+          ["jabon-avena-miel", "Limpia sin resecar: la avena calma y la miel retiene la humedad."],
+          ["maqui", "Karité y aceite de maqui para nutrir y reforzar la barrera de la piel."],
+          ["aceite-almendras", "Unas gotas sobre la piel húmeda sellan la hidratación."],
+        ],
+      },
+      {
+        id: "grasa",
+        label: "Grasa o mixta",
+        advice: "El error más común es resecarla: la piel responde produciendo más grasa. Limpia una vez al día con un jabón que arrastre el exceso de sebo, tonifica e hidrata siempre, pero con texturas ligeras.",
+        picks: [
+          ["jabon-carbon-activado", "El carbón activado atrapa impurezas y exceso de grasa."],
+          ["agua-rosas", "Tónico que refresca y equilibra la piel después de la limpieza."],
+          ["crema-leche-avena", "Hidratación ligera, de rápida absorción y sin sensación grasa."],
+        ],
+      },
+      {
+        id: "sensible",
+        label: "Sensible o irritada",
+        advice: "Menos es más: pocos productos, suaves y con ingredientes calmantes. Evita los exfoliantes y prueba cada producto nuevo en una zona pequeña antes de usarlo en todo el rostro.",
+        picks: [
+          ["jabon-calendula", "Limpieza delicada con caléndula, la planta calmante por excelencia."],
+          ["crema-leche-avena", "Avena y caléndula, dos calmantes clásicos, en textura ligera."],
+          ["aceite-calmar-irritaciones", "Caléndula y manzanilla para la piel enrojecida o reactiva."],
+        ],
+      },
+      {
+        id: "madura",
+        label: "Madura",
+        advice: "Con los años la piel pierde lípidos y capacidad de renovarse. Ayudan los antioxidantes durante el día, los aceites ricos en omegas por la noche y, sobre todo, el protector solar a diario.",
+        picks: [
+          ["maqui", "De día: antioxidantes del maqui y karité que nutre y protege."],
+          ["crema-rosa-mosqueta", "De noche: rosa mosqueta y vitamina E acompañan la renovación."],
+          ["aceite-maqui", "Un extra de nutrición y elasticidad: 2 a 3 gotas por la noche."],
+        ],
+      },
+      {
+        id: "manchas",
+        label: "Con manchas o marcas",
+        advice: "Las manchas mejoran con constancia y, ante todo, con protector solar: sin él, cualquier cuidado pierde efecto. La rosa mosqueta es el ingrediente con más tradición para mejorar la apariencia de marcas y cicatrices.",
+        picks: [
+          ["aceite-rosa-mosqueta", "Prensado en frío: 2 a 3 gotas por la noche sobre la zona."],
+          ["crema-rosa-mosqueta", "Crema de noche que nutre y ayuda a unificar el tono."],
+          ["jabon-arroz", "Limpieza suave que deja la piel más luminosa y uniforme."],
+        ],
+      },
+    ],
+  },
+  cabello: {
+    label: "Cabello",
+    needs: [
+      {
+        id: "seco",
+        label: "Seco o dañado",
+        advice: "El cabello seco o castigado por el calor y las tinturas necesita una limpieza suave y lípidos que le devuelvan flexibilidad. No te saltes el acondicionador, de medios a puntas.",
+        picks: [
+          ["shampoo-palta", "La palta aporta vitamina E y grasas nobles que suavizan la fibra."],
+          ["shampoo-rosa-mosqueta", "Hidrata y ayuda a reparar el cabello quebradizo."],
+          ["acondicionador-solido", "El aceite de coco reduce el quiebre y facilita el desenredado."],
+        ],
+      },
+      {
+        id: "graso",
+        label: "Raíz grasa",
+        advice: "Si la raíz se engrasa rápido, concentra el shampoo en el cuero cabelludo, masajea bien y aplica el acondicionador solo en las puntas. Evita el agua muy caliente, que estimula la producción de grasa.",
+        picks: [
+          ["shampoo-ortiga", "La ortiga se usa tradicionalmente para equilibrar el cuero cabelludo graso."],
+          ["shampoo-romero", "Limpieza fresca que estimula el cuero cabelludo."],
+        ],
+      },
+      {
+        id: "debil",
+        label: "Débil o con caída",
+        advice: "La caída tiene muchas causas: estrés, cambios hormonales o de estación. Un shampoo acompaña fortaleciendo el cabello y estimulando el cuero cabelludo con el masaje; si la caída es intensa o persistente, consulta a un dermatólogo.",
+        picks: [
+          ["shampoo-ortiga", "Planta rica en minerales, usada tradicionalmente para fortalecer el cabello."],
+          ["shampoo-romero", "El romero se asocia a la estimulación del cuero cabelludo."],
+          ["pack-shampoo-romero-acondicionador", "El dúo completo: shampoo de romero y acondicionador."],
+        ],
+      },
+      {
+        id: "tenido",
+        label: "Teñido",
+        advice: "El cabello tinturado es más poroso y pierde color con cada lavado. Lava con agua tibia, espacia los lavados y usa siempre acondicionador para sellar la cutícula.",
+        picks: [
+          ["shampoo-maqui", "Indicado para cabellos tinturados, con los antioxidantes del maqui."],
+          ["acondicionador-solido", "Sella la cutícula y deja el cabello suave."],
+          ["pack-shampoo-acondicionador", "El dúo completo: shampoo de maqui y acondicionador."],
+        ],
+      },
+      {
+        id: "opaco",
+        label: "Opaco o sin brillo",
+        advice: "El brillo depende de una cutícula lisa. Ayudan los lavados suaves, un enjuague final con agua fría y los ingredientes que suavizan la fibra capilar.",
+        picks: [
+          ["shampoo-manzanilla", "Da brillo y realza los reflejos, sobre todo en cabellos claros."],
+          ["shampoo-avena", "Limpia con suavidad y deja el cabello suave y con brillo."],
+          ["acondicionador-solido", "Alisa la fibra para que refleje mejor la luz."],
+        ],
+      },
+      {
+        id: "sensible",
+        label: "Cuero cabelludo sensible",
+        advice: "Si el cuero cabelludo pica o se irrita, busca fórmulas suaves con ingredientes calmantes y enjuaga muy bien para no dejar residuos.",
+        picks: [
+          ["shampoo-avena", "La avena es reconocida por su efecto calmante e hidratante."],
+          ["shampoo-manzanilla", "La manzanilla calma el cuero cabelludo sensible."],
+        ],
+      },
+    ],
+  },
+  bienestar: {
+    label: "Bienestar",
+    needs: [
+      {
+        id: "tension",
+        label: "Tensión muscular",
+        advice: "Para cuello, hombros y espalda cargados, lo que más ayuda es el masaje: el calor y la presión suave relajan la zona, y los aceites esenciales acompañan.",
+        picks: [
+          ["aceite-contracturas", "Con canela, que aporta una sensación de calor en la zona."],
+          ["aceite-masaje-muscular", "Con romero, lavanda y manzanilla, ideal después del ejercicio."],
+          ["unguento-masaje", "Bálsamo para llevar contigo y aplicar en zonas puntuales."],
+        ],
+      },
+      {
+        id: "estres",
+        label: "Estrés y descanso",
+        advice: "Los aromas actúan rápido: un par de minutos de respiración profunda con lavanda ayudan a bajar el ritmo, durante el día o antes de dormir.",
+        picks: [
+          ["roll-on-antiestres", "Lavanda, melisa y menta para tus pausas."],
+          ["unguento-masaje", "Un masaje en cuello y sienes con manzanilla, lavanda y melisa."],
+        ],
+      },
+      {
+        id: "enfoque",
+        label: "Concentración y energía",
+        advice: "Los aromas herbales y frescos se asocian a un mayor estado de alerta. Úsalos antes de estudiar, trabajar o cuando necesites despejarte.",
+        picks: [
+          ["roll-on-romero", "Aroma herbal asociado a la memoria y la concentración."],
+          ["roll-on-eucalipto", "Frescor que despeja y renueva."],
+        ],
+      },
+    ],
+  },
+};
+let advisorArea = "piel";
+let advisorNeed = advisorGuide.piel.needs[0].id;
+let showcaseRefreshPending = false;
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"']/g, (character) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
+  })[character]);
+}
+
+function isProductAvailable(id) {
+  return Object.hasOwn(products, id) && products[id].published !== false;
+}
+
+function miniCard(id, why = "") {
+  const product = products[id];
+  const name = escapeHtml(product.name);
+  return `
+    <article class="mini-card">
+      <button class="mini-card-image" type="button" data-detail="${id}" aria-label="Ver detalles de ${name}"><img src="${escapeHtml(product.image)}" alt="" loading="lazy"></button>
+      <div class="mini-card-copy">
+        <h3><button type="button" data-detail="${id}">${name}</button></h3>
+        ${why ? `<p class="mini-card-why">${escapeHtml(why)}</p>` : ""}
+        <div class="mini-card-foot">
+          <span class="mini-card-price">${product.price === null ? "Precio por confirmar" : formatPrice(product.price)}</span>
+          <button class="mini-card-add" type="button" data-add="${id}">Agregar <span aria-hidden="true">↗</span></button>
+        </div>
+      </div>
+    </article>`;
+}
+
+function renderShowcase() {
+  const favorites = favoriteProducts.filter(isProductAvailable);
+  document.querySelector("#favorites-grid").innerHTML = favorites.map((id) => miniCard(id)).join("");
+  document.querySelector("#favoritos").hidden = favorites.length === 0;
+
+  const area = advisorGuide[advisorArea];
+  const need = area.needs.find((item) => item.id === advisorNeed) || area.needs[0];
+  document.querySelector("#advisor-tabs").innerHTML = Object.entries(advisorGuide).map(([key, item]) =>
+    `<button class="advisor-tab${key === advisorArea ? " is-active" : ""}" type="button" data-advisor-area="${key}" aria-pressed="${key === advisorArea}">${item.label}</button>`,
+  ).join("");
+  document.querySelector("#advisor-needs").innerHTML = area.needs.map((item) =>
+    `<button class="advisor-need${item.id === need.id ? " is-active" : ""}" type="button" data-advisor-need="${item.id}" aria-pressed="${item.id === need.id}">${item.label}</button>`,
+  ).join("");
+  document.querySelector("#advisor-result").innerHTML = `
+    <p class="advisor-advice">${need.advice}</p>
+    <p class="advisor-picks-title">TE RECOMENDAMOS</p>
+    <div class="advisor-picks">${need.picks.filter(([id]) => isProductAvailable(id)).map(([id, why]) => miniCard(id, why)).join("")}</div>`;
+}
+
+function scheduleShowcaseRefresh() {
+  if (showcaseRefreshPending) return;
+  showcaseRefreshPending = true;
+  window.setTimeout(() => {
+    showcaseRefreshPending = false;
+    renderShowcase();
+  }, 0);
+}
+
+document.querySelectorAll("#favoritos, #asesoria, #testimonios").forEach((section) => {
+  section.addEventListener("click", (event) => {
+    const areaButton = event.target.closest("[data-advisor-area]");
+    const needButton = event.target.closest("[data-advisor-need]");
+    const detailButton = event.target.closest("[data-detail]");
+    const addButton = event.target.closest("[data-add]");
+    if (areaButton) {
+      advisorArea = areaButton.dataset.advisorArea;
+      advisorNeed = advisorGuide[advisorArea].needs[0].id;
+      renderShowcase();
+    } else if (needButton) {
+      advisorNeed = needButton.dataset.advisorNeed;
+      renderShowcase();
+    } else if (detailButton) {
+      openProductDialog(detailButton.dataset.detail, detailButton);
+    } else if (addButton) {
+      addToCart(addButton.dataset.add);
+    }
+  });
+});
+renderShowcase();
+
+let testimonials = [];
+
+function testimonialCard(item, withProduct = true) {
+  const product = withProduct && item.productId && isProductAvailable(item.productId)
+    ? products[item.productId]
+    : null;
+  const author = [item.name, item.city].filter(Boolean).map(escapeHtml).join(" · ");
+  return `
+    <figure class="testimonial">
+      <blockquote>${escapeHtml(item.text)}</blockquote>
+      <figcaption><strong>${author}</strong>${product ? `<button type="button" data-detail="${escapeHtml(product.id)}">${escapeHtml(product.name)}</button>` : ""}</figcaption>
+    </figure>`;
+}
+
+window.amankayRenderTestimonials = (list) => {
+  testimonials = Array.isArray(list) ? list : [];
+  document.querySelector("#testimonios").hidden = testimonials.length === 0;
+  document.querySelector("#testimonials-grid").innerHTML =
+    testimonials.slice(0, 6).map((item) => testimonialCard(item)).join("");
+};
+if (window.amankayTestimonials) window.amankayRenderTestimonials(window.amankayTestimonials);
+
 productCards.forEach((card) => {
   const product = products[card.dataset.product];
   if (product) renderCardWholesale(card, product);
@@ -931,51 +1268,27 @@ updateCart();
 
 window.amankayProducts = Object.values(products);
 window.amankayProductDescriptionSync = {
-  revision: "20261002-1",
-  productIds: [
-    "maqui",
-    "crema-leche-avena",
-    "crema-rosa-mosqueta",
-    "serum",
-    "cafe",
-    "jabon-cafe",
-    "jabon-carbon-activado",
-    "jabon-maqui",
-    "jabon-calendula",
-    "jabon-romero",
-    "jabon-arroz",
-    "jabon-canelo-cacao",
-    "jabon-rosa-mosqueta",
-    "jabon-avena-miel",
-    "aceite-maqui",
-    "aceite-oregano",
-    "agua-rosas",
-    "aceite-calmar-irritaciones",
-    "macerado-calendula",
-    "aceite-almendras",
-    "aceite-rosa-mosqueta",
-    "shampoo-seco",
-    "shampoo-normal",
-    "shampoo-hidratante",
-    "pomada-calendula",
-    "aceite-contracturas",
-    "aceite-masaje-muscular",
-    "unguento-masaje",
-    "roll-on-antiestres",
-    "roll-on-eucalipto",
-    "roll-on-romero",
-    "pack-shampoo-acondicionador",
-    "pack-shampoo-rosa-mosqueta-acondicionador",
-    "shampoo-romero",
-    "pack-shampoo-ortiga-acondicionador",
-    "shampoo-rosa-mosqueta",
-    "shampoo-manzanilla",
-    "pack-shampoo-manzanilla-acondicionador",
-  ],
+  revision: "20261003-1",
+  productIds: Object.keys(products),
 };
 // Fotos del catálogo que pasaron de PNG a JPG: los registros guardados en Firebase pueden apuntar aún al PNG.
 const optimizedImages = new Set(Object.values(products).map((product) => product.image));
+// Textos y formatos del sitio: la tarjeta muestra el resumen corto mientras la descripción completa no se edite en Firebase.
+const staticCopy = new Map(Object.values(products).map((product) => [product.id, {
+  detail: product.detail,
+  format: product.format || "",
+  summary: document.querySelector(`[data-product="${CSS.escape(product.id)}"] .product-description`)?.textContent || "",
+}]));
+// Productos retirados de la tienda: se ignoran aunque sigan guardados en Firebase.
+const retiredProducts = new Set(["jabones", "shampoo-seco", "shampoo-normal", "shampoo-hidratante"]);
+// Aceites que antes estaban en Rostro o Botánica: Firebase puede conservar la categoría antigua.
+const recategorizedOils = new Set(["aceite-maqui", "aceite-oregano", "aceite-rosa-mosqueta", "aceite-almendras", "macerado-calendula", "aceite-calmar-irritaciones"]);
 window.amankayApplyCatalogUpdate = (record) => {
+  if (retiredProducts.has(record.id)) return;
+  scheduleShowcaseRefresh();
+  if (recategorizedOils.has(record.id) && ["Rostro", "Botánica"].includes(record.category)) {
+    record = { ...record, category: "Aceites" };
+  }
   const optimizedImage = String(record.image || "").replace(/\.png$/i, ".jpg");
   const staticProduct = products[record.id];
   const descriptionSync = window.amankayProductDescriptionSync;
@@ -991,7 +1304,7 @@ window.amankayApplyCatalogUpdate = (record) => {
     category: record.category,
     image: optimizedImages.has(optimizedImage) ? optimizedImage : record.image,
     detail: useReviewedDescription && staticProduct ? staticProduct.detail : record.detail,
-    format: record.format || "",
+    format: record.format || staticCopy.get(record.id)?.format || "",
     published: record.published !== false,
   };
   products[product.id] = product;
@@ -1035,7 +1348,9 @@ window.amankayApplyCatalogUpdate = (record) => {
   titleRow.querySelector(".product-price").textContent =
     product.price === null ? "Precio por confirmar" : formatPrice(product.price);
   renderCardWholesale(card, product);
-  card.querySelector(".product-description").textContent = product.detail;
+  const copy = staticCopy.get(product.id);
+  card.querySelector(".product-description").textContent =
+    copy?.summary && product.detail === copy.detail ? copy.summary : product.detail;
   filterProducts();
   updateCart();
 };
