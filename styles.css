@@ -751,6 +751,99 @@ body { background: #ffffff; }
 .collection-toolbar.is-searching .category-filter-meta .collection-results { display: inline; color: var(--forest); font-size: 12px; }
 .checkout-shipping { margin-top: -4px; padding-top: 0; border-top: 0; }
 .checkout-shipping strong { text-align: right; }
+/* Confirmación del pedido en el checkout */
+.checkout-done { margin-top: 18px; display: grid; gap: 14px; }
+.checkout-done[hidden], .checkout-form[hidden] { display: none; }
+.checkout-done p { margin: 0; color: #625965; font-size: 13px; line-height: 1.7; }
+.checkout-done p:empty { display: none; }
+.checkout-done .checkout-done-folio { width: fit-content; padding: 6px 12px; background: var(--paper-deep); color: var(--forest); font-size: 12px; font-weight: 600; letter-spacing: .06em; }
+.checkout-done-whatsapp { min-height: 48px; justify-content: space-between; }
+.checkout-done-close { min-height: 44px; border: 1px solid var(--line); background: #fff; color: var(--forest); font: inherit; font-size: 12px; cursor: pointer; }
+.checkout-whatsapp:disabled { opacity: .65; cursor: progress; }
+/* En el panel no se muestra el encabezado ni el pie de la tienda */
+body.admin-mode .announcement, body.admin-mode .site-header, body.admin-mode .site-footer { display: none; }
+/* Panel: resumen, pedidos con varios productos y acciones */
+.admin-columns { margin-bottom: 15px; }
+.admin-columns-even { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.admin-list p { margin: 0; padding: 10px 0; display: flex; align-items: baseline; justify-content: space-between; gap: 12px; border-bottom: 1px solid #f0ecf1; font-size: 11px; }
+.admin-list p:last-child { border-bottom: 0; }
+.admin-list strong { flex: 0 0 auto; color: #675568; font-weight: 500; }
+.admin-card-heading > span { color: #89818c; font-size: 9px; }
+.admin-heading-actions { display: flex; flex-wrap: wrap; gap: 9px; }
+.admin-secondary { min-height: 41px; padding: 0 14px; border: 1px solid #d9d0da; background: #fff; color: #483749; font-size: 10px; cursor: pointer; }
+.admin-secondary:hover { background: #f5f0f5; }
+.admin-period { display: grid; gap: 7px; color: #625965; font-size: 10px; }
+.admin-badge.is-paid { background: #e8f0e1; color: #4d6537; }
+.admin-table-wrap td .admin-badge + br + .admin-badge { margin-top: 5px; }
+.admin-table-wrap td a { text-decoration: underline; }
+.admin-order-lines { min-width: 0; margin: 0; padding: 13px; border: 1px solid #ded8df; }
+.admin-order-lines legend { padding: 0 6px; color: #625965; font-size: 10px; }
+.admin-order-add { display: grid; grid-template-columns: minmax(0, 1fr) 72px auto; gap: 7px; }
+.admin-order-lines ul { margin: 11px 0 0; padding: 0; list-style: none; }
+.admin-order-lines li { padding: 8px 0; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #f0ecf1; font-size: 11px; }
+.admin-order-lines li span:first-child { margin-right: auto; }
+.admin-order-lines li button { width: 26px; height: 26px; border: 0; background: none; color: #a53f4e; font-size: 17px; cursor: pointer; }
+.admin-order-total { margin: 11px 0 0; display: flex; justify-content: space-between; font-size: 12px; }
+.admin-order-total strong { font-weight: 600; }
+.admin-app .admin-check { display: flex; align-items: center; gap: 8px; }
+.admin-app .admin-check input { width: auto; min-height: 0; }
+@media (max-width: 680px) {
+  .admin-columns-even { grid-template-columns: 1fr; }
+}
+/* Los símbolos ✳ y ↗ se dibujan como texto y no como emoji de color en iPhone */
+body { font-variant-emoji: text; }
+/* Ajustes para teléfono: no cambian la versión de escritorio */
+@media (max-width: 840px) {
+  html, body { overflow-x: clip; }
+  /* Sin columna asignada, el menú se ancla al ancho completo del encabezado y no a la columna del logo */
+  .main-nav { grid-column: auto; max-height: calc(100dvh - 78px); overflow-y: auto; }
+  .main-nav a { padding: 15px 0; font-size: 14px; }
+  .header-search { width: 32px; height: 40px; }
+  .cart-trigger { min-height: 40px; }
+}
+@media (max-width: 680px) {
+  .checkout-dialog { width: calc(100% - 16px); max-height: 92dvh; overscroll-behavior: contain; }
+  .checkout-content { padding: 30px 20px 24px; }
+  .checkout-content h2 { margin: 12px 44px 8px 0; font-size: 26px; }
+  .checkout-intro { font-size: 12px; line-height: 1.6; }
+  .checkout-form { grid-template-columns: minmax(0, 1fr); gap: 12px; margin-top: 18px; }
+  .checkout-form label { grid-template-columns: minmax(0, 1fr); font-size: 12px; }
+  .checkout-form input, .checkout-form select { min-width: 0; min-height: 46px; }
+  .checkout-total { gap: 12px; font-size: 13px; }
+  .checkout-payment-note { font-size: 11px; }
+  .checkout-whatsapp { min-height: 50px; font-size: 12px; }
+  .checkout-mercadopago { font-size: 11px; }
+  .cart-items { overscroll-behavior: contain; }
+  .cart-line-details > span, .cart-line-price { font-size: 12px; }
+  .cart-wholesale-note { font-size: 11px; }
+  .quantity-control button { width: 34px; height: 34px; font-size: 16px; }
+  .quantity-control span { min-width: 26px; font-size: 13px; }
+  .remove-item { padding: 6px 0; font-size: 12px; }
+  .subtotal-row { font-size: 14px; }
+  .checkout-note { font-size: 11px; }
+  .checkout-button { font-size: 12px; }
+  .checkout-caption { font-size: 10px; }
+  /* Arriba, para no tapar el botón de checkout de la bolsa */
+  .toast { top: 12px; left: 16px; right: 16px; bottom: auto; font-size: 12px; text-align: center; }
+}
+@media (hover: none) and (pointer: coarse) {
+  /* iOS amplía la página al enfocar campos con letra menor a 16px */
+  .checkout-form input, .checkout-form select, .search-box input,
+  .admin-app input, .admin-app select, .admin-app textarea { font-size: 16px; }
+  .admin-stock-form input { width: 78px; }
+  .admin-stock-form input[aria-label="Mínimo"] { width: 68px; }
+}
+@media (hover: none) {
+  /* En pantallas táctiles el estado hover queda "pegado" después de tocar */
+  .button:hover, .filter-button:hover { transform: none; }
+  .text-add:hover, .mini-card-add:hover { background: transparent; color: var(--forest); }
+  .text-add:hover span, .mini-card-add:hover span { color: var(--clay); }
+  .text-add:active, .mini-card-add:active { background: var(--forest); color: #fff; }
+  .text-add:active span, .mini-card-add:active span { color: #fff; }
+  .button-outline:hover { background: transparent; color: #483749; }
+  .button-outline:active { background: #483749; color: #fff; }
+  .product-card:hover .product-image img, .mini-card:hover .mini-card-image img, .category-tile:hover img { transform: none; }
+}
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }

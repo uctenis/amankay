@@ -29,8 +29,32 @@ service cloud.firestore {
       allow read, write: if isAdmin();
     }
 
+    // Pedido enviado desde la tienda: cualquiera puede crearlo, pero solo como "Nuevo",
+    // sin tocar stock ni pagos, y nadie fuera del panel puede leerlo ni modificarlo.
+    function isWebOrder() {
+      let order = request.resource.data;
+      return order.keys().hasOnly(['number', 'customer', 'phone', 'email', 'region', 'city', 'address',
+          'items', 'total', 'notes', 'status', 'channel', 'paid', 'stockDeducted', 'createdAt'])
+        && order.status == 'Nuevo'
+        && order.channel == 'Web'
+        && order.paid == false
+        && order.stockDeducted == false
+        && order.createdAt == request.time
+        && order.number is string && order.number.size() <= 24
+        && order.customer is string && order.customer.size() > 0 && order.customer.size() <= 100
+        && order.phone is string && order.phone.size() > 0 && order.phone.size() <= 30
+        && order.email is string && order.email.size() <= 254
+        && order.region is string && order.region.size() <= 40
+        && order.city is string && order.city.size() <= 100
+        && order.address is string && order.address.size() <= 200
+        && order.notes is string && order.notes.size() <= 300
+        && order.items is list && order.items.size() > 0 && order.items.size() <= 80
+        && order.total is int && order.total >= 0 && order.total <= 50000000;
+    }
+
     match /orders/{orderId} {
-      allow read, write: if isAdmin();
+      allow read, update, delete: if isAdmin();
+      allow create: if isAdmin() || isWebOrder();
     }
 
     match /expenses/{expenseId} {

@@ -95,7 +95,7 @@ function friendlyError(error) {
     "auth/weak-password": "La contraseña debe tener al menos 8 caracteres.",
     "auth/popup-closed-by-user": "Se cerró la ventana de Google antes de completar el acceso.",
     "auth/popup-blocked": "El navegador bloqueó la ventana de acceso de Google. Permite las ventanas emergentes para este sitio e inténtalo de nuevo.",
-    "auth/unauthorized-domain": "Autoriza localhost o el dominio actual en Firebase Authentication → Dominios autorizados.",
+    "auth/unauthorized-domain": `El dominio ${location.hostname} no está autorizado. Agrégalo en Firebase Console → Authentication → Configuración → Dominios autorizados.`,
     "permission-denied": "Firebase rechazó esta operación. Publica firestore.rules en la consola y verifica que el correo administrador esté confirmado.",
     "failed-precondition": "Falta configurar Firestore o un índice. Revisa la configuración en Firebase Console.",
     "unavailable": "Firebase no está disponible en este momento. Inténtalo nuevamente.",
@@ -129,6 +129,50 @@ function asDate(value) {
   }
   const date = value ? new Date(value) : new Date();
   return Number.isNaN(date.getTime()) ? new Date() : date;
+}
+
+// Un pedido cuenta como venta desde que se confirma; los nuevos y anulados quedan fuera.
+function isSale(order) {
+  return order.status !== "Anulado" && order.status !== "Nuevo";
+}
+
+function orderCost(order) {
+  return (order.items || []).reduce(
+    (sum, item) => sum + (Number(item.unitCost) || 0) * (Number(item.quantity) || 0), 0,
+  );
+}
+
+function inPeriod(value, period) {
+  if (period === "all") return true;
+  const date = asDate(value);
+  const now = new Date();
+  if (period === "year") return date.getFullYear() === now.getFullYear();
+  const reference = period === "previous" ? new Date(now.getFullYear(), now.getMonth() - 1, 1) : now;
+  return date.getFullYear() === reference.getFullYear() && date.getMonth() === reference.getMonth();
+}
+
+function whatsappLink(phone) {
+  let digits = String(phone || "").replace(/\D/g, "");
+  if (!digits) return "";
+  // Los celulares chilenos suelen anotarse sin el código de país.
+  if (digits.length === 9 && digits.startsWith("9")) digits = `56${digits}`;
+  else if (digits.length === 8) digits = `569${digits}`;
+  return `https://wa.me/${digits}`;
+}
+
+function downloadFile(name, content, type) {
+  const url = URL.createObjectURL(new Blob([content], { type }));
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = name;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+function downloadCsv(name, rows) {
+  // Punto y coma y BOM para que Excel en español abra las columnas y los acentos correctamente.
+  const csv = rows.map((row) => row.map((cell) => `"${String(cell ?? "").replace(/"/g, '""')}"`).join(";")).join("\r\n");
+  downloadFile(name, `﻿${csv}`, "text/csv;charset=utf-8");
 }
 
 function productFromStatic(product) {
@@ -249,6 +293,16 @@ onSnapshot(query(collection(db, "testimonials"), where("published", "==", true))
   window.amankayRenderTestimonials?.(list);
 }, (error) => {
   console.warn("No se pudieron cargar los testimonios de la tienda.", error);
+});
+
+// Pedidos hechos desde la tienda: llegan al panel como "Nuevo" para confirmarlos.
+window.amankaySubmitOrder = (order) => addDoc(collection(db, "orders"), {
+  ...order,
+  status: "Nuevo",
+  channel: "Web",
+  paid: false,
+  stockDeducted: false,
+  createdAt: serverTimestamp(),
 });
 
 async function seedBusinessData() {
@@ -397,11 +451,50 @@ function monthOrders() {
 }
 
 function renderDashboard() {
-  const month = monthOrders();
-  const closedStatuses = new Set(["Anulado"]);
-  const revenue = month.filter((order) =>
-    !closedStatuses.has(order.status) && order.status !== "Nuevo")
+  const hour = new Date().getHours();
+  document.querySelector("#admin-greeting").textContent =
+    `${hour < 12 ? "Buenos días" : hour < 20 ? "Buenas tardes" : "Buenas noches"}, Amankay.`;
+  const sales = monthOrders().filter(isSale);
+  const revenue = sales.reduce((sum, order) => sum + (Number(order.total) || 0), 0);
+  const withCost = sales.filter((order) => (order.items || []).some((item) => Number(item.unitCost) > 0));
+  const webNew = data.orders.filter((order) => order.status === "Nuevo" && order.channel === "Web").length;
+  const unpaid = data.orders.filter((order) => order.status !== "Anulado" && order.paid === false)
     .reduce((sum, order) => sum + (Number(order.total) || 0), 0);
+  const customers = customerList();
+  const topProducts = new Map();
+  const channels = new Map();
+  sales.forEach((order) => {
+    const channel = order.channel || "Sin canal";
+    channels.set(channel, (channels.get(channel) || 0) + (Number(order.total) || 0));
+    (order.items || []).forEach((item) => {
+      const entry = topProducts.get(item.name) || { units: 0, total: 0 };
+      entry.units += Number(item.quantity) || 0;
+      entry.total += (Number(item.unitPrice) || 0) * (Number(item.quantity) || 0);
+      topProducts.set(item.name, entry);
+    });
+  });
+  document.querySelector("#metric-pending-note").textContent = webNew > 0
+    ? `${numberFormat.format(webNew)} ${webNew === 1 ? "llegó" : "llegaron"} por la web y ${webNew === 1 ? "espera" : "esperan"} confirmación`
+    : "Pedidos nuevos, confirmados o en preparación";
+  document.querySelector("#metric-ticket").textContent = money(sales.length ? Math.round(revenue / sales.length) : 0);
+  document.querySelector("#metric-margin").textContent =
+    money(withCost.reduce((sum, order) => sum + (Number(order.total) || 0) - orderCost(order), 0));
+  document.querySelector("#metric-margin-note").textContent = withCost.length < sales.length
+    ? `Calculado sobre ${numberFormat.format(withCost.length)} de ${numberFormat.format(sales.length)} pedidos: registra el costo de tus productos`
+    : "Ventas menos costo de los productos vendidos";
+  document.querySelector("#metric-unpaid").textContent = money(unpaid);
+  document.querySelector("#metric-returning").textContent = customers.length
+    ? `${Math.round(customers.filter((customer) => customer.orders > 1).length / customers.length * 100)}%`
+    : "—";
+  document.querySelector("#dashboard-top-products").innerHTML = [...topProducts]
+    .sort((a, b) => b[1].units - a[1].units)
+    .slice(0, 5)
+    .map(([name, entry]) => `<p><span>${escapeHtml(name)}</span><strong>${numberFormat.format(entry.units)} u · ${money(entry.total)}</strong></p>`)
+    .join("") || "<p>Aún no hay ventas confirmadas este mes.</p>";
+  document.querySelector("#dashboard-channels").innerHTML = [...channels]
+    .sort((a, b) => b[1] - a[1])
+    .map(([channel, total]) => `<p><span>${escapeHtml(channel)}</span><strong>${money(total)} · ${revenue ? Math.round(total / revenue * 100) : 0}%</strong></p>`)
+    .join("") || "<p>Registra el canal de cada pedido para saber dónde vendes más.</p>";
   const expenses = data.expenses.filter((item) => {
     const date = asDate(item.date);
     const now = new Date();
@@ -432,7 +525,7 @@ function filteredOrders() {
   const query = document.querySelector("#order-search").value.trim().toLocaleLowerCase("es");
   const status = document.querySelector("#order-status-filter").value;
   return [...data.orders].filter((order) => {
-    const customer = `${order.customer || ""} ${order.phone || ""} ${order.number || ""}`.toLocaleLowerCase("es");
+    const customer = `${order.customer || ""} ${order.phone || ""} ${order.email || ""} ${order.number || ""}`.toLocaleLowerCase("es");
     return (!query || customer.includes(query)) && (!status || order.status === status);
   }).sort((a, b) => asDate(b.createdAt) - asDate(a.createdAt));
 }
@@ -449,29 +542,42 @@ function renderOrders() {
       Anulado: ["Confirmado"],
     }[order.status] || [];
     const items = Array.isArray(order.items) ? order.items : [];
-    const whatsapp = String(order.phone || "").replace(/[^\d+]/g, "");
-    return `<tr><td>${escapeHtml(asDate(order.createdAt).toLocaleDateString("es-CL"))}<small>${escapeHtml(order.number || order.id.slice(0, 7))}</small></td><td>${escapeHtml(order.customer)}<small>${escapeHtml(order.phone)}</small></td><td>${items.map((item) => `${escapeHtml(item.name)} × ${numberFormat.format(item.quantity)}`).join("<br>") || escapeHtml(order.notes || "—")}</td><td>${money(order.total)}</td><td><span class="admin-badge">${escapeHtml(order.status)}</span></td><td><div class="admin-row-actions">${whatsapp ? `<a href="https://wa.me/${encodeURIComponent(whatsapp)}" target="_blank" rel="noreferrer">WhatsApp</a>` : ""}${nextStatus.map((status) => `<button type="button" data-order-status="${escapeHtml(status)}" data-order-id="${escapeHtml(order.id)}">${escapeHtml(status)}</button>`).join("")}</div></td></tr>`;
+    const whatsapp = whatsappLink(order.phone);
+    const delivery = [order.region === "retiro" ? "Retiro en Villarrica" : order.region, order.city, order.address]
+      .filter(Boolean).join(", ");
+    const sale = [order.channel, order.paymentMethod].filter(Boolean).join(" · ");
+    const removable = (order.status === "Nuevo" || order.status === "Anulado") && order.stockDeducted !== true;
+    const orderId = escapeHtml(order.id);
+    return `<tr><td>${escapeHtml(asDate(order.createdAt).toLocaleDateString("es-CL"))}<small>${escapeHtml(order.number || order.id.slice(0, 7))}</small>${sale ? `<small>${escapeHtml(sale)}</small>` : ""}</td><td>${escapeHtml(order.customer)}<small>${escapeHtml(order.phone)}</small>${order.email ? `<small>${escapeHtml(order.email)}</small>` : ""}${delivery ? `<small>${escapeHtml(delivery)}</small>` : ""}</td><td>${items.map((item) => `${escapeHtml(item.name)} × ${numberFormat.format(item.quantity)}`).join("<br>") || "—"}${order.discount ? `<small>Descuento ${money(order.discount)}</small>` : ""}${order.notes ? `<small>${escapeHtml(order.notes)}</small>` : ""}</td><td>${money(order.total)}</td><td><span class="admin-badge">${escapeHtml(order.status)}</span>${order.status === "Anulado" || order.paid === undefined ? "" : `<br><span class="admin-badge ${order.paid ? "is-paid" : "is-warning"}">${order.paid ? "Pagado" : "Por cobrar"}</span>`}</td><td><div class="admin-row-actions">${whatsapp ? `<a href="${whatsapp}" target="_blank" rel="noreferrer">WhatsApp</a>` : ""}${nextStatus.map((status) => `<button type="button" data-order-status="${escapeHtml(status)}" data-order-id="${orderId}">${escapeHtml(status)}</button>`).join("")}${order.status === "Anulado" ? "" : `<button type="button" data-order-paid="${orderId}">${order.paid ? "Quitar pago" : "Marcar pagado"}</button>`}${removable ? `<button type="button" data-order-delete="${orderId}">Eliminar</button>` : ""}</div></td></tr>`;
   }).join("");
 }
 
-function renderCustomers() {
+function customerList() {
   const customers = new Map();
-  data.orders.filter((order) => order.status !== "Anulado" && order.status !== "Nuevo").forEach((order) => {
+  data.orders.filter(isSale).forEach((order) => {
     const phone = String(order.phone || "").trim();
     const name = String(order.customer || "").trim();
-    const key = phone || name.toLocaleLowerCase("es");
+    const key = phone.replace(/\D/g, "").slice(-8) || name.toLocaleLowerCase("es");
     if (!key) return;
-    const customer = customers.get(key) || { name, phone, orders: 0, total: 0, lastOrder: null };
+    const customer = customers.get(key) || { name, phone, email: "", city: "", orders: 0, total: 0, lastOrder: null };
     customer.orders += 1;
     customer.total += Number(order.total) || 0;
-    if (!customer.lastOrder || asDate(order.createdAt) > asDate(customer.lastOrder)) {
-      customer.lastOrder = order.createdAt;
-    }
+    customer.email ||= order.email || "";
+    customer.city ||= order.city || "";
+    const created = asDate(order.createdAt);
+    if (!customer.lastOrder || created > customer.lastOrder) customer.lastOrder = created;
     customers.set(key, customer);
   });
-  const rows = [...customers.values()].sort((a, b) => b.total - a.total);
-  document.querySelector("#customers-table").innerHTML = rows.map((customer) => `<tr><td><strong>${escapeHtml(customer.name)}</strong></td><td>${escapeHtml(customer.phone || "—")}</td><td>${numberFormat.format(customer.orders)}</td><td>${money(customer.total)}</td><td>${customer.lastOrder ? escapeHtml(asDate(customer.lastOrder).toLocaleDateString("es-CL")) : "—"}</td></tr>`)
-    .join("") || '<tr><td colspan="5">Los clientes aparecerán aquí al registrar los primeros pedidos.</td></tr>';
+  return [...customers.values()].sort((a, b) => b.total - a.total);
+}
+
+function renderCustomers() {
+  const reactivateBefore = Date.now() - 60 * 24 * 60 * 60 * 1000;
+  document.querySelector("#customers-table").innerHTML = customerList().map((customer) => {
+    const whatsapp = whatsappLink(customer.phone);
+    const contact = [customer.email, customer.city].filter(Boolean).join(" · ");
+    return `<tr><td><strong>${escapeHtml(customer.name)}</strong>${contact ? `<small>${escapeHtml(contact)}</small>` : ""}</td><td>${whatsapp ? `<a href="${whatsapp}" target="_blank" rel="noreferrer">${escapeHtml(customer.phone)}</a>` : "—"}</td><td>${numberFormat.format(customer.orders)}</td><td>${money(customer.total)}</td><td>${escapeHtml(customer.lastOrder.toLocaleDateString("es-CL"))}${customer.lastOrder.getTime() < reactivateBefore ? ' <span class="admin-badge is-warning">Reactivar</span>' : ""}</td></tr>`;
+  }).join("") || '<tr><td colspan="5">Los clientes aparecerán aquí al confirmar los primeros pedidos.</td></tr>';
 }
 
 function renderAdminUsers() {
@@ -545,15 +651,23 @@ document.querySelector("#admin-users-table").addEventListener("click", async (ev
 
 function renderCatalog() {
   const inventory = new Map(data.inventory.map((item) => [item.id, item]));
+  const search = document.querySelector("#product-admin-search").value.trim().toLocaleLowerCase("es");
   document.querySelector("#products-table").innerHTML = [...data.catalog]
+    .filter((product) => !search || `${product.name} ${product.category}`.toLocaleLowerCase("es").includes(search))
     .sort((a, b) => a.name.localeCompare(b.name, "es"))
-    .map((product) => `<tr class="${product.published === false ? "is-unpublished" : ""}">
+    .map((product) => {
+      const cost = inventory.get(product.id)?.costPrice;
+      const hasCost = Number.isSafeInteger(cost);
+      const margin = hasCost && product.price > 0 ? Math.round((product.price - cost) / product.price * 100) : null;
+      return `<tr class="${product.published === false ? "is-unpublished" : ""}">
       <td><strong>${escapeHtml(product.name)}</strong><small>${escapeHtml(product.id)} · ${escapeHtml(product.category)}</small></td>
       <td>${money(product.price)}</td><td>${product.wholesaleMinimum ? `${numberFormat.format(product.wholesaleMinimum)} unidades` : "—"}</td><td>${product.wholesalePrice ? money(product.wholesalePrice) : "—"}</td>
-      <td>${Number.isSafeInteger(inventory.get(product.id)?.costPrice) ? money(inventory.get(product.id).costPrice) : "Sin registrar"}</td>
+      <td>${hasCost ? money(cost) : "Sin registrar"}</td>
+      <td>${margin === null ? "—" : `<span class="admin-badge ${margin < 40 ? "is-warning" : ""}">${margin}%</span>`}</td>
       <td class="admin-product-description">${escapeHtml(product.detail)}</td>
       <td><div class="admin-row-actions"><button type="button" data-edit-product="${escapeHtml(product.id)}">Editar</button><button type="button" data-publish-product="${escapeHtml(product.id)}">${product.published === false ? "Publicar" : "Ocultar"}</button></div></td>
-    </tr>`).join("");
+    </tr>`;
+    }).join("");
 }
 
 function renderStockMovements() {
@@ -587,20 +701,19 @@ function renderExpenses() {
 }
 
 function renderReports() {
-  const sales = data.orders.filter((order) => order.status !== "Anulado" && order.status !== "Nuevo")
-    .reduce((sum, order) => sum + Number(order.total || 0), 0);
-  const expenses = data.expenses.reduce((sum, item) => sum + Number(item.amount || 0), 0);
-  const costOfGoods = data.orders.filter((order) => order.status !== "Anulado" && order.status !== "Nuevo")
-    .reduce((sum, order) => sum + (order.items || []).reduce(
-      (itemSum, item) => itemSum + (Number(item.unitCost) || 0) * (Number(item.quantity) || 0), 0,
-    ), 0);
+  const period = document.querySelector("#report-period").value;
+  const orders = data.orders.filter((order) => isSale(order) && inPeriod(order.createdAt, period));
+  const sales = orders.reduce((sum, order) => sum + Number(order.total || 0), 0);
+  const expenses = data.expenses.filter((item) => inPeriod(item.date, period))
+    .reduce((sum, item) => sum + Number(item.amount || 0), 0);
+  const costOfGoods = orders.reduce((sum, order) => sum + orderCost(order), 0);
   document.querySelector("#report-sales").textContent = money(sales);
   document.querySelector("#report-expenses").textContent = money(expenses);
   document.querySelector("#report-margin").textContent = money(sales - costOfGoods - expenses);
-  document.querySelector("#report-orders").textContent = numberFormat.format(
-    data.orders.filter((order) => order.status !== "Anulado" && order.status !== "Nuevo").length,
-  );
+  document.querySelector("#report-orders").textContent = numberFormat.format(orders.length);
 }
+document.querySelector("#report-period").addEventListener("change", renderReports);
+document.querySelector("#product-admin-search").addEventListener("input", renderCatalog);
 
 function refreshOrderProductOptions() {
   const select = document.querySelector("#order-product");
@@ -614,10 +727,64 @@ function refreshOrderProductOptions() {
 const orderDialog = document.querySelector("#admin-order-dialog");
 const orderForm = document.querySelector("#admin-order-form");
 
+const orderQuantity = document.querySelector("#order-quantity");
+let orderLines = [];
+
+function lineUnitPrice(product, quantity) {
+  return product.wholesaleMinimum > 0 && quantity >= product.wholesaleMinimum ? product.wholesalePrice : product.price;
+}
+
+function orderLinesTotal() {
+  return orderLines.reduce((sum, line) => {
+    const product = currentCatalogProduct(line.productId);
+    return sum + (product ? Number(lineUnitPrice(product, line.quantity)) || 0 : 0) * line.quantity;
+  }, 0);
+}
+
+function renderOrderLines() {
+  document.querySelector("#order-lines").innerHTML = orderLines.map((line, index) => {
+    const product = currentCatalogProduct(line.productId);
+    const unitPrice = product ? Number(lineUnitPrice(product, line.quantity)) || 0 : 0;
+    return `<li><span>${escapeHtml(product?.name || line.productId)} × ${numberFormat.format(line.quantity)}</span><span>${money(unitPrice * line.quantity)}</span><button type="button" data-remove-line="${index}" aria-label="Quitar producto">×</button></li>`;
+  }).join("") || "<li>Elige un producto y pulsa “Agregar”.</li>";
+  const discount = Math.max(0, Number(orderForm.elements.discount.value) || 0);
+  document.querySelector("#order-total").textContent = money(Math.max(0, orderLinesTotal() - discount));
+}
+
+function addOrderLine() {
+  const product = currentCatalogProduct(document.querySelector("#order-product").value);
+  const quantity = Number(orderQuantity.value);
+  if (!product || !Number.isInteger(quantity) || quantity <= 0) {
+    showAdminFeedback("Elige un producto y una cantidad válida.", true);
+    return false;
+  }
+  if (!Number.isFinite(Number(lineUnitPrice(product, quantity)))) {
+    showAdminFeedback("Completa el precio del producto antes de registrar el pedido.", true);
+    return false;
+  }
+  const existing = orderLines.find((line) => line.productId === product.id);
+  if (existing) existing.quantity += quantity;
+  else orderLines.push({ productId: product.id, quantity });
+  orderQuantity.value = "1";
+  renderOrderLines();
+  return true;
+}
+
+document.querySelector("#order-add-line").addEventListener("click", addOrderLine);
+document.querySelector("#order-lines").addEventListener("click", (event) => {
+  const button = event.target.closest("[data-remove-line]");
+  if (!button) return;
+  orderLines.splice(Number(button.dataset.removeLine), 1);
+  renderOrderLines();
+});
+orderForm.elements.discount.addEventListener("input", renderOrderLines);
+
 function openNewOrderDialog() {
   orderForm.reset();
   refreshOrderProductOptions();
-  orderForm.elements.quantity.value = "1";
+  orderLines = [];
+  orderQuantity.value = "1";
+  renderOrderLines();
   orderDialog.showModal();
 }
 
@@ -629,35 +796,37 @@ document.querySelectorAll(".admin-dialog-close").forEach((button) => {
 
 orderForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  const product = currentCatalogProduct(orderForm.elements.product.value);
-  const quantity = Number(orderForm.elements.quantity.value);
-  if (!product || !Number.isInteger(quantity) || quantity <= 0) {
-    showAdminFeedback("Elige un producto y una cantidad válida.", true);
-    return;
-  }
-  const unitPrice = product.wholesaleMinimum > 0 && quantity >= product.wholesaleMinimum
-    ? product.wholesalePrice : product.price;
-  if (!Number.isFinite(Number(unitPrice))) {
-    showAdminFeedback("Completa el precio del producto antes de registrar el pedido.", true);
-    return;
-  }
+  // Si solo se eligió un producto sin pulsar "Agregar", se toma esa selección.
+  if (orderLines.length === 0 && !addOrderLine()) return;
   const values = new FormData(orderForm);
+  const subtotal = orderLinesTotal();
+  const discount = Number(values.get("discount")) || 0;
+  if (!Number.isSafeInteger(discount) || discount < 0 || discount > subtotal) {
+    showAdminFeedback("El descuento debe ser un monto entero que no supere el total.", true);
+    return;
+  }
   const now = new Date();
   const dateCode = dateForInput(now).replace(/-/g, "");
   const order = {
     number: `AM-${dateCode}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`,
     customer: String(values.get("customer")).trim(),
     phone: String(values.get("phone")).trim(),
-    items: [{
-      productId: product.id,
-      name: product.name,
-      quantity,
-      unitPrice: Number(unitPrice),
-      unitCost: Number.isSafeInteger(data.inventory.find((item) => item.id === product.id)?.costPrice)
-        ? data.inventory.find((item) => item.id === product.id).costPrice
-        : null,
-    }],
-    total: Number(unitPrice) * quantity,
+    channel: String(values.get("channel")),
+    paymentMethod: String(values.get("paymentMethod") || ""),
+    paid: values.get("paid") === "on",
+    items: orderLines.map((line) => {
+      const product = currentCatalogProduct(line.productId);
+      const cost = data.inventory.find((item) => item.id === line.productId)?.costPrice;
+      return {
+        productId: line.productId,
+        name: product.name,
+        quantity: line.quantity,
+        unitPrice: Number(lineUnitPrice(product, line.quantity)),
+        unitCost: Number.isSafeInteger(cost) ? cost : null,
+      };
+    }),
+    discount,
+    total: subtotal - discount,
     status: "Nuevo",
     notes: String(values.get("notes") || "").trim(),
     stockDeducted: false,
@@ -697,11 +866,12 @@ async function changeOrderStatus(orderId, status) {
       }
       const snapshots = [];
       for (const entry of inventoryReads) snapshots.push(await transaction.get(entry.ref));
+      // Los productos sin existencias registradas no llevan control de stock: no bloquean ni se descuentan.
+      const tracked = snapshots.map((snapshot) => Number.isInteger(snapshot.data()?.quantity));
       if (shouldDeduct) {
         snapshots.forEach((snapshot, index) => {
           const entry = inventoryReads[index];
-          const quantity = snapshot.exists() ? snapshot.data().quantity : null;
-          if (!Number.isInteger(quantity) || quantity < entry.item.quantity) {
+          if (tracked[index] && snapshot.data().quantity < entry.item.quantity) {
             throw new Error(`Stock insuficiente de ${entry.item.name}. Actualiza el inventario antes de confirmar.`);
           }
         });
@@ -709,6 +879,7 @@ async function changeOrderStatus(orderId, status) {
       const movementIds = [];
       if (shouldDeduct || shouldRestore) {
         inventoryReads.forEach((entry, index) => {
+          if (!tracked[index]) return;
           const previousQuantity = Number(snapshots[index].data()?.quantity) || 0;
           const quantityChange = shouldDeduct ? -entry.item.quantity : entry.item.quantity;
           transaction.set(entry.ref, {
@@ -732,6 +903,13 @@ async function changeOrderStatus(orderId, status) {
       }
       transaction.update(orderRef, {
         status,
+        // Los pedidos de la web llegan sin costo: se toma el vigente al confirmar para calcular el margen.
+        ...(shouldDeduct ? {
+          items: items.map((item, index) => {
+            const cost = snapshots[index].data()?.costPrice;
+            return item.unitCost == null && Number.isSafeInteger(cost) ? { ...item, unitCost: cost } : item;
+          }),
+        } : {}),
         stockDeducted: shouldDeduct ? true : shouldRestore ? false : wasDeducted,
         stockMovementIds: movementIds.length ? movementIds : order.stockMovementIds || [],
         updatedAt: serverTimestamp(),
@@ -746,9 +924,45 @@ async function changeOrderStatus(orderId, status) {
   }
 }
 
-document.querySelector("#orders-table").addEventListener("click", (event) => {
+document.querySelector("#orders-table").addEventListener("click", async (event) => {
   const button = event.target.closest("[data-order-status]");
+  const paidButton = event.target.closest("[data-order-paid]");
+  const deleteButton = event.target.closest("[data-order-delete]");
   if (button) changeOrderStatus(button.dataset.orderId, button.dataset.orderStatus);
+  try {
+    if (paidButton) {
+      const order = data.orders.find((item) => item.id === paidButton.dataset.orderPaid);
+      if (!order) return;
+      await updateDoc(doc(db, "orders", order.id), { paid: !order.paid, updatedAt: serverTimestamp() });
+      showAdminFeedback(order.paid ? "Pago quitado del pedido." : "Pago registrado.");
+    } else if (deleteButton && window.confirm("¿Eliminar este pedido? Esta acción no se puede deshacer.")) {
+      await deleteDoc(doc(db, "orders", deleteButton.dataset.orderDelete));
+      showAdminFeedback("Pedido eliminado.");
+    }
+  } catch (error) {
+    console.error("No se pudo actualizar el pedido.", error);
+    showAdminFeedback(friendlyError(error), true);
+  }
+});
+document.querySelector("#admin-export-orders").addEventListener("click", () => {
+  downloadCsv(`amankay-pedidos-${dateForInput()}.csv`, [
+    ["Fecha", "Folio", "Cliente", "Teléfono", "Correo", "Ciudad", "Canal", "Estado", "Pago", "Forma de pago", "Productos", "Total"],
+    ...filteredOrders().map((order) => [
+      asDate(order.createdAt).toLocaleDateString("es-CL"), order.number || order.id.slice(0, 7), order.customer,
+      order.phone, order.email, order.city, order.channel, order.status,
+      order.paid === undefined ? "" : order.paid ? "Pagado" : "Por cobrar", order.paymentMethod,
+      (order.items || []).map((item) => `${item.name} x${item.quantity}`).join(", "), Number(order.total) || 0,
+    ]),
+  ]);
+});
+document.querySelector("#admin-export-customers").addEventListener("click", () => {
+  downloadCsv(`amankay-clientes-${dateForInput()}.csv`, [
+    ["Cliente", "Teléfono", "Correo", "Ciudad", "Pedidos", "Total comprado", "Último pedido"],
+    ...customerList().map((customer) => [
+      customer.name, customer.phone, customer.email, customer.city, customer.orders, customer.total,
+      customer.lastOrder.toLocaleDateString("es-CL"),
+    ]),
+  ]);
 });
 document.querySelector("#order-search").addEventListener("input", renderOrders);
 document.querySelector("#order-status-filter").addEventListener("change", renderOrders);
@@ -1018,14 +1232,7 @@ document.querySelector("#admin-export-data").addEventListener("click", () => {
     expenses: data.expenses,
     testimonials: data.testimonials,
   };
-  const url = URL.createObjectURL(new Blob([JSON.stringify(exportData, null, 2)], {
-    type: "application/json",
-  }));
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = `amankay-respaldo-${dateForInput()}.json`;
-  link.click();
-  URL.revokeObjectURL(url);
+  downloadFile(`amankay-respaldo-${dateForInput()}.json`, JSON.stringify(exportData, null, 2), "application/json");
   showAdminFeedback("Respaldo del negocio descargado.");
 });
 

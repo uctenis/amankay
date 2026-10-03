@@ -961,8 +961,13 @@ document.querySelector(".checkout-button").addEventListener("click", (event) => 
   );
   checkoutSubtotal.textContent = hasUnpricedItems ? "Por confirmar" : formatPrice(subtotal);
   updateShippingEstimate();
+  checkoutForm.hidden = false;
+  checkoutDialog.querySelector(".checkout-intro").hidden = false;
+  checkoutDone.hidden = true;
+  checkoutDialog.querySelector("#checkout-title").textContent = "Tus datos de entrega";
   checkoutDialog.showModal();
-  checkoutDialog.querySelector('[name="name"]').focus();
+  // En pantallas táctiles no se enfoca el campo: el teclado taparía el formulario al abrir.
+  if (!window.matchMedia("(pointer: coarse)").matches) checkoutDialog.querySelector('[name="name"]').focus();
 });
 
 checkoutDialog.querySelector(".checkout-close").addEventListener("click", () => {
@@ -975,16 +980,74 @@ checkoutDialog.addEventListener("close", () => {
   checkoutTrigger?.focus();
   checkoutTrigger = null;
 });
-checkoutForm.addEventListener("submit", (event) => {
+const checkoutDone = checkoutDialog.querySelector(".checkout-done");
+const checkoutSubmit = checkoutForm.querySelector(".checkout-whatsapp");
+const checkoutSubmitLabel = checkoutForm.querySelector(".checkout-submit-label");
+
+// Registra el pedido en el panel de Amankay. Si no se puede (sin conexión o sin permisos), devuelve false.
+async function saveWebOrder(customer, number) {
+  if (!window.amankaySubmitOrder) return false;
+  const shipping = getShippingEstimate(customer.region)?.text;
+  const order = {
+    number,
+    customer: customer.name.trim(),
+    phone: customer.phone.trim(),
+    email: customer.email.trim(),
+    region: customer.region,
+    city: customer.city.trim(),
+    address: (customer.address || "").trim(),
+    items: cart.map(({ id, quantity }) => ({
+      productId: id,
+      name: products[id].name,
+      quantity,
+      unitPrice: getUnitPrice(products[id], quantity) ?? 0,
+      unitCost: null,
+    })),
+    total: cart.reduce((sum, item) => sum + (getUnitPrice(products[item.id], item.quantity) ?? 0) * item.quantity, 0),
+    notes: shipping ? `Envío referencial: ${shipping}` : "",
+  };
+  try {
+    await Promise.race([
+      window.amankaySubmitOrder(order),
+      new Promise((resolve, reject) => window.setTimeout(() => reject(new Error("timeout")), 8000)),
+    ]);
+    return true;
+  } catch (error) {
+    console.warn("No se pudo registrar el pedido en línea.", error);
+    return false;
+  }
+}
+
+checkoutForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  if (cart.length === 0) return;
+  if (cart.length === 0 || checkoutSubmit.disabled) return;
   const customer = Object.fromEntries(new FormData(checkoutForm));
-  const message = buildOrderMessage(customer);
-  window.open(
-    `https://wa.me/56953750504?text=${encodeURIComponent(message)}`,
-    "_blank",
-    "noopener,noreferrer",
-  );
+  const date = new Date();
+  const dateCode = [date.getFullYear(), date.getMonth() + 1, date.getDate()].map((part) => String(part).padStart(2, "0")).join("");
+  const number = `AM-${dateCode}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
+  const message = `${buildOrderMessage(customer)}\nFolio: ${number}`;
+  checkoutSubmit.disabled = true;
+  checkoutSubmitLabel.textContent = "Registrando tu pedido…";
+  const saved = await saveWebOrder(customer, number);
+  checkoutSubmit.disabled = false;
+  checkoutSubmitLabel.textContent = "Confirmar pedido";
+  checkoutForm.hidden = true;
+  checkoutDialog.querySelector(".checkout-intro").hidden = true;
+  checkoutDialog.querySelector("#checkout-title").textContent = saved ? "¡Pedido recibido!" : "Falta un paso";
+  checkoutDone.querySelector(".checkout-done-folio").textContent = saved ? `Folio ${number}` : "";
+  checkoutDone.querySelector(".checkout-done-text").textContent = saved
+    ? "Ya tenemos tu pedido. Te escribiremos para coordinar el pago y la entrega. Si quieres acelerarlo, envíanos el resumen por WhatsApp."
+    : "No pudimos registrar tu pedido en línea. Envíanos el resumen por WhatsApp y lo coordinamos contigo de inmediato.";
+  checkoutDone.querySelector(".checkout-done-whatsapp").href = `https://wa.me/56953750504?text=${encodeURIComponent(message)}`;
+  checkoutDone.hidden = false;
+  if (saved) {
+    cart = [];
+    saveCart();
+    updateCart();
+    checkoutForm.reset();
+  }
+});
+checkoutDone.querySelector(".checkout-done-close").addEventListener("click", () => {
   checkoutDialog.close();
   closeDrawer();
 });
@@ -1313,7 +1376,7 @@ function miniCard(id, why = "") {
         ${why ? `<p class="mini-card-why">${escapeHtml(why)}</p>` : ""}
         <div class="mini-card-foot">
           <span class="mini-card-price">${product.price === null ? "Precio por confirmar" : formatPrice(product.price)}</span>
-          <button class="mini-card-add" type="button" data-add="${id}">Agregar <span aria-hidden="true">↗</span></button>
+          <button class="mini-card-add" type="button" data-add="${id}">Agregar <span aria-hidden="true">↗︎</span></button>
         </div>
       </div>
     </article>`;
@@ -1461,7 +1524,7 @@ window.amankayApplyCatalogUpdate = (record) => {
         <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="${escaped(product.id)}">${escaped(product.name)}</button></h3><span class="product-price">${product.price === null ? "Precio por confirmar" : formatPrice(product.price)}</span></div>
         <p class="product-wholesale-note" ${product.wholesale ? "" : "hidden"}>${product.wholesale ? `Mayorista desde ${product.wholesale.minimumQuantity} unidades · ${formatPrice(product.wholesale.price)} c/u` : ""}</p>
         <p class="product-description">${escaped(product.detail)}</p>
-        <button class="text-add" type="button" data-add="${escaped(product.id)}">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
+        <button class="text-add" type="button" data-add="${escaped(product.id)}">Agregar a la bolsa <span aria-hidden="true">↗︎</span></button>
       </article>`);
     renderCardWholesale(document.querySelector(`[data-product="${CSS.escape(product.id)}"]`), product);
     setupGallery(document.querySelector(`[data-product="${CSS.escape(product.id)}"] .product-image`), product);
