@@ -723,6 +723,28 @@ body { background: #ffffff; }
   .testimonials-grid { margin-top: 26px; grid-template-columns: 1fr; gap: 22px; }
   .testimonial blockquote { font-size: 16px; }
 }
+/* Menú fijo: se compacta al bajar por la página */
+.site-header { position: sticky; top: 0; transition: height .28s ease, box-shadow .28s ease; }
+.site-header .brand-logo { transition: width .28s ease; }
+.site-header.is-compact { box-shadow: 0 8px 24px rgba(36, 27, 39, .07); }
+@media (min-width: 841px) {
+  .site-header.is-compact { height: 74px; }
+  .site-header.is-compact .brand-logo { width: 58px; }
+}
+/* Galería de fotos del producto */
+.product-dialog-image { position: relative; }
+.gallery-arrow { width: 36px; height: 36px; padding: 0; position: absolute; top: 50%; z-index: 2; display: grid; place-items: center; border: 0; border-radius: 50%; background: rgba(255, 255, 255, .92); color: var(--forest); box-shadow: 0 4px 14px rgba(36, 27, 39, .16); opacity: 0; transform: translateY(-50%); cursor: pointer; transition: opacity .2s, background .2s; }
+.gallery-arrow:hover { background: #fff; }
+.gallery-arrow svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.gallery-arrow-prev { left: 10px; }
+.gallery-arrow-next { right: 10px; }
+.product-image:hover .gallery-arrow, .product-dialog-image:hover .gallery-arrow, .gallery-arrow:focus-visible { opacity: 1; }
+.gallery-dots { position: absolute; left: 0; right: 0; bottom: 11px; z-index: 2; display: flex; justify-content: center; gap: 6px; pointer-events: none; }
+.gallery-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255, 255, 255, .6); box-shadow: 0 0 3px rgba(36, 27, 39, .35); }
+.gallery-dot.is-active { background: #fff; }
+@media (hover: none) {
+  .gallery-arrow { width: 32px; height: 32px; opacity: 1; }
+}
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }

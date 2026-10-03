@@ -585,6 +585,43 @@ function renderCardWholesale(card, product) {
     : "";
 }
 
+// Galería: cada producto puede sumar fotos extra en "images" (en uso, en la mano, detalle).
+function getGallery(product) {
+  return [product.image, ...(product.images || [])].filter(Boolean);
+}
+
+function showGalleryImage(container, gallery, index) {
+  const current = (index + gallery.length) % gallery.length;
+  container.dataset.galleryIndex = String(current);
+  container.querySelector("img").src = gallery[current];
+  container.querySelectorAll(".gallery-dot").forEach((dot, position) => {
+    dot.classList.toggle("is-active", position === current);
+  });
+}
+
+function setupGallery(container, product) {
+  container.querySelectorAll(".gallery-arrow, .gallery-dots").forEach((element) => element.remove());
+  container.dataset.galleryIndex = "0";
+  const gallery = getGallery(product);
+  if (gallery.length < 2) return;
+  container.insertAdjacentHTML("beforeend", `
+    <button class="gallery-arrow gallery-arrow-prev" type="button" data-gallery-step="-1" aria-label="Foto anterior"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 6-6 6 6 6"/></svg></button>
+    <button class="gallery-arrow gallery-arrow-next" type="button" data-gallery-step="1" aria-label="Foto siguiente"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9.5 6 6 6-6 6"/></svg></button>
+    <div class="gallery-dots" aria-hidden="true">${gallery.map((_, position) => `<span class="gallery-dot${position === 0 ? " is-active" : ""}"></span>`).join("")}</div>`);
+}
+
+document.addEventListener("click", (event) => {
+  const arrow = event.target.closest("[data-gallery-step]");
+  if (!arrow) return;
+  const container = arrow.parentElement;
+  const id = container.closest("[data-product]")?.dataset.product || productDialogAdd.dataset.add;
+  showGalleryImage(
+    container,
+    getGallery(products[id]),
+    Number(container.dataset.galleryIndex) + Number(arrow.dataset.galleryStep),
+  );
+});
+
 function renderDialogWholesale(product, quantity) {
   productDialogWholesale.hidden = !product.wholesale;
   if (!product.wholesale) {
@@ -707,7 +744,13 @@ function openProductDialog(id, trigger) {
     return;
   }
   const image = card.querySelector(".product-image img");
-  productDialogImage.src = product.image;
+  const dialogGallery = productDialogImage.parentElement;
+  setupGallery(dialogGallery, product);
+  showGalleryImage(
+    dialogGallery,
+    getGallery(product),
+    Number(card.querySelector(".product-image").dataset.galleryIndex) || 0,
+  );
   productDialogImage.alt = image.alt;
   productDialogImage.classList.toggle(
     "is-botanical",
@@ -981,6 +1024,16 @@ storyDialog.addEventListener("click", (event) => {
 storyDialog.addEventListener("close", () => {
   storyOpen.focus({ preventScroll: true });
 });
+
+const siteHeader = document.querySelector(".site-header");
+function updateHeaderCompact() {
+  // Dos umbrales distintos evitan que el menú parpadee justo en el límite.
+  const compact = siteHeader.classList.contains("is-compact");
+  if (!compact && window.scrollY > 220) siteHeader.classList.add("is-compact");
+  else if (compact && window.scrollY < 60) siteHeader.classList.remove("is-compact");
+}
+window.addEventListener("scroll", updateHeaderCompact, { passive: true });
+updateHeaderCompact();
 
 const menuToggle = document.querySelector(".menu-toggle");
 const mainNav = document.querySelector(".main-nav");
@@ -1261,7 +1314,9 @@ if (window.amankayTestimonials) window.amankayRenderTestimonials(window.amankayT
 
 productCards.forEach((card) => {
   const product = products[card.dataset.product];
-  if (product) renderCardWholesale(card, product);
+  if (!product) return;
+  renderCardWholesale(card, product);
+  setupGallery(card.querySelector(".product-image"), product);
 });
 filterProducts();
 updateCart();
@@ -1277,6 +1332,7 @@ const optimizedImages = new Set(Object.values(products).map((product) => product
 const staticCopy = new Map(Object.values(products).map((product) => [product.id, {
   detail: product.detail,
   format: product.format || "",
+  images: product.images || [],
   summary: document.querySelector(`[data-product="${CSS.escape(product.id)}"] .product-description`)?.textContent || "",
 }]));
 // Productos retirados de la tienda: se ignoran aunque sigan guardados en Firebase.
@@ -1305,6 +1361,7 @@ window.amankayApplyCatalogUpdate = (record) => {
     image: optimizedImages.has(optimizedImage) ? optimizedImage : record.image,
     detail: useReviewedDescription && staticProduct ? staticProduct.detail : record.detail,
     format: record.format || staticCopy.get(record.id)?.format || "",
+    images: Array.isArray(record.images) ? record.images : staticCopy.get(record.id)?.images || [],
     published: record.published !== false,
   };
   products[product.id] = product;
@@ -1328,6 +1385,7 @@ window.amankayApplyCatalogUpdate = (record) => {
         <button class="text-add" type="button" data-add="${escaped(product.id)}">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
       </article>`);
     renderCardWholesale(document.querySelector(`[data-product="${CSS.escape(product.id)}"]`), product);
+    setupGallery(document.querySelector(`[data-product="${CSS.escape(product.id)}"] .product-image`), product);
     productCards = [...document.querySelectorAll(".product-card")];
     filterProducts();
     updateCart();
@@ -1340,6 +1398,7 @@ window.amankayApplyCatalogUpdate = (record) => {
   card.dataset.category = product.category.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
   const image = card.querySelector(".product-image img");
   image.src = product.image;
+  setupGallery(card.querySelector(".product-image"), product);
   image.alt = product.name;
   card.querySelector(".product-meta > span").textContent =
     `${product.category.toLocaleUpperCase("es")}${product.format ? ` · ${product.format}` : ""}`;
