@@ -18,8 +18,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20261002-21">
-    <script src="app.js?v=20261002-66" defer></script>
+    <link rel="stylesheet" href="styles.css?v=20261002-23">
+    <script src="app.js?v=20261002-68" defer></script>
     <script type="module" src="admin.js?v=20261002-4"></script>
   </head>
   <body>
@@ -936,10 +936,12 @@
           <label>Nombre y apellido<input name="name" autocomplete="name" required maxlength="100"></label>
           <label>Correo electrónico<input name="email" type="email" autocomplete="email" required maxlength="254"></label>
           <label>Teléfono / WhatsApp<input name="phone" type="tel" autocomplete="tel" required maxlength="30"></label>
+          <label>Región de entrega<select name="region" required><option value="">Elige tu región</option><option value="retiro">Retiro en Villarrica (sin costo)</option><option value="La Araucanía">La Araucanía</option><option value="Los Ríos">Los Ríos</option><option value="Los Lagos">Los Lagos</option><option value="Biobío">Biobío</option><option value="Ñuble">Ñuble</option><option value="Maule">Maule</option><option value="O&#39;Higgins">O&#39;Higgins</option><option value="Metropolitana de Santiago">Metropolitana de Santiago</option><option value="Valparaíso">Valparaíso</option><option value="Coquimbo">Coquimbo</option><option value="Atacama">Atacama</option><option value="Antofagasta">Antofagasta</option><option value="Tarapacá">Tarapacá</option><option value="Arica y Parinacota">Arica y Parinacota</option><option value="Aysén">Aysén</option><option value="Magallanes">Magallanes</option></select></label>
           <label>Comuna o ciudad de entrega<input name="city" autocomplete="address-level2" required maxlength="100"></label>
           <label>Dirección (opcional)<input name="address" autocomplete="street-address" maxlength="200"></label>
           <div class="checkout-total"><span>Subtotal referencial</span><strong class="checkout-subtotal">$0</strong></div>
-          <p class="checkout-payment-note">El costo de envío y el total final se confirman antes del pago.</p>
+          <div class="checkout-total checkout-shipping"><span>Envío por pagar (referencial)</span><strong class="checkout-shipping-value">Elige tu región</strong></div>
+          <p class="checkout-payment-note">El envío no se suma al subtotal: se paga al recibir el pedido. El valor es una estimación según tarifas de courier; Amankay confirma el monto final contigo.</p>
           <button class="button button-dark checkout-whatsapp" type="submit">Enviar pedido por WhatsApp <span aria-hidden="true">↗</span></button>
           <button class="checkout-mercadopago" type="button" disabled>Pagar con Mercado Pago · próximamente</button>
         </form>

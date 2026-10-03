@@ -849,6 +849,62 @@ cartItems.addEventListener("click", (event) => {
   updateCart();
 });
 
+// Envío por pagar: valores referenciales por zona desde La Araucanía, para paquetes XS (hasta 0,5 kg),
+// S (hasta 3 kg) y M (hasta 6 kg). Son estimaciones: ajústalas con las tarifas vigentes del courier.
+const shippingRates = {
+  a: [3900, 4500, 6000],
+  b: [4200, 5200, 6700],
+  c: [4950, 5900, 7700],
+  d: [6300, 7000, 9900],
+  e: [7150, 8300, 12400],
+  f: [8000, 9500, 14000],
+};
+const shippingZones = {
+  "La Araucanía": "a",
+  "Los Ríos": "b",
+  "Los Lagos": "b",
+  "Biobío": "b",
+  "Ñuble": "b",
+  "Maule": "c",
+  "O'Higgins": "c",
+  "Metropolitana de Santiago": "c",
+  "Valparaíso": "c",
+  "Coquimbo": "d",
+  "Atacama": "d",
+  "Antofagasta": "e",
+  "Tarapacá": "e",
+  "Arica y Parinacota": "e",
+  "Aysén": "f",
+  "Magallanes": "f",
+};
+// Peso estimado por unidad (kg), con su envase.
+const unitWeights = { Cabello: 0.08, Jabones: 0.13, Rostro: 0.2, Aceites: 0.12, Cuerpo: 0.12, Aromaterapia: 0.05 };
+const shippingSizes = ["XS", "S", "M"];
+
+function getCartWeight() {
+  const contents = cart.reduce((sum, { id, quantity }) => {
+    const unit = id.startsWith("pack-") ? 0.16 : unitWeights[products[id].category] ?? 0.15;
+    return sum + unit * quantity;
+  }, 0);
+  return contents + 0.1;
+}
+
+function getShippingEstimate(region) {
+  if (!region) return null;
+  if (region === "retiro") return { text: "Retiro sin costo en Villarrica" };
+  const weight = getCartWeight();
+  const size = weight <= 0.5 ? 0 : weight <= 3 ? 1 : weight <= 6 ? 2 : -1;
+  const rates = shippingRates[shippingZones[region]];
+  if (size < 0 || !rates) return { text: "Por confirmar (pedido grande)" };
+  return { text: `${formatPrice(rates[size])} aprox. · paquete ${shippingSizes[size]}` };
+}
+
+function updateShippingEstimate() {
+  const estimate = getShippingEstimate(checkoutForm.elements.region.value);
+  checkoutDialog.querySelector(".checkout-shipping-value").textContent = estimate ? estimate.text : "Elige tu región";
+}
+checkoutForm.elements.region.addEventListener("change", updateShippingEstimate);
+
 function buildOrderMessage(customer) {
   const lines = cart.map(({ id, quantity }) => {
     const product = products[id];
@@ -877,6 +933,7 @@ function buildOrderMessage(customer) {
           `Nombre: ${customer.name}`,
           `Correo: ${customer.email}`,
           `Teléfono: ${customer.phone}`,
+          `Región: ${customer.region === "retiro" ? "Retiro en Villarrica" : customer.region}`,
           `Comuna o ciudad: ${customer.city}`,
           ...(customer.address ? [`Dirección: ${customer.address}`] : []),
           "",
@@ -886,7 +943,10 @@ function buildOrderMessage(customer) {
     "",
     hasUnpricedItems
       ? "El valor final y la entrega quedan por confirmar."
-      : `Subtotal referencial: ${formatPrice(subtotal)}. Envío por confirmar.`,
+      : `Subtotal referencial: ${formatPrice(subtotal)}.`,
+    customer?.region === "retiro"
+      ? "Entrega: retiro en Villarrica, sin costo."
+      : `Envío por pagar (referencial): ${getShippingEstimate(customer?.region)?.text ?? "por confirmar"}.`,
   ].join("\n");
   return message;
 }
@@ -900,6 +960,7 @@ document.querySelector(".checkout-button").addEventListener("click", (event) => 
     0,
   );
   checkoutSubtotal.textContent = hasUnpricedItems ? "Por confirmar" : formatPrice(subtotal);
+  updateShippingEstimate();
   checkoutDialog.showModal();
   checkoutDialog.querySelector('[name="name"]').focus();
 });
@@ -942,7 +1003,17 @@ document.querySelectorAll(".filter-button").forEach((button) => {
   });
 });
 
-document.querySelector("#product-search").addEventListener("input", filterProducts);
+document.querySelector("#product-search").addEventListener("input", (event) => {
+  // La búsqueda recorre todo el catálogo, no solo la categoría elegida.
+  if (event.target.value.trim()) {
+    document.querySelectorAll(".filter-button").forEach((filter) => {
+      const active = filter.dataset.filter === "todos";
+      filter.classList.toggle("is-active", active);
+      filter.setAttribute("aria-pressed", String(active));
+    });
+  }
+  filterProducts();
+});
 
 loadMoreProducts.addEventListener("click", () => {
   visibleProductLimit += 6;
@@ -954,6 +1025,9 @@ function filterProducts(resetVisibleLimit = true) {
     document.querySelector(".filter-button.is-active").dataset.filter;
   const searchValue = document.querySelector("#product-search").value.trim();
   const query = normalizeSearch(searchValue);
+  document.querySelector(".collection-toolbar").classList.toggle("is-searching", searchValue !== "");
+  document.querySelector(".category-filter-heading > p").textContent =
+    searchValue ? "Resultados de tu búsqueda" : "Explora por categoría";
   const matchingCards = [];
   document.querySelectorAll(".filter-button").forEach((button) => {
     const category = button.dataset.filter;
@@ -988,7 +1062,12 @@ function filterProducts(resetVisibleLimit = true) {
     }
   });
   document.querySelectorAll(".product-group").forEach((group) => {
-    group.hidden = ![...group.querySelectorAll(".product-card")].some((card) => !card.hidden);
+    const groupCards = [...group.querySelectorAll(".product-card")];
+    group.hidden = !groupCards.some((card) => !card.hidden);
+    if (query) {
+      const found = groupCards.filter((card) => matchingCards.includes(card)).length;
+      group.querySelector(".product-group-count").textContent = `${found} ${found === 1 ? "resultado" : "resultados"}`;
+    }
   });
   const remainingCount = matchingCards.length - visibleProductLimit;
   const showLoadMore = mobileCatalog.matches && remainingCount > 0;
