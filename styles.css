@@ -753,11 +753,12 @@ body { background: #ffffff; }
 .checkout-shipping strong { text-align: right; }
 /* Confirmación del pedido en el checkout */
 .checkout-done { margin-top: 18px; display: grid; gap: 14px; }
-.checkout-done[hidden], .checkout-form[hidden] { display: none; }
+.checkout-done[hidden], .checkout-form[hidden], .checkout-done-whatsapp[hidden], .checkout-done-pay[hidden], .checkout-mercadopago[hidden] { display: none; }
 .checkout-done p { margin: 0; color: #625965; font-size: 13px; line-height: 1.7; }
 .checkout-done p:empty { display: none; }
 .checkout-done .checkout-done-folio { width: fit-content; padding: 6px 12px; background: var(--paper-deep); color: var(--forest); font-size: 12px; font-weight: 600; letter-spacing: .06em; }
-.checkout-done-whatsapp { min-height: 48px; justify-content: space-between; }
+.checkout-done-whatsapp, .checkout-done-pay { min-height: 48px; justify-content: space-between; }
+.checkout-done-pay:disabled { opacity: .65; cursor: progress; }
 .checkout-done-close { min-height: 44px; border: 1px solid var(--line); background: #fff; color: var(--forest); font: inherit; font-size: 12px; cursor: pointer; }
 .checkout-whatsapp:disabled { opacity: .65; cursor: progress; }
 /* En el panel no se muestra el encabezado ni el pie de la tienda */

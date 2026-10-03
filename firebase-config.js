@@ -8,4 +8,8 @@ export const firebaseConfig = {
   measurementId: "G-LZ8B3KQVCV",
 };
 
+// Pago en línea con Mercado Pago: pega aquí la dirección del Worker (ver MERCADOPAGO_SETUP.md).
+// Mientras esté vacío, la tienda registra el pedido y el pago se coordina directamente con la clienta.
+export const paymentEndpoint = "";
+
 export const ownerEmail = "dsilvaroco@gmail.com";

@@ -18,9 +18,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20261003-3">
-    <script src="app.js?v=20261003-2" defer></script>
-    <script type="module" src="admin.js?v=20261003-2"></script>
+    <link rel="stylesheet" href="styles.css?v=20261003-5">
+    <script src="app.js?v=20261003-4" defer></script>
+    <script type="module" src="admin.js?v=20261003-3"></script>
   </head>
   <body>
     <div class="announcement">
@@ -952,7 +952,7 @@
     <dialog class="checkout-dialog" aria-labelledby="checkout-title">
       <button class="icon-button checkout-close" type="button" aria-label="Cerrar checkout">×</button>
       <div class="checkout-content">
-        <p class="eyebrow"><span class="eyebrow-line"></span> UN ÚLTIMO PASO</p>
+        <p class="eyebrow"><span class="eyebrow-line"></span> <span class="checkout-eyebrow-text">UN ÚLTIMO PASO</span></p>
         <h2 id="checkout-title">Tus datos de entrega</h2>
         <p class="checkout-intro">Registramos tu pedido y Amankay te contacta para coordinar el pago y la entrega. Usamos tus datos solo para gestionar este pedido.</p>
         <form class="checkout-form">
@@ -971,6 +971,7 @@
         <div class="checkout-done" role="status" hidden>
           <p class="checkout-done-folio"></p>
           <p class="checkout-done-text"></p>
+          <button class="button button-dark checkout-done-pay" type="button" hidden><span class="checkout-pay-label">Pagar con Mercado Pago</span> <span aria-hidden="true">↗︎</span></button>
           <a class="button button-dark checkout-done-whatsapp" href="#" target="_blank" rel="noopener noreferrer">Enviar resumen por WhatsApp <span aria-hidden="true">↗︎</span></a>
           <button class="checkout-done-close" type="button">Seguir explorando</button>
         </div>

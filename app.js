@@ -965,6 +965,9 @@ document.querySelector(".checkout-button").addEventListener("click", (event) => 
   checkoutDialog.querySelector(".checkout-intro").hidden = false;
   checkoutDone.hidden = true;
   checkoutDialog.querySelector("#checkout-title").textContent = "Tus datos de entrega";
+  checkoutDialog.querySelector(".checkout-eyebrow-text").textContent = "UN ÚLTIMO PASO";
+  checkoutSubmitLabel.textContent = checkoutSubmitText();
+  checkoutForm.querySelector(".checkout-mercadopago").hidden = Boolean(window.amankayPaymentEndpoint);
   checkoutDialog.showModal();
   // En pantallas táctiles no se enfoca el campo: el teclado taparía el formulario al abrir.
   if (!window.matchMedia("(pointer: coarse)").matches) checkoutDialog.querySelector('[name="name"]').focus();
@@ -1018,6 +1021,65 @@ async function saveWebOrder(customer, number) {
   }
 }
 
+// Pago en línea: se activa al definir paymentEndpoint en firebase-config.js.
+const checkoutPay = checkoutDone.querySelector(".checkout-done-pay");
+const checkoutPayLabel = checkoutPay.querySelector(".checkout-pay-label");
+let pendingPayment = null;
+
+function checkoutSubmitText() {
+  return window.amankayPaymentEndpoint ? "Continuar al pago" : "Confirmar pedido";
+}
+
+function showCheckoutResult({ eyebrow, title, folio, text }) {
+  checkoutForm.hidden = true;
+  checkoutDialog.querySelector(".checkout-intro").hidden = true;
+  checkoutDialog.querySelector(".checkout-eyebrow-text").textContent = eyebrow;
+  checkoutDialog.querySelector("#checkout-title").textContent = title;
+  checkoutDone.querySelector(".checkout-done-folio").textContent = folio ? `Folio ${folio}` : "";
+  checkoutDone.querySelector(".checkout-done-text").textContent = text;
+  checkoutDone.hidden = false;
+}
+
+checkoutPay.addEventListener("click", async () => {
+  if (!pendingPayment || checkoutPay.disabled) return;
+  checkoutPay.disabled = true;
+  checkoutPayLabel.textContent = "Abriendo Mercado Pago…";
+  try {
+    const response = await fetch(window.amankayPaymentEndpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(pendingPayment),
+    });
+    const result = await response.json();
+    if (!response.ok || !result.url) throw new Error(result.error || "Sin enlace de pago");
+    window.location.href = result.url;
+  } catch (error) {
+    console.warn("No se pudo abrir el pago en línea.", error);
+    checkoutPay.hidden = true;
+    checkoutDone.querySelector(".checkout-done-text").textContent =
+      "No pudimos abrir el pago en línea. Tu pedido sigue registrado: te contactaremos para coordinar el pago y la entrega.";
+  } finally {
+    checkoutPay.disabled = false;
+    checkoutPayLabel.textContent = "Pagar con Mercado Pago";
+  }
+});
+
+// Regreso desde Mercado Pago: ?pago=aprobado|pendiente|rechazado&folio=AM-…
+const paymentReturn = new URLSearchParams(window.location.search);
+const paymentResults = {
+  aprobado: { eyebrow: "GRACIAS POR TU COMPRA", title: "¡Pago recibido!", text: "Recibimos tu pago. Prepararemos tu pedido y te contactaremos para coordinar la entrega." },
+  pendiente: { eyebrow: "PAGO EN PROCESO", title: "Tu pago está en proceso", text: "Mercado Pago está procesando tu pago. Te avisaremos apenas se confirme." },
+  rechazado: { eyebrow: "PAGO NO COMPLETADO", title: "No se completó el pago", text: "Tu pedido sigue registrado. Te contactaremos para coordinar otra forma de pago." },
+};
+if (paymentResults[paymentReturn.get("pago")]) {
+  pendingPayment = null;
+  checkoutPay.hidden = true;
+  checkoutDone.querySelector(".checkout-done-whatsapp").hidden = true;
+  showCheckoutResult({ ...paymentResults[paymentReturn.get("pago")], folio: paymentReturn.get("folio") });
+  checkoutDialog.showModal();
+  window.history.replaceState(null, "", `${window.location.pathname}${window.location.hash}`);
+}
+
 checkoutForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   if (cart.length === 0 || checkoutSubmit.disabled) return;
@@ -1030,16 +1092,31 @@ checkoutForm.addEventListener("submit", async (event) => {
   checkoutSubmitLabel.textContent = "Registrando tu pedido…";
   const saved = await saveWebOrder(customer, number);
   checkoutSubmit.disabled = false;
-  checkoutSubmitLabel.textContent = "Confirmar pedido";
-  checkoutForm.hidden = true;
-  checkoutDialog.querySelector(".checkout-intro").hidden = true;
-  checkoutDialog.querySelector("#checkout-title").textContent = saved ? "¡Pedido recibido!" : "Falta un paso";
-  checkoutDone.querySelector(".checkout-done-folio").textContent = saved ? `Folio ${number}` : "";
-  checkoutDone.querySelector(".checkout-done-text").textContent = saved
-    ? "Ya tenemos tu pedido. Te escribiremos para coordinar el pago y la entrega. Si quieres acelerarlo, envíanos el resumen por WhatsApp."
-    : "No pudimos registrar tu pedido en línea. Envíanos el resumen por WhatsApp y lo coordinamos contigo de inmediato.";
+  checkoutSubmitLabel.textContent = checkoutSubmitText();
+  // Solo se cobra en línea un pedido registrado y con todos sus precios definidos.
+  const payable = saved && Boolean(window.amankayPaymentEndpoint) && cart.every((item) => products[item.id].price !== null);
+  pendingPayment = payable
+    ? {
+        number,
+        items: cart.map(({ id, quantity }) => ({ id, quantity })),
+        payer: { name: customer.name.trim(), email: customer.email.trim() },
+        returnUrl: `${window.location.origin}${window.location.pathname}`,
+      }
+    : null;
+  showCheckoutResult({
+    eyebrow: payable ? "ÚLTIMO PASO: EL PAGO" : saved ? "GRACIAS POR TU COMPRA" : "UN ÚLTIMO PASO",
+    title: payable ? "Pedido registrado" : saved ? "¡Pedido recibido!" : "Falta un paso",
+    folio: saved ? number : "",
+    text: payable
+      ? "Paga ahora con Mercado Pago para confirmar tu pedido. El envío se coordina contigo después y se paga al recibir."
+      : saved
+        ? "Ya tenemos tu pedido. Te contactaremos al teléfono o correo que nos dejaste para coordinar el pago y la entrega."
+        : "No pudimos registrar tu pedido en línea. Envíanos el resumen por WhatsApp y lo coordinamos contigo de inmediato.",
+  });
+  checkoutPay.hidden = !payable;
+  // WhatsApp queda solo como respaldo cuando el pedido no se pudo registrar.
+  checkoutDone.querySelector(".checkout-done-whatsapp").hidden = saved;
   checkoutDone.querySelector(".checkout-done-whatsapp").href = `https://wa.me/56953750504?text=${encodeURIComponent(message)}`;
-  checkoutDone.hidden = false;
   if (saved) {
     cart = [];
     saveCart();

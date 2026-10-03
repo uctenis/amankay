@@ -21,7 +21,7 @@ import {
   updateDoc,
   where,
 } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
-import { ownerEmail, firebaseConfig } from "./firebase-config.js";
+import { ownerEmail, firebaseConfig, paymentEndpoint } from "./firebase-config.js";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -294,6 +294,8 @@ onSnapshot(query(collection(db, "testimonials"), where("published", "==", true))
 }, (error) => {
   console.warn("No se pudieron cargar los testimonios de la tienda.", error);
 });
+
+window.amankayPaymentEndpoint = paymentEndpoint;
 
 // Pedidos hechos desde la tienda: llegan al panel como "Nuevo" para confirmarlos.
 window.amankaySubmitOrder = (order) => addDoc(collection(db, "orders"), {
