@@ -18,8 +18,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20261002-4">
-    <script src="app.js?v=20261002-21" defer></script>
+    <link rel="stylesheet" href="styles.css?v=20261002-14">
+    <script src="app.js?v=20261002-51" defer></script>
+    <script type="module" src="admin.js?v=20261002-3"></script>
   </head>
   <body>
     <div class="announcement">
@@ -39,6 +40,9 @@
         <a href="#ritual">Rituales</a>
       </nav>
       <div class="header-actions">
+        <a class="admin-open admin-icon-link" href="#administracion" aria-label="Acceso de administración" title="Administración">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.4a3.6 3.6 0 1 0 0 7.2 3.6 3.6 0 0 0 0-7.2Z"/><path d="m19.4 15 .1.1a1.8 1.8 0 0 1-2.5 2.5l-.1-.1a1.8 1.8 0 0 0-3 .9v.2a1.8 1.8 0 0 1-3.6 0v-.2a1.8 1.8 0 0 0-3-.9l-.1.1a1.8 1.8 0 0 1-2.5-2.5l.1-.1a1.8 1.8 0 0 0-.9-3h-.2a1.8 1.8 0 0 1 0-3.6h.2a1.8 1.8 0 0 0 .9-3l-.1-.1a1.8 1.8 0 0 1 2.5-2.5l.1.1a1.8 1.8 0 0 0 3-.9v-.2a1.8 1.8 0 0 1 3.6 0v.2a1.8 1.8 0 0 0 3 .9l.1-.1a1.8 1.8 0 0 1 2.5 2.5l-.1.1a1.8 1.8 0 0 0 .9 3h.2a1.8 1.8 0 0 1 0 3.6h-.2a1.8 1.8 0 0 0-.9 3Z"/></svg>
+        </a>
         <button class="header-search" type="button" aria-label="Buscar productos">
           <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.5"/><path d="m16 16 4 4"/></svg>
         </button>
@@ -78,37 +82,72 @@
       <section class="collection section-wrap" id="coleccion">
         <div class="section-heading">
           <div>
-            <p class="eyebrow"><span class="eyebrow-line"></span> CUIDARNOS TAMBIÉN ES VOLVER</p>
+            <p class="eyebrow"><span class="eyebrow-line"></span> BOTÁNICA PARA TUS MOMENTOS</p>
             <h2>Encuentra tu <em>ritual.</em></h2>
           </div>
-          <p class="section-intro">Fórmulas artesanales para acompañar tus momentos de cuidado, con la esencia natural de nuestra tierra.</p>
+          <p class="section-intro">Explora una colección hecha con dedicación en el sur: pequeños rituales para acompañar tu cuidado cotidiano.</p>
         </div>
         <div class="collection-toolbar">
-          <div class="category-filters" role="group" aria-label="Filtrar productos">
-            <button class="filter-button is-active" type="button" data-filter="todos" aria-pressed="true">Todo <span>21</span></button>
-            <button class="filter-button" type="button" data-filter="rostro" aria-pressed="false">Rostro</button>
-            <button class="filter-button" type="button" data-filter="cuerpo" aria-pressed="false">Cuerpo</button>
-            <button class="filter-button" type="button" data-filter="aromaterapia" aria-pressed="false">Aromaterapia</button>
-            <button class="filter-button" type="button" data-filter="cabello" aria-pressed="false">Cabello</button>
-            <button class="filter-button" type="button" data-filter="jabones" aria-pressed="false">Jabones</button>
-            <button class="filter-button" type="button" data-filter="botanica" aria-pressed="false">Botánica</button>
+          <div class="collection-search-row">
+            <div class="collection-search-copy">
+              <p class="eyebrow"><span class="eyebrow-line"></span> ENCUENTRA TU FAVORITO</p>
+              <span>Busca por nombre o ingrediente</span>
+            </div>
+            <label class="search-box">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.5"/><path d="m16 16 4 4"/></svg>
+              <input id="product-search" type="search" placeholder="Ej. maqui, caléndula, shampoo…" aria-label="Buscar productos por nombre o ingrediente">
+            </label>
           </div>
-          <label class="search-box">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.5"/><path d="m16 16 4 4"/></svg>
-            <input id="product-search" type="search" placeholder="Buscar en la colección" aria-label="Buscar productos">
-          </label>
+          <div class="category-filter-section">
+            <div class="category-filter-heading">
+              <p>Explora por categoría</p>
+              <span class="collection-results" aria-live="polite">33 opciones para explorar</span>
+            </div>
+            <div class="category-filters" role="group" aria-label="Filtrar productos por categoría">
+              <button class="filter-button is-active" type="button" data-filter="todos" aria-pressed="true">Todo <span class="filter-count">35</span></button>
+              <button class="filter-button" type="button" data-filter="rostro" aria-pressed="false">Rostro <span class="filter-count">0</span></button>
+              <button class="filter-button" type="button" data-filter="cuerpo" aria-pressed="false">Cuerpo <span class="filter-count">0</span></button>
+              <button class="filter-button" type="button" data-filter="aromaterapia" aria-pressed="false">Aromaterapia <span class="filter-count">0</span></button>
+              <button class="filter-button" type="button" data-filter="cabello" aria-pressed="false">Cabello <span class="filter-count">0</span></button>
+              <button class="filter-button" type="button" data-filter="jabones" aria-pressed="false">Jabones <span class="filter-count">0</span></button>
+              <button class="filter-button" type="button" data-filter="botanica" aria-pressed="false">Botánica <span class="filter-count">0</span></button>
+            </div>
+          </div>
         </div>
 
         <div class="product-grid" id="product-grid">
           <article class="product-card" data-product="maqui" data-category="rostro" data-name="crema facial de maqui">
             <div class="product-image product-image-maqui">
-              <button class="product-detail-trigger" type="button" data-detail="maqui" aria-label="Ver detalles de Crema facial de maqui"><img src="assets/products/crema-maqui-catalogo.jpg" alt="Crema facial de maqui Amankay junto a frutos y hojas de maqui" loading="lazy"></button>
+              <button class="product-detail-trigger" type="button" data-detail="maqui" aria-label="Ver detalles de Crema facial de maqui"><img src="assets/products/crema-facial-maqui-catalogo.jpg" alt="Crema facial de maqui Amankay junto a frutos y hojas de maqui" loading="lazy"></button>
               <span class="product-tag">Favorito del sur</span>
             </div>
             <div class="product-meta"><span>ROSTRO · MAQUI</span><span class="product-number">01</span></div>
-            <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="maqui">Crema facial de maqui</button></h3><span class="product-price">$5.000</span></div>
-            <p class="product-description">Maqui, karité y aceite de maqui en un cuidado facial pensado para hidratar y acompañar la piel.</p>
+            <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="maqui">Crema facial de maqui</button></h3><span class="product-price">$10.000</span></div>
+            <p class="product-wholesale-note">Mayorista desde 6 unidades · $8.000 c/u</p>
+            <p class="product-description">Aceite de maqui y manteca de karité se unen en esta crema facial, pensada para acompañar el cuidado de las líneas de expresión.</p>
             <button class="text-add" type="button" data-add="maqui">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
+          </article>
+
+          <article class="product-card" data-product="crema-leche-avena" data-category="rostro" data-name="crema leche de avena">
+            <div class="product-image product-image-botanical">
+              <button class="product-detail-trigger" type="button" data-detail="crema-leche-avena" aria-label="Ver detalles de Crema leche de avena"><img src="assets/products/crema-leche-avena-catalogo.jpg" alt="Crema leche de avena Amankay con avena y caléndula" loading="lazy"></button>
+            </div>
+            <div class="product-meta"><span>ROSTRO · 50 G</span><span class="product-number">02</span></div>
+            <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="crema-leche-avena">Crema leche de avena</button></h3><span class="product-price">$10.000</span></div>
+            <p class="product-wholesale-note">Mayorista desde 6 unidades · $8.000 c/u</p>
+            <p class="product-description">De textura ligera, combina avena y aceite de caléndula. Ideal para sumar a tu rutina de día.</p>
+            <button class="text-add" type="button" data-add="crema-leche-avena">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
+          </article>
+
+          <article class="product-card" data-product="crema-rosa-mosqueta" data-category="rostro" data-name="crema facial rosa mosqueta">
+            <div class="product-image product-image-botanical">
+              <button class="product-detail-trigger" type="button" data-detail="crema-rosa-mosqueta" aria-label="Ver detalles de Crema facial rosa mosqueta"><img src="assets/products/crema-rosa-mosqueta-catalogo.jpg" alt="Crema facial de rosa mosqueta Amankay junto a flores y frutos de rosa mosqueta" loading="lazy"></button>
+            </div>
+            <div class="product-meta"><span>ROSTRO · 50 G</span><span class="product-number">03</span></div>
+            <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="crema-rosa-mosqueta">Crema facial rosa mosqueta</button></h3><span class="product-price">$10.000</span></div>
+            <p class="product-wholesale-note">Mayorista desde 6 unidades · $8.000 c/u</p>
+            <p class="product-description">Para tu rutina nocturna, con rosa mosqueta, manteca de karité y vitamina E. Aporta hidratación y ayuda a cuidar la piel.</p>
+            <button class="text-add" type="button" data-add="crema-rosa-mosqueta">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
           </article>
 
           <article class="product-card" data-product="serum" data-category="rostro" data-name="serum facial">
@@ -116,9 +155,9 @@
               <button class="product-detail-trigger" type="button" data-detail="serum" aria-label="Ver detalles de Sérum facial"><img src="assets/products/serum-facial-catalogo.jpg" alt="Sérum facial Amankay en frasco con dosificador, junto a flores rosadas" loading="lazy"></button>
               <span class="product-tag product-tag-light">Ritual esencial</span>
             </div>
-            <div class="product-meta"><span>ROSTRO · 30 G</span><span class="product-number">02</span></div>
+            <div class="product-meta"><span>ROSTRO · 30 G</span><span class="product-number">04</span></div>
             <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="serum">Sérum facial</button></h3><span class="product-price">$6.000</span></div>
-            <p class="product-description">Un gesto ligero para tu rutina: proteína de seda que ayuda a hidratar y nutrir la piel.</p>
+            <p class="product-description">Una textura ligera con proteína de seda para acompañar la hidratación y nutrición de tu piel.</p>
             <button class="text-add" type="button" data-add="serum">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
           </article>
 
@@ -127,9 +166,9 @@
               <button class="product-detail-trigger" type="button" data-detail="cafe" aria-label="Ver detalles de Exfoliante de café"><img src="assets/products/exfoliante-cafe-catalogo.jpg" alt="Exfoliante de café Amankay en envase kraft, fotografiado con granos de café" loading="lazy"></button>
               <span class="product-tag">Pausa para ti</span>
             </div>
-            <div class="product-meta"><span>ROSTRO Y CUERPO · 100 G</span><span class="product-number">03</span></div>
+            <div class="product-meta"><span>ROSTRO Y CUERPO · 100 G</span><span class="product-number">05</span></div>
             <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="cafe">Exfoliante de café</button></h3><span class="product-price">$5.000</span></div>
-            <p class="product-description">Una pausa exfoliante para rostro y cuerpo, con aceites de coco, almendras y zanahoria.</p>
+            <p class="product-description">Un momento de cuidado para rostro y cuerpo, elaborado con aceites de coco, almendras y zanahoria.</p>
             <button class="text-add" type="button" data-add="cafe">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
           </article>
 
@@ -138,10 +177,10 @@
               <button class="product-detail-trigger" type="button" data-detail="roll-on-antiestres" aria-label="Ver detalles de Roll on antiestrés"><img src="assets/products/roll-on-antiestres-catalogo.jpg" alt="Roll on antiestrés Amankay con lavanda, melisa y menta" loading="lazy"></button>
               <span class="product-tag product-tag-light">Top ventas</span>
             </div>
-            <div class="product-meta"><span>AROMATERAPIA · ROLL ON</span><span class="product-number">04</span></div>
+            <div class="product-meta"><span>AROMATERAPIA · ROLL ON</span><span class="product-number">06</span></div>
             <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="roll-on-antiestres">Roll on antiestrés</button></h3><span class="product-price">$8.000</span></div>
             <p class="product-wholesale-note">Mayorista desde 6 unidades · $7.000 c/u</p>
-            <p class="product-description">Una pausa aromática para acompañar momentos de estrés, con lavanda, melisa y menta.</p>
+            <p class="product-description">Lavanda, melisa y menta se encuentran en esta mezcla aromática para acompañar tus pausas.</p>
             <button class="text-add" type="button" data-add="roll-on-antiestres">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
           </article>
 
@@ -149,10 +188,10 @@
             <div class="product-image product-image-botanical">
               <button class="product-detail-trigger" type="button" data-detail="roll-on-eucalipto" aria-label="Ver detalles de Roll on de eucalipto"><img src="assets/products/roll-on-eucalipto-catalogo.jpg" alt="Roll on de eucalipto Amankay de 10 ml junto a hojas de eucalipto" loading="lazy"></button>
             </div>
-            <div class="product-meta"><span>AROMATERAPIA · 10 ML</span><span class="product-number">05</span></div>
+            <div class="product-meta"><span>AROMATERAPIA · 10 ML</span><span class="product-number">07</span></div>
             <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="roll-on-eucalipto">Roll on de eucalipto</button></h3><span class="product-price">$7.500</span></div>
             <p class="product-wholesale-note">Mayorista desde 6 unidades · $6.500 c/u</p>
-            <p class="product-description">Una nota fresca y estimulante de eucalipto para acompañar tu día y despejar las vías respiratorias.</p>
+            <p class="product-description">Una mezcla aromática de eucalipto con notas frescas y estimulantes para acompañar tu día.</p>
             <button class="text-add" type="button" data-add="roll-on-eucalipto">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
           </article>
 
@@ -160,10 +199,10 @@
             <div class="product-image product-image-botanical">
               <button class="product-detail-trigger" type="button" data-detail="roll-on-romero" aria-label="Ver detalles de Roll on de romero"><img src="assets/products/roll-on-romero-catalogo.jpg" alt="Roll on de romero Amankay de 10 ml junto a ramas de romero" loading="lazy"></button>
             </div>
-            <div class="product-meta"><span>AROMATERAPIA · 10 ML</span><span class="product-number">06</span></div>
+            <div class="product-meta"><span>AROMATERAPIA · 10 ML</span><span class="product-number">08</span></div>
             <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="roll-on-romero">Roll on de romero</button></h3><span class="product-price">$8.000</span></div>
             <p class="product-wholesale-note">Mayorista desde 6 unidades · $6.000 c/u</p>
-            <p class="product-description">El aroma herbal del romero acompaña la memoria, la concentración y el estado de alerta.</p>
+            <p class="product-description">Una nota herbal de romero para acompañar tus momentos de enfoque y concentración.</p>
             <button class="text-add" type="button" data-add="roll-on-romero">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
           </article>
 
@@ -172,10 +211,10 @@
               <button class="product-detail-trigger" type="button" data-detail="pomada-calendula" aria-label="Ver detalles de Pomada de caléndula"><img src="assets/products/pomada-calendula-catalogo.jpg" alt="Pomada de caléndula Amankay de 30 gramos junto a flores de caléndula" loading="lazy"></button>
               <span class="product-tag product-tag-light">Cuidado botánico</span>
             </div>
-            <div class="product-meta"><span>CUERPO · 30 G</span><span class="product-number">07</span></div>
+            <div class="product-meta"><span>CUERPO · 30 G</span><span class="product-number">09</span></div>
             <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="pomada-calendula">Pomada de caléndula</button></h3><span class="product-price">$7.000</span></div>
             <p class="product-wholesale-note">Mayorista desde 6 unidades · $4.500 c/u</p>
-            <p class="product-description">Caléndula para un cuidado reconfortante que ayuda a calmar irritaciones e hidratar la piel reseca.</p>
+            <p class="product-description">Un cuidado reconfortante con caléndula para acompañar la hidratación de la piel reseca y el cuidado de las irritaciones.</p>
             <button class="text-add" type="button" data-add="pomada-calendula">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
           </article>
 
@@ -183,9 +222,9 @@
             <div class="product-image product-image-botanical">
               <button class="product-detail-trigger" type="button" data-detail="aceite-contracturas" aria-label="Ver detalles de Aceite para contracturas"><img src="assets/products/aceite-contracturas-catalogo.jpg" alt="Aceite Amankay para contracturas en frasco de 30 ml con gotero y flores de lavanda" loading="lazy"></button>
             </div>
-            <div class="product-meta"><span>CUERPO · 30 ML</span><span class="product-number">08</span></div>
+            <div class="product-meta"><span>CUERPO · 30 ML</span><span class="product-number">10</span></div>
             <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="aceite-contracturas">Aceite para contracturas</button></h3><span class="product-price">$9.500</span></div>
-            <p class="product-description">Un masaje botánico con jojoba, caléndula, canela, manzanilla y lavanda.</p>
+            <p class="product-description">Masajea la zona con una mezcla de jojoba, caléndula y aceites esenciales de canela, manzanilla y lavanda.</p>
             <button class="text-add" type="button" data-add="aceite-contracturas">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
           </article>
 
@@ -193,9 +232,9 @@
             <div class="product-image product-image-botanical">
               <button class="product-detail-trigger" type="button" data-detail="aceite-masaje-muscular" aria-label="Ver detalles de Aceite masaje muscular"><img src="assets/products/aceite-masaje-muscular-catalogo.jpg" alt="Aceite Amankay para masaje muscular en frasco con gotero y lavanda" loading="lazy"></button>
             </div>
-            <div class="product-meta"><span>CUERPO · 30 ML</span><span class="product-number">09</span></div>
+            <div class="product-meta"><span>CUERPO · 30 ML</span><span class="product-number">11</span></div>
             <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="aceite-masaje-muscular">Aceite masaje muscular</button></h3><span class="product-price">$9.500</span></div>
-            <p class="product-description">Aceite de almendras y notas de lavanda, manzanilla y romero para acompañar el masaje.</p>
+            <p class="product-description">Aceite de almendras con lavanda, manzanilla y romero para acompañar el masaje muscular.</p>
             <button class="text-add" type="button" data-add="aceite-masaje-muscular">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
           </article>
 
@@ -203,31 +242,118 @@
             <div class="product-image product-image-botanical">
               <button class="product-detail-trigger" type="button" data-detail="unguento-masaje" aria-label="Ver detalles de Ungüento para masaje"><img src="assets/products/unguento-masaje-catalogo.jpg" alt="Ungüento para masaje Amankay de 20 gramos con lavanda y manzanilla" loading="lazy"></button>
             </div>
-            <div class="product-meta"><span>CUERPO · 20 G</span><span class="product-number">10</span></div>
+            <div class="product-meta"><span>CUERPO · 20 G</span><span class="product-number">12</span></div>
             <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="unguento-masaje">Ungüento para masaje</button></h3><span class="product-price">$5.000</span></div>
-            <p class="product-description">Un bálsamo para el masaje con coco, cera vegetal y notas de manzanilla, lavanda y melisa.</p>
+            <p class="product-description">Bálsamo de masaje con aceite de coco, cera vegetal y aceites esenciales de manzanilla, lavanda y melisa.</p>
             <button class="text-add" type="button" data-add="unguento-masaje">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
           </article>
 
-          <article class="product-card" data-product="jabones" data-category="jabones" data-name="jabones orgánicos">
-            <div class="product-image product-image-jabon">
-              <button class="product-detail-trigger" type="button" data-detail="jabones" aria-label="Ver detalles de Jabones orgánicos"><img src="https://images.unsplash.com/photo-1600857544200-b2f666a9a2ec?auto=format&fit=crop&w=900&q=80" alt="Imagen referencial de jabones artesanales" loading="lazy"></button>
-              <span class="product-tag product-tag-light">Hecho a mano</span>
+          <article class="product-card" data-product="jabon-cafe" data-category="jabones" data-name="jabón café">
+            <div class="product-image product-image-botanical">
+              <button class="product-detail-trigger" type="button" data-detail="jabon-cafe" aria-label="Ver detalles de Jabón café"><img src="assets/products/jabon-cafe-catalogo.jpg" alt="Jabón artesanal de café con granos de café" loading="lazy"></button>
             </div>
-            <div class="product-meta"><span>JABONES · 150 G</span><span class="product-number">11</span></div>
-            <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="jabones">Jabones orgánicos</button></h3><span class="product-price">$3.500</span></div>
-            <p class="product-description">Jabones orgánicos y artesanales para elegir y sumar un gesto natural a tu ritual cotidiano.</p>
-            <button class="text-add" type="button" data-add="jabones">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
+            <div class="product-meta"><span>JABONES · CAFÉ</span><span class="product-number">14</span></div>
+            <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="jabon-cafe">Jabón café</button></h3><span class="product-price">$6.000</span></div>
+            <p class="product-wholesale-note">Mayorista desde 10 unidades · $4.000 c/u</p>
+            <p class="product-description">Hecho artesanalmente con café, aceites y mantecas vegetales.</p>
+            <button class="text-add" type="button" data-add="jabon-cafe">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
+          </article>
+
+          <article class="product-card" data-product="jabon-carbon-activado" data-category="jabones" data-name="jabón carbón activado">
+            <div class="product-image product-image-botanical">
+              <button class="product-detail-trigger" type="button" data-detail="jabon-carbon-activado" aria-label="Ver detalles de Jabón carbón activado"><img src="assets/products/jabon-carbon-activado-catalogo.jpg" alt="Jabón artesanal con carbón activado" loading="lazy"></button>
+            </div>
+            <div class="product-meta"><span>JABONES · CARBÓN ACTIVADO</span><span class="product-number">15</span></div>
+            <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="jabon-carbon-activado">Jabón carbón activado</button></h3><span class="product-price">$6.000</span></div>
+            <p class="product-wholesale-note">Mayorista desde 10 unidades · $4.000 c/u</p>
+            <p class="product-description">Una barra con carbón activado para una limpieza profunda, pensada para pieles con tendencia al acné.</p>
+            <button class="text-add" type="button" data-add="jabon-carbon-activado">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
+          </article>
+
+          <article class="product-card" data-product="jabon-maqui" data-category="jabones" data-name="jabón maqui">
+            <div class="product-image product-image-botanical">
+              <button class="product-detail-trigger" type="button" data-detail="jabon-maqui" aria-label="Ver detalles de Jabón maqui"><img src="assets/products/jabon-maqui-catalogo.jpg" alt="Jabón artesanal de maqui con frutos y hojas de maqui" loading="lazy"></button>
+            </div>
+            <div class="product-meta"><span>JABONES · MAQUI</span><span class="product-number">16</span></div>
+            <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="jabon-maqui">Jabón maqui</button></h3><span class="product-price">$6.000</span></div>
+            <p class="product-wholesale-note">Mayorista desde 10 unidades · $4.000 c/u</p>
+            <p class="product-description">Con maqui, para aportar hidratación y cuidado antioxidante a tu rutina.</p>
+            <button class="text-add" type="button" data-add="jabon-maqui">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
+          </article>
+
+          <article class="product-card" data-product="jabon-calendula" data-category="jabones" data-name="jabón caléndula">
+            <div class="product-image product-image-botanical">
+              <button class="product-detail-trigger" type="button" data-detail="jabon-calendula" aria-label="Ver detalles de Jabón caléndula"><img src="assets/products/jabon-calendula-catalogo.jpg" alt="Jabón artesanal de caléndula con pétalos y flores de caléndula" loading="lazy"></button>
+            </div>
+            <div class="product-meta"><span>JABONES · CALÉNDULA</span><span class="product-number">17</span></div>
+            <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="jabon-calendula">Jabón caléndula</button></h3><span class="product-price">$6.000</span></div>
+            <p class="product-wholesale-note">Mayorista desde 10 unidades · $4.000 c/u</p>
+            <p class="product-description">La caléndula acompaña este jabón pensado para el cuidado de las pieles irritadas.</p>
+            <button class="text-add" type="button" data-add="jabon-calendula">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
+          </article>
+
+          <article class="product-card" data-product="jabon-romero" data-category="jabones" data-name="jabón romero">
+            <div class="product-image product-image-botanical">
+              <button class="product-detail-trigger" type="button" data-detail="jabon-romero" aria-label="Ver detalles de Jabón Romero"><img src="assets/products/jabon-romero-catalogo.jpg" alt="Jabón artesanal de romero junto a ramas frescas de romero" loading="lazy"></button>
+            </div>
+            <div class="product-meta"><span>JABONES · ROMERO</span><span class="product-number">18</span></div>
+            <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="jabon-romero">Jabón Romero</button></h3><span class="product-price">$6.000</span></div>
+            <p class="product-wholesale-note">Mayorista desde 10 unidades · $4.000 c/u</p>
+            <p class="product-description">Jabón de romero con propiedades antibacterianas e hidratantes.</p>
+            <button class="text-add" type="button" data-add="jabon-romero">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
+          </article>
+
+          <article class="product-card" data-product="jabon-arroz" data-category="jabones" data-name="jabón arroz">
+            <div class="product-image product-image-botanical">
+              <button class="product-detail-trigger" type="button" data-detail="jabon-arroz" aria-label="Ver detalles de Jabón arroz"><img src="assets/products/jabon-arroz-catalogo.jpg" alt="Jabón artesanal de arroz con granos de arroz y espigas" loading="lazy"></button>
+            </div>
+            <div class="product-meta"><span>JABONES · ARROZ</span><span class="product-number">19</span></div>
+            <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="jabon-arroz">Jabón arroz</button></h3><span class="product-price">$6.000</span></div>
+            <p class="product-description">Elaborado con finos aceites, este jabón natural ayuda a aclarar y dar elasticidad a la piel.</p>
+            <button class="text-add" type="button" data-add="jabon-arroz">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
+          </article>
+
+          <article class="product-card" data-product="jabon-canelo-cacao" data-category="jabones" data-name="jabón canelo cacao">
+            <div class="product-image product-image-botanical">
+              <button class="product-detail-trigger" type="button" data-detail="jabon-canelo-cacao" aria-label="Ver detalles de Jabón canelo-cacao"><img src="assets/products/jabon-canelo-cacao-catalogo.jpg" alt="Jabón artesanal de canelo y cacao junto a corteza y granos de cacao" loading="lazy"></button>
+            </div>
+            <div class="product-meta"><span>JABONES · CANELO Y CACAO</span><span class="product-number">20</span></div>
+            <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="jabon-canelo-cacao">Jabón canelo-cacao</button></h3><span class="product-price">$6.000</span></div>
+            <p class="product-wholesale-note">Mayorista desde 10 unidades · $4.000 c/u</p>
+            <p class="product-description">Jabón de canelo y cacao con propiedades antioxidantes.</p>
+            <button class="text-add" type="button" data-add="jabon-canelo-cacao">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
+          </article>
+
+          <article class="product-card" data-product="jabon-rosa-mosqueta" data-category="jabones" data-name="jabón rosa mosqueta">
+            <div class="product-image product-image-botanical">
+              <button class="product-detail-trigger" type="button" data-detail="jabon-rosa-mosqueta" aria-label="Ver detalles de Jabón rosa mosqueta"><img src="assets/products/jabon-rosa-mosqueta-catalogo.jpg" alt="Jabón artesanal de rosa mosqueta junto a frutos de rosa mosqueta" loading="lazy"></button>
+            </div>
+            <div class="product-meta"><span>JABONES · ROSA MOSQUETA</span><span class="product-number">21</span></div>
+            <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="jabon-rosa-mosqueta">Jabón rosa mosqueta</button></h3><span class="product-price">$6.000</span></div>
+            <p class="product-wholesale-note">Mayorista desde 10 unidades · $4.000 c/u</p>
+            <p class="product-description">Con rosa mosqueta, para acompañar la regeneración e hidratación de la piel.</p>
+            <button class="text-add" type="button" data-add="jabon-rosa-mosqueta">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
+          </article>
+
+          <article class="product-card" data-product="jabon-avena-miel" data-category="jabones" data-name="jabón avena miel">
+            <div class="product-image product-image-botanical">
+              <button class="product-detail-trigger" type="button" data-detail="jabon-avena-miel" aria-label="Ver detalles de Jabón avena miel"><img src="assets/products/jabon-avena-miel-catalogo.jpg" alt="Jabón artesanal de avena y miel junto a avena y miel" loading="lazy"></button>
+            </div>
+            <div class="product-meta"><span>JABONES · AVENA Y MIEL</span><span class="product-number">22</span></div>
+            <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="jabon-avena-miel">Jabón avena miel</button></h3><span class="product-price">$6.000</span></div>
+            <p class="product-wholesale-note">Mayorista desde 10 unidades · $4.000 c/u</p>
+            <p class="product-description">Elaborado con finos aceites, limpia en profundidad y ayuda a dar elasticidad a la piel.</p>
+            <button class="text-add" type="button" data-add="jabon-avena-miel">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
           </article>
 
           <article class="product-card" data-product="aceite-maqui" data-category="botanica" data-name="aceite de maqui">
             <div class="product-image product-image-botanical">
               <button class="product-detail-trigger" type="button" data-detail="aceite-maqui" aria-label="Ver detalles de Aceite de maqui"><img src="assets/products/aceite-maqui-catalogo.jpg" alt="Aceite de maqui Amankay en frasco gotero junto a frutos de maqui" loading="lazy"></button>
             </div>
-            <div class="product-meta"><span>BOTÁNICA · 30 ML</span><span class="product-number">12</span></div>
+            <div class="product-meta"><span>BOTÁNICA · 30 ML</span><span class="product-number">23</span></div>
             <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="aceite-maqui">Aceite de maqui</button></h3><span class="product-price">$8.000</span></div>
             <p class="product-wholesale-note">Mayorista desde 6 unidades · $7.000 c/u</p>
-            <p class="product-description">Un potente antioxidante de maqui, especialmente pensado para pieles maduras.</p>
+            <p class="product-description">Aceite de maqui, apreciado por su perfil antioxidante y pensado especialmente para pieles maduras.</p>
             <button class="text-add" type="button" data-add="aceite-maqui">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
           </article>
 
@@ -235,19 +361,20 @@
             <div class="product-image product-image-botanical">
               <button class="product-detail-trigger" type="button" data-detail="aceite-oregano" aria-label="Ver detalles de Aceite de orégano"><img src="assets/products/aceite-oregano-catalogo.jpg" alt="Aceite de orégano Amankay en frasco gotero de 30 ml junto a hojas de orégano" loading="lazy"></button>
             </div>
-            <div class="product-meta"><span>BOTÁNICA · 30 ML</span><span class="product-number">13</span></div>
+            <div class="product-meta"><span>BOTÁNICA · 30 ML</span><span class="product-number">24</span></div>
             <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="aceite-oregano">Aceite de orégano</button></h3><span class="product-price">$9.000</span></div>
-            <p class="product-description">Un aceite botánico para el cuidado de la piel, apreciado por sus propiedades terapéuticas.</p>
+            <p class="product-description">Aceite botánico de orégano para sumar a tu rutina de cuidado de la piel.</p>
             <button class="text-add" type="button" data-add="aceite-oregano">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
           </article>
 
           <article class="product-card" data-product="agua-rosas" data-category="rostro" data-name="agua de rosas">
             <div class="product-image product-image-botanical">
-              <button class="product-detail-trigger" type="button" data-detail="agua-rosas" aria-label="Ver detalles de Agua de rosas"><img src="assets/products/agua-rosas-catalogo.jpg" alt="Frasco original de agua de rosas Amankay acompañado de rosas blancas" loading="lazy"></button>
+              <button class="product-detail-trigger" type="button" data-detail="agua-rosas" aria-label="Ver detalles de Agua de rosas"><img src="assets/products/agua-rosas-catalogo.jpg" alt="Agua de rosas Amankay en frasco atomizador, rodeado de flores de rosa" loading="lazy"></button>
             </div>
-            <div class="product-meta"><span>ROSTRO · AGUA BOTÁNICA</span><span class="product-number">14</span></div>
-            <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="agua-rosas">Agua de rosas</button></h3><span class="product-price">Precio por confirmar</span></div>
-            <p class="product-description">Rosas en un gesto de frescura: agua botánica hidratante, refrescante y purificante.</p>
+            <div class="product-meta"><span>ROSTRO · AGUA BOTÁNICA</span><span class="product-number">25</span></div>
+            <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="agua-rosas">Agua de rosas</button></h3><span class="product-price">$6.000</span></div>
+            <p class="product-wholesale-note">Mayorista desde 6 unidades · $4.500 c/u</p>
+            <p class="product-description">Agua de rosas para limpiar y refrescar la piel como parte de tu rutina diaria.</p>
             <button class="text-add" type="button" data-add="agua-rosas">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
           </article>
 
@@ -255,9 +382,9 @@
             <div class="product-image product-image-botanical">
               <button class="product-detail-trigger" type="button" data-detail="aceite-calmar-irritaciones" aria-label="Ver detalles de Aceite para calmar irritaciones"><img src="assets/products/aceite-calmar-irritaciones-catalogo.jpg" alt="Aceite Amankay para calmar irritaciones en frasco gotero junto a caléndula y manzanilla" loading="lazy"></button>
             </div>
-            <div class="product-meta"><span>ROSTRO · 30 ML</span><span class="product-number">15</span></div>
+            <div class="product-meta"><span>ROSTRO · 30 ML</span><span class="product-number">26</span></div>
             <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="aceite-calmar-irritaciones">Aceite para calmar irritaciones</button></h3><span class="product-price">$9.500</span></div>
-            <p class="product-description">Un cuidado botánico diario para el rostro, con caléndula y aceite esencial de manzanilla.</p>
+            <p class="product-description">Con aceite de caléndula y aceite esencial de manzanilla, para un cuidado botánico diario del rostro.</p>
             <button class="text-add" type="button" data-add="aceite-calmar-irritaciones">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
           </article>
 
@@ -265,10 +392,10 @@
             <div class="product-image product-image-botanical">
               <button class="product-detail-trigger" type="button" data-detail="aceite-rosa-mosqueta" aria-label="Ver detalles de Aceite de rosa mosqueta"><img src="assets/products/aceite-rosa-mosqueta-catalogo.jpg" alt="Aceite de rosa mosqueta Amankay prensado en frío en frasco gotero de 30 ml" loading="lazy"></button>
             </div>
-            <div class="product-meta"><span>ROSTRO · 30 ML</span><span class="product-number">16</span></div>
+            <div class="product-meta"><span>ROSTRO · 30 ML</span><span class="product-number">27</span></div>
             <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="aceite-rosa-mosqueta">Aceite de rosa mosqueta</button></h3><span class="product-price">$9.000</span></div>
             <p class="product-wholesale-note">Mayorista desde 6 unidades · $8.000 c/u</p>
-            <p class="product-description">Un cuidado 100% natural y prensado en frío que ayuda a regenerar y atenuar las manchas.</p>
+            <p class="product-description">Prensado en frío, con rosa mosqueta para acompañar la hidratación y ayudar a cuidar la apariencia de las manchas.</p>
             <button class="text-add" type="button" data-add="aceite-rosa-mosqueta">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
           </article>
 
@@ -276,10 +403,10 @@
             <div class="product-image product-image-botanical">
               <button class="product-detail-trigger" type="button" data-detail="macerado-calendula" aria-label="Ver detalles de Macerado de caléndula"><img src="assets/products/macerado-calendula-catalogo.jpg" alt="Macerado de caléndula Amankay en frasco gotero, junto a flores de caléndula" loading="lazy"></button>
             </div>
-            <div class="product-meta"><span>ROSTRO · ACEITE BOTÁNICO</span><span class="product-number">17</span></div>
+            <div class="product-meta"><span>ROSTRO · ACEITE BOTÁNICO</span><span class="product-number">28</span></div>
             <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="macerado-calendula">Macerado de caléndula</button></h3><span class="product-price">$9.000</span></div>
             <p class="product-wholesale-note">Mayorista desde 6 unidades · $8.000 c/u</p>
-            <p class="product-description">Caléndula macerada en aceite vegetal para ayudar a calmar las irritaciones de la piel.</p>
+            <p class="product-description">Caléndula macerada en aceite vegetal para acompañar el cuidado de la piel irritada.</p>
             <button class="text-add" type="button" data-add="macerado-calendula">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
           </article>
 
@@ -287,10 +414,10 @@
             <div class="product-image product-image-botanical">
               <button class="product-detail-trigger" type="button" data-detail="aceite-almendras" aria-label="Ver detalles de Aceite de almendras"><img src="assets/products/aceite-almendras-catalogo.jpg" alt="Aceite de almendras Amankay en frasco gotero, junto a almendras y flores" loading="lazy"></button>
             </div>
-            <div class="product-meta"><span>ROSTRO · ACEITE BOTÁNICO</span><span class="product-number">18</span></div>
+            <div class="product-meta"><span>ROSTRO · ACEITE BOTÁNICO</span><span class="product-number">29</span></div>
             <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="aceite-almendras">Aceite de almendras</button></h3><span class="product-price">$9.000</span></div>
             <p class="product-wholesale-note">Mayorista desde 6 unidades · $7.000 c/u</p>
-            <p class="product-description">Un aceite 100% natural, rico en vitamina E y adecuado para todo tipo de pieles.</p>
+            <p class="product-description">Aceite de almendras, rico en vitamina E, una opción sencilla para sumar a tu rutina de cuidado.</p>
             <button class="text-add" type="button" data-add="aceite-almendras">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
           </article>
 
@@ -298,9 +425,10 @@
             <div class="product-image product-image-instagram">
               <button class="product-detail-trigger" type="button" data-detail="shampoo-seco" aria-label="Ver detalles de Shampoo sólido para cabello seco"><img src="assets/instagram/shampoo-cabello-seco-romero-ortiga.webp" alt="Shampoo sólido Amankay para cabello seco con romero y ortiga, 60 gramos" loading="lazy"></button>
             </div>
-            <div class="product-meta"><span>CABELLO · 60 G</span><span class="product-number">19</span></div>
-            <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="shampoo-seco">Shampoo sólido · cabello seco</button></h3><span class="product-price">Precio por confirmar</span></div>
-            <p class="product-description">Romero y ortiga en un shampoo sólido para cabello seco, inspirado en la botánica del sur.</p>
+            <div class="product-meta"><span>CABELLO · 60 G</span><span class="product-number">30</span></div>
+            <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="shampoo-seco">Shampoo sólido · cabello seco</button></h3><span class="product-price">$7.000</span></div>
+            <p class="product-wholesale-note">Mayorista desde 6 unidades · $6.000 c/u</p>
+            <p class="product-description">Una barra sólida con romero y ortiga, creada para acompañar el cuidado del cabello seco.</p>
             <button class="text-add" type="button" data-add="shampoo-seco">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
           </article>
 
@@ -308,9 +436,10 @@
             <div class="product-image product-image-instagram">
               <button class="product-detail-trigger" type="button" data-detail="shampoo-normal" aria-label="Ver detalles de Shampoo sólido para cabello normal"><img src="assets/instagram/shampoo-02.webp" alt="Shampoo sólido Amankay para cabello normal, 60 gramos, con flores violetas" loading="lazy"></button>
             </div>
-            <div class="product-meta"><span>CABELLO · 60 G</span><span class="product-number">20</span></div>
-            <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="shampoo-normal">Shampoo sólido · cabello normal</button></h3><span class="product-price">Precio por confirmar</span></div>
-            <p class="product-description">Una alternativa sólida para acompañar el cuidado del cabello normal.</p>
+            <div class="product-meta"><span>CABELLO · 60 G</span><span class="product-number">31</span></div>
+            <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="shampoo-normal">Shampoo sólido · cabello normal</button></h3><span class="product-price">$7.000</span></div>
+            <p class="product-wholesale-note">Mayorista desde 6 unidades · $6.000 c/u</p>
+            <p class="product-description">Una barra sólida de Amankay pensada para sumar sencillez a la rutina del cabello normal.</p>
             <button class="text-add" type="button" data-add="shampoo-normal">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
           </article>
 
@@ -318,13 +447,105 @@
             <div class="product-image product-image-instagram">
               <button class="product-detail-trigger" type="button" data-detail="shampoo-hidratante" aria-label="Ver detalles de Shampoo hidratante"><img src="assets/instagram/shampoo-03.webp" alt="Shampoo hidratante Amankay de caléndula y jojoba, 60 gramos" loading="lazy"></button>
             </div>
-            <div class="product-meta"><span>CABELLO · 60 G</span><span class="product-number">21</span></div>
-            <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="shampoo-hidratante">Shampoo hidratante</button></h3><span class="product-price">Precio por confirmar</span></div>
-            <p class="product-description">Caléndula y jojoba en un shampoo sólido hidratante para tu rutina capilar.</p>
+            <div class="product-meta"><span>CABELLO · 60 G</span><span class="product-number">32</span></div>
+            <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="shampoo-hidratante">Shampoo hidratante</button></h3><span class="product-price">$7.000</span></div>
+            <p class="product-wholesale-note">Mayorista desde 6 unidades · $6.000 c/u</p>
+            <p class="product-description">Una fórmula sólida con caléndula y jojoba para acompañar una rutina capilar hidratante.</p>
             <button class="text-add" type="button" data-add="shampoo-hidratante">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
           </article>
 
+          <article class="product-card" data-product="shampoo-ortiga" data-category="cabello" data-name="shampoo ortiga anticaída">
+            <div class="product-image product-image-botanical">
+              <button class="product-detail-trigger" type="button" data-detail="shampoo-ortiga" aria-label="Ver detalles de Shampoo ortiga"><img src="assets/products/shampoo-ortiga-catalogo.jpg" alt="Shampoo sólido anticaída de ortiga junto a hojas de ortiga" loading="lazy"></button>
+            </div>
+            <div class="product-meta"><span>CABELLO · 60 G</span><span class="product-number">33</span></div>
+            <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="shampoo-ortiga">Shampoo ortiga</button></h3><span class="product-price">$7.000</span></div>
+            <p class="product-wholesale-note">Mayorista desde 6 unidades · $6.000 c/u</p>
+            <p class="product-description">Shampoo anticaída elaborado con derivado del aceite de coco y polvo de ortiga. Peso aprox. 60 g.</p>
+            <button class="text-add" type="button" data-add="shampoo-ortiga">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
+          </article>
+
+          <article class="product-card" data-product="pack-shampoo-acondicionador" data-category="cabello" data-name="pack shampoo maqui acondicionador coco">
+            <div class="product-image product-image-botanical">
+              <button class="product-detail-trigger" type="button" data-detail="pack-shampoo-acondicionador" aria-label="Ver detalles de Pack shampoo de maqui y acondicionador"><img src="assets/products/pack-shampoo-acondicionador-catalogo.jpg" alt="Pack Amankay de shampoo sólido de maqui y acondicionador de aceite de coco" loading="lazy"></button>
+            </div>
+            <div class="product-meta"><span>CABELLO · PACK</span><span class="product-number">34</span></div>
+            <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="pack-shampoo-acondicionador">Pack shampoo de maqui y acondicionador</button></h3><span class="product-price">$13.000</span></div>
+            <p class="product-wholesale-note">Mayorista desde 6 unidades · $11.000 c/u</p>
+            <p class="product-description">Un dúo para tu rutina capilar: shampoo de maqui y acondicionador de aceite de coco.</p>
+            <button class="text-add" type="button" data-add="pack-shampoo-acondicionador">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
+          </article>
+
+          <article class="product-card" data-product="pack-shampoo-rosa-mosqueta-acondicionador" data-category="cabello" data-name="pack shampoo rosa mosqueta acondicionador aceite coco">
+            <div class="product-image product-image-botanical">
+              <button class="product-detail-trigger" type="button" data-detail="pack-shampoo-rosa-mosqueta-acondicionador" aria-label="Ver detalles de Pack shampoo y acondicionador"><img src="assets/products/pack-shampoo-rosa-mosqueta-acondicionador-catalogo.jpg" alt="Pack Amankay de shampoo de rosa mosqueta y acondicionador de aceite de coco" loading="lazy"></button>
+            </div>
+            <div class="product-meta"><span>CABELLO · PACK</span><span class="product-number">35</span></div>
+            <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="pack-shampoo-rosa-mosqueta-acondicionador">Pack shampoo y acondicionador</button></h3><span class="product-price">$13.000</span></div>
+            <p class="product-wholesale-note">Mayorista desde 6 unidades · $11.000 c/u</p>
+            <p class="product-description">Pack shampoo rosa mosqueta y acondicionador aceite de coco.</p>
+            <button class="text-add" type="button" data-add="pack-shampoo-rosa-mosqueta-acondicionador">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
+          </article>
+
+          <article class="product-card" data-product="shampoo-romero" data-category="cabello" data-name="shampoo romero reparador brillo">
+            <div class="product-image product-image-botanical">
+              <button class="product-detail-trigger" type="button" data-detail="shampoo-romero" aria-label="Ver detalles de Shampoo romero"><img src="assets/products/shampoo-romero-catalogo.jpg" alt="Shampoo sólido de romero junto a ramas frescas de romero en flor" loading="lazy"></button>
+            </div>
+            <div class="product-meta"><span>CABELLO · 50 G</span><span class="product-number">36</span></div>
+            <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="shampoo-romero">Shampoo romero</button></h3><span class="product-price">$7.000</span></div>
+            <p class="product-wholesale-note">Mayorista desde 6 unidades · $6.000 c/u</p>
+            <p class="product-description">Shampoo sólido de romero que ayuda a reparar el cabello dañado y a devolverle su brillo. Peso aprox. 50 g.</p>
+            <button class="text-add" type="button" data-add="shampoo-romero">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
+          </article>
+
+          <article class="product-card" data-product="pack-shampoo-ortiga-acondicionador" data-category="cabello" data-name="pack shampoo ortiga acondicionador aceite coco">
+            <div class="product-image product-image-botanical">
+              <button class="product-detail-trigger" type="button" data-detail="pack-shampoo-ortiga-acondicionador" aria-label="Ver detalles de Pack shampoo de ortiga y acondicionador"><img src="assets/products/pack-shampoo-ortiga-acondicionador-catalogo.png" alt="Pack Amankay de shampoo de ortiga y acondicionador de aceite de coco en caja kraft" loading="lazy"></button>
+            </div>
+            <div class="product-meta"><span>CABELLO · PACK</span><span class="product-number">37</span></div>
+            <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="pack-shampoo-ortiga-acondicionador">Pack shampoo de ortiga y acondicionador</button></h3><span class="product-price">$13.000</span></div>
+            <p class="product-wholesale-note">Mayorista desde 6 unidades · $11.000 c/u</p>
+            <p class="product-description">Un dúo para tu rutina capilar: shampoo de ortiga y acondicionador de aceite de coco.</p>
+            <button class="text-add" type="button" data-add="pack-shampoo-ortiga-acondicionador">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
+          </article>
+
+          <article class="product-card" data-product="shampoo-rosa-mosqueta" data-category="cabello" data-name="shampoo rosa mosqueta hidratante reparador">
+            <div class="product-image product-image-botanical">
+              <button class="product-detail-trigger" type="button" data-detail="shampoo-rosa-mosqueta" aria-label="Ver detalles de Shampoo rosa mosqueta"><img src="assets/products/shampoo-rosa-mosqueta-catalogo.png" alt="Shampoo sólido de rosa mosqueta sobre su caja kraft, junto a flores y frutos de rosa mosqueta" loading="lazy"></button>
+            </div>
+            <div class="product-meta"><span>CABELLO · 60 G</span><span class="product-number">38</span></div>
+            <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="shampoo-rosa-mosqueta">Shampoo rosa mosqueta</button></h3><span class="product-price">$7.000</span></div>
+            <p class="product-wholesale-note">Mayorista desde 6 unidades · $6.000 c/u</p>
+            <p class="product-description">Shampoo sólido de rosa mosqueta que hidrata y ayuda a reparar el cabello dañado. Peso aprox. 60 g.</p>
+            <button class="text-add" type="button" data-add="shampoo-rosa-mosqueta">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
+          </article>
+
+          <article class="product-card" data-product="shampoo-manzanilla" data-category="cabello" data-name="shampoo manzanilla brillo reparador">
+            <div class="product-image product-image-botanical">
+              <button class="product-detail-trigger" type="button" data-detail="shampoo-manzanilla" aria-label="Ver detalles de Shampoo manzanilla"><img src="assets/products/shampoo-manzanilla-catalogo.jpg" alt="Shampoo sólido de manzanilla junto a flores frescas y secas de manzanilla" loading="lazy"></button>
+            </div>
+            <div class="product-meta"><span>CABELLO · MANZANILLA</span><span class="product-number">39</span></div>
+            <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="shampoo-manzanilla">Shampoo manzanilla</button></h3><span class="product-price">$7.000</span></div>
+            <p class="product-wholesale-note">Mayorista desde 6 unidades · $6.000 c/u</p>
+            <p class="product-description">Shampoo sólido de manzanilla que da brillo y ayuda a reparar el cabello dañado.</p>
+            <button class="text-add" type="button" data-add="shampoo-manzanilla">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
+          </article>
+
+          <article class="product-card" data-product="pack-shampoo-manzanilla-acondicionador" data-category="cabello" data-name="pack shampoo manzanilla acondicionador aceite coco">
+            <div class="product-image product-image-botanical">
+              <button class="product-detail-trigger" type="button" data-detail="pack-shampoo-manzanilla-acondicionador" aria-label="Ver detalles de Pack shampoo de manzanilla y acondicionador"><img src="assets/products/pack-shampoo-manzanilla-acondicionador-catalogo.jpg" alt="Pack Amankay de shampoo de manzanilla y acondicionador de aceite de coco en caja kraft" loading="lazy"></button>
+            </div>
+            <div class="product-meta"><span>CABELLO · PACK</span><span class="product-number">40</span></div>
+            <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="pack-shampoo-manzanilla-acondicionador">Pack shampoo de manzanilla y acondicionador</button></h3><span class="product-price">$13.000</span></div>
+            <p class="product-wholesale-note">Mayorista desde 6 unidades · $11.000 c/u</p>
+            <p class="product-description">Un dúo para tu rutina capilar: shampoo de manzanilla y acondicionador de aceite de coco.</p>
+            <button class="text-add" type="button" data-add="pack-shampoo-manzanilla-acondicionador">Agregar a la bolsa <span aria-hidden="true">↗</span></button>
+          </article>
+
           <p class="empty-search" hidden>No encontramos productos con esa búsqueda.</p>
+        </div>
+        <div class="product-load-more">
+          <button id="load-more-products" type="button" aria-controls="product-grid" hidden>Ver más productos</button>
         </div>
         <p class="catalog-note">Las fotos originales de Amankay se irán incorporando y ajustando producto a producto. Las imágenes referenciales restantes son temporales.</p>
       </section>
@@ -339,7 +560,7 @@
           <h2>Un poco de sur.<br>Un mundo de <em>cuidado.</em></h2>
           <p>Amankay nace para rescatar el uso de los recursos que nos ofrece generosamente el entorno del sur de Chile. Creamos cosmética natural con dedicación, inspirada en sus plantas, sus aromas y su manera de invitarnos a bajar el ritmo.</p>
           <p>Elaboramos jabones artesanales y cremas con cariño, buscando que cada pequeño ritual te acerque un poquito más a la naturaleza.</p>
-          <a class="underlined-link" href="https://www.instagram.com/amankayorganic/" target="_blank" rel="noreferrer">Conoce más de Amankay <span aria-hidden="true">↗</span></a>
+          <button class="underlined-link story-open" type="button" aria-haspopup="dialog">Conoce nuestra historia <span aria-hidden="true">↗</span></button>
           <span class="story-seal" aria-hidden="true"><span>DESDE EL SUR<br>CON AMOR</span><b>✳</b></span>
         </div>
       </section>
@@ -363,6 +584,150 @@
         <div class="closing-overlay"></div>
         <div class="closing-content"><p class="eyebrow">AMANKAY · COSMÉTICA NATURAL</p><h2>Vuelve a lo <em>esencial.</em></h2><a class="button button-light" href="#coleccion">Descubrir la colección <span aria-hidden="true">↗</span></a></div>
       </section>
+    </main>
+
+    <main class="admin-app" id="administracion" hidden>
+      <section class="admin-login" aria-labelledby="admin-login-title">
+        <a class="admin-back" href="#inicio">← Volver a la tienda</a>
+        <div class="admin-login-card">
+          <img src="assets/branding/amankay-logo-plum.png" alt="Amankay Organic" width="88">
+          <p class="eyebrow">PANEL PRIVADO · AMANKAY ORGANIC</p>
+          <h1 id="admin-login-title">Gestión del negocio</h1>
+          <p>Entra con tu cuenta de Google autorizada. Solo la propietaria puede invitar nuevos perfiles de administración.</p>
+          <button class="button button-dark admin-google-button" id="admin-google-sign-in" type="button">
+            <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#4285F4" d="M43.6 24.5c0-1.4-.1-2.8-.4-4.1H24v7.7h11a9.4 9.4 0 0 1-4.1 6.2v5.1h6.6c3.9-3.6 6.1-8.8 6.1-14.9Z"/><path fill="#34A853" d="M24 44c5.5 0 10.2-1.8 13.6-4.8L31 34.1c-1.8 1.2-4.1 2-7 2-5.3 0-9.8-3.6-11.4-8.4H5.8v5.3A20.5 20.5 0 0 0 24 44Z"/><path fill="#FBBC05" d="M12.6 27.7a12.3 12.3 0 0 1 0-7.4V15H5.8a20.4 20.4 0 0 0 0 18l6.8-5.3Z"/><path fill="#EA4335" d="M24 11.9c3 0 5.6 1 7.7 3.1l5.8-5.8A19.5 19.5 0 0 0 24 4 20.5 20.5 0 0 0 5.8 15l6.8 5.3c1.6-4.8 6.1-8.4 11.4-8.4Z"/></svg>
+            Continuar con Google
+          </button>
+          <p class="admin-notice" id="admin-auth-notice" role="status"></p>
+        </div>
+      </section>
+
+      <section class="admin-workspace" hidden>
+        <header class="admin-topbar">
+          <a class="admin-back" href="#inicio">← Volver a la tienda</a>
+          <div><span class="admin-online-dot"></span><span id="firebase-sync-status">Conectando con Firebase…</span><span id="admin-user-email"></span></div>
+          <button id="admin-sign-out" type="button">Cerrar sesión</button>
+        </header>
+        <div class="admin-layout">
+          <aside class="admin-sidebar">
+            <p class="eyebrow">OPERACIÓN AMANKAY</p>
+            <h1>Tu negocio,<br><em>bajo control.</em></h1>
+            <nav class="admin-tabs" aria-label="Herramientas de administración">
+              <button class="admin-tab is-active" type="button" data-admin-view="dashboard">Resumen</button>
+              <button class="admin-tab" type="button" data-admin-view="orders">Pedidos</button>
+              <button class="admin-tab" type="button" data-admin-view="customers">Clientes</button>
+              <button class="admin-tab" type="button" data-admin-view="products">Productos y catálogo</button>
+              <button class="admin-tab" type="button" data-admin-view="inventory">Inventario</button>
+              <button class="admin-tab" type="button" data-admin-view="expenses">Gastos</button>
+              <button class="admin-tab" type="button" data-admin-view="reports">Informes y respaldo</button>
+              <button class="admin-tab owner-only" type="button" data-admin-view="users" hidden>Perfiles administradores</button>
+            </nav>
+            <p class="admin-local-note">Datos sincronizados con Firebase Firestore.</p>
+          </aside>
+
+          <div class="admin-content">
+            <section class="admin-view is-active" data-admin-panel="dashboard">
+              <div class="admin-heading"><div><p class="eyebrow">VISTA GENERAL</p><h2>Buenos días, Amankay.</h2></div><button class="admin-primary" id="admin-new-order" type="button">＋ Registrar pedido</button></div>
+              <div class="admin-metrics">
+                <article><span>Ventas del mes</span><strong id="metric-sales">$0</strong><small>Pedidos confirmados, preparados y entregados</small></article>
+                <article><span>Pedidos por preparar</span><strong id="metric-pending">0</strong><small>Pedidos nuevos o confirmados</small></article>
+                <article><span>Productos con poco stock</span><strong id="metric-low-stock">0</strong><small>En o bajo su nivel mínimo</small></article>
+                <article><span>Gastos del mes</span><strong id="metric-expenses">$0</strong><small>Gastos registrados este mes</small></article>
+              </div>
+              <div class="admin-columns">
+                <section class="admin-card"><div class="admin-card-heading"><h3>Pedidos recientes</h3><button type="button" data-open-view="orders">Ver todos →</button></div><div class="admin-table-wrap"><table><thead><tr><th>Pedido</th><th>Cliente</th><th>Total</th><th>Estado</th></tr></thead><tbody id="dashboard-orders"></tbody></table></div></section>
+                <section class="admin-card admin-alert-card"><p class="eyebrow">PARA HOY</p><h3>Atención a tus productos</h3><div id="dashboard-low-stock"></div><p class="admin-tip">Al confirmar un pedido, el inventario se descuenta automáticamente.</p></section>
+              </div>
+            </section>
+
+            <section class="admin-view" data-admin-panel="orders">
+              <div class="admin-heading"><div><p class="eyebrow">VENTA Y ATENCIÓN</p><h2>Pedidos</h2></div><button class="admin-primary" id="admin-new-order-list" type="button">＋ Registrar pedido</button></div>
+              <div class="admin-toolbar"><label>Buscar pedido o cliente <input id="order-search" type="search" placeholder="Nombre, teléfono o folio"></label><label>Estado <select id="order-status-filter"><option value="">Todos</option><option>Nuevo</option><option>Confirmado</option><option>Preparando</option><option>Entregado</option><option>Anulado</option></select></label></div>
+              <div class="admin-card admin-table-wrap"><table><thead><tr><th>Fecha y folio</th><th>Cliente y contacto</th><th>Productos</th><th>Total</th><th>Estado</th><th>Acción</th></tr></thead><tbody id="orders-table"></tbody></table><p class="admin-empty" id="orders-empty" hidden>No hay pedidos. Registra la primera venta para comenzar.</p></div>
+            </section>
+
+            <section class="admin-view" data-admin-panel="customers">
+              <div class="admin-heading"><div><p class="eyebrow">RELACIÓN CON TU COMUNIDAD</p><h2>Clientes</h2></div></div>
+              <p class="admin-intro">Listado de clientes que han realizado pedidos, con su historial, contacto y monto acumulado.</p>
+              <div class="admin-card admin-table-wrap"><table><thead><tr><th>Cliente</th><th>WhatsApp</th><th>Pedidos</th><th>Compras registradas</th><th>Último pedido</th></tr></thead><tbody id="customers-table"></tbody></table></div>
+            </section>
+
+            <section class="admin-view" data-admin-panel="products">
+              <div class="admin-heading"><div><p class="eyebrow">TIENDA ONLINE</p><h2>Productos y catálogo</h2></div><button class="admin-primary" id="admin-add-product" type="button">＋ Agregar producto</button></div>
+              <p class="admin-intro">Edita nombre, precio y descripción publicados en la tienda. Los cambios se sincronizan con Firebase.</p>
+              <div class="admin-card admin-table-wrap"><table><thead><tr><th>Producto</th><th>Precio CLP</th><th>Mayorista desde</th><th>Precio mayorista</th><th>Costo unitario</th><th>Descripción</th><th></th></tr></thead><tbody id="products-table"></tbody></table></div>
+            </section>
+
+            <section class="admin-view" data-admin-panel="inventory">
+              <div class="admin-heading"><div><p class="eyebrow">CONTROL Y REPOSICIÓN</p><h2>Inventario</h2></div></div>
+              <p class="admin-intro">Registra existencias y alertas de reposición. Los movimientos al confirmar o anular pedidos se reflejan en esta vista.</p>
+              <div class="admin-card admin-table-wrap"><table><thead><tr><th>Producto</th><th>Existencias</th><th>Alerta mínima</th><th>Estado</th><th>Actualizar</th></tr></thead><tbody id="inventory-table"></tbody></table></div>
+              <section class="admin-card admin-movement-card"><div class="admin-card-heading"><h3>Movimientos recientes</h3><span>Registro de ajustes y pedidos</span></div><div class="admin-table-wrap"><table><thead><tr><th>Fecha</th><th>Producto</th><th>Cambio</th><th>Motivo</th></tr></thead><tbody id="stock-movements-table"></tbody></table></div></section>
+            </section>
+
+            <section class="admin-view" data-admin-panel="expenses">
+              <div class="admin-heading"><div><p class="eyebrow">COSTOS DEL NEGOCIO</p><h2>Gastos y compras</h2></div></div>
+              <form class="admin-card admin-expense-form" id="expense-form">
+                <h3>Registrar un gasto o compra</h3>
+                <label>Descripción<input name="description" required maxlength="120" placeholder="Ej. Insumos para cremas"></label>
+                <label>Categoría<select name="category"><option>Insumos y materias primas</option><option>Envases y etiquetado</option><option>Producción</option><option>Arriendo y servicios</option><option>Transporte y despacho</option><option>Marketing y ventas</option><option>Otros</option></select></label>
+                <label>Proveedor<input name="supplier" maxlength="100" placeholder="Nombre del proveedor"></label>
+                <label>Monto CLP<input name="amount" type="number" min="1" step="1" required></label>
+                <label>Fecha<input name="date" type="date" required></label>
+                <label>Notas<input name="notes" maxlength="240" placeholder="Vencimiento, comprobante, detalle"></label>
+                <button class="admin-primary" type="submit">Guardar gasto</button>
+              </form>
+              <div class="admin-card admin-table-wrap"><table><thead><tr><th>Fecha</th><th>Descripción y proveedor</th><th>Categoría</th><th>Monto</th><th></th></tr></thead><tbody id="expenses-table"></tbody></table></div>
+            </section>
+
+            <section class="admin-view" data-admin-panel="reports">
+              <div class="admin-heading"><div><p class="eyebrow">NÚMEROS CLAROS, DECISIONES TRANQUILAS</p><h2>Informes y respaldo</h2></div></div>
+              <div class="admin-metrics admin-report-metrics"><article><span>Ventas confirmadas</span><strong id="report-sales">$0</strong></article><article><span>Gastos registrados</span><strong id="report-expenses">$0</strong></article><article><span>Resultado estimado</span><strong id="report-margin">$0</strong><small>Ventas menos costos y gastos ingresados</small></article><article><span>Pedidos confirmados</span><strong id="report-orders">0</strong></article></div>
+              <p class="admin-intro">El resultado es orientativo: completa el costo de elaboración o compra de cada producto para estimar mejor la utilidad.</p>
+              <div class="admin-card admin-backup-card"><h3>Tu información siempre respaldada</h3><p>Descarga productos, inventario, pedidos y gastos en un archivo JSON. Este respaldo no reemplaza Firebase; guárdalo en un lugar seguro.</p><button class="admin-primary" id="admin-export-data" type="button">Descargar respaldo del negocio</button></div>
+            </section>
+
+            <section class="admin-view" data-admin-panel="users">
+              <div class="admin-heading"><div><p class="eyebrow">ACCESO SEGURO AL NEGOCIO</p><h2>Perfiles administradores</h2></div></div>
+              <p class="admin-intro">Invita a alguien con su correo de Google. Esa persona podrá entrar con “Continuar con Google” una vez que la invitación esté guardada. Solo la cuenta propietaria puede administrar estos accesos.</p>
+              <form class="admin-card admin-invite-form" id="admin-invite-form">
+                <label>Nombre del perfil<input name="name" required maxlength="80" placeholder="Nombre de la persona"></label>
+                <label>Correo de su cuenta Google<input name="email" type="email" required maxlength="120" placeholder="persona@gmail.com"></label>
+                <button class="admin-primary" type="submit">Invitar administrador</button>
+              </form>
+              <div class="admin-card admin-table-wrap"><table><thead><tr><th>Perfil</th><th>Cuenta Google</th><th>Acceso</th><th></th></tr></thead><tbody id="admin-users-table"></tbody></table></div>
+            </section>
+          </div>
+        </div>
+        <p class="admin-feedback" id="admin-feedback" role="status" aria-live="polite"></p>
+      </section>
+      <dialog class="admin-dialog" id="admin-order-dialog">
+        <form id="admin-order-form">
+          <div class="admin-dialog-heading"><div><p class="eyebrow">VENTA DIRECTA O WHATSAPP</p><h2>Registrar pedido</h2></div><button type="button" class="admin-dialog-close" aria-label="Cerrar">×</button></div>
+          <label>Nombre del cliente<input name="customer" required maxlength="100"></label>
+          <label>WhatsApp / teléfono<input name="phone" type="tel" required maxlength="30"></label>
+          <label>Productos en el pedido<select name="product" id="order-product" required></select></label>
+          <label>Cantidad<input name="quantity" type="number" min="1" step="1" value="1" required></label>
+          <label>Notas y entrega<textarea name="notes" rows="3" maxlength="300"></textarea></label>
+          <button class="admin-primary" type="submit">Guardar como pedido nuevo</button>
+        </form>
+      </dialog>
+      <dialog class="admin-dialog" id="admin-product-dialog">
+        <form id="admin-product-form">
+          <div class="admin-dialog-heading"><div><p class="eyebrow">CATÁLOGO</p><h2 id="admin-product-dialog-title">Nuevo producto</h2></div><button type="button" class="admin-dialog-close" aria-label="Cerrar">×</button></div>
+          <label>Identificador (único, sin espacios)<input name="id" pattern="[a-z0-9-]+" required maxlength="48"></label>
+          <label>Nombre<input name="name" required maxlength="100"></label>
+          <label>Categoría<select name="category"><option>Rostro</option><option>Cuerpo</option><option>Aromaterapia</option><option>Cabello</option><option>Jabones</option><option>Botánica</option></select></label>
+          <label>Formato<input name="format" maxlength="50" placeholder="50 g · 30 ml"></label>
+          <label>Precio unitario CLP<input name="price" type="number" min="0" step="1" required></label>
+          <label>Costo unitario de elaboración o compra CLP<input name="costPrice" type="number" min="0" step="1"></label>
+          <label>Mínimo mayorista<input name="wholesaleMinimum" type="number" min="0" step="1" value="0"></label>
+          <label>Precio mayorista CLP<input name="wholesalePrice" type="number" min="0" step="1" value="0"></label>
+          <label>Ruta de foto<input name="image" maxlength="300" placeholder="assets/products/mi-producto.jpg"></label>
+          <label>Descripción<textarea name="detail" rows="4" required maxlength="500"></textarea></label>
+          <button class="admin-primary" type="submit">Guardar producto</button>
+        </form>
+      </dialog>
     </main>
 
     <footer class="site-footer">
@@ -390,7 +755,7 @@
             <p class="product-dialog-category"></p>
             <h2 id="product-dialog-title"></h2>
             <p class="product-dialog-price"></p>
-            <p class="product-dialog-wholesale" hidden></p>
+            <div class="product-dialog-wholesale" aria-live="polite" hidden></div>
             <div class="product-dialog-format"><span>COLECCIÓN Y FORMATO</span><strong></strong></div>
             <div class="product-purchase-row">
               <div class="quantity-picker" aria-label="Cantidad">
@@ -423,11 +788,50 @@
       <div class="cart-empty"><span class="empty-flower">✳</span><h3>Tu bolsa está esperando.</h3><p>Descubre un pequeño ritual hecho en el sur.</p><button class="button button-dark continue-shopping" type="button">Explorar la colección <span aria-hidden="true">↗</span></button></div>
       <div class="drawer-footer" hidden>
         <div class="subtotal-row"><span>Subtotal</span><strong class="cart-subtotal">$0</strong></div>
-        <p class="checkout-note">El valor y la coordinación de entrega se confirman al realizar tu pedido.</p>
-        <button class="button button-dark checkout-button" type="button">Continuar por WhatsApp <span aria-hidden="true">↗</span></button>
-        <p class="checkout-caption">Pedido de muestra · sin pago en línea</p>
+        <p class="checkout-note">Completa tus datos para continuar. El envío se coordina antes de confirmar el pago.</p>
+        <button class="button button-dark checkout-button" type="button">Continuar al checkout <span aria-hidden="true">↗</span></button>
+        <p class="checkout-caption">Mercado Pago · próximamente</p>
       </div>
     </aside>
+    <dialog class="story-dialog" aria-labelledby="story-dialog-title">
+      <button class="icon-button story-dialog-close" type="button" aria-label="Cerrar nuestra historia">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+      <div class="story-dialog-content">
+        <p class="eyebrow"><span class="eyebrow-line"></span> NUESTRA HISTORIA</p>
+        <h2 id="story-dialog-title">Hecho a mano,<br><em>desde Villarrica.</em></h2>
+        <p class="story-dialog-lead">Amankay nace en Villarrica, entre bosques, lagos y volcanes, con una idea sencilla: cuidar la piel con lo que la naturaleza del sur nos ofrece.</p>
+        <div class="story-pillars">
+          <article><span aria-hidden="true">01</span><h3>Del entorno a tu piel</h3><p>Trabajamos con ingredientes botánicos como maqui, rosa mosqueta, caléndula y canelo, protagonistas del paisaje que nos rodea.</p></article>
+          <article><span aria-hidden="true">02</span><h3>Hecho a mano</h3><p>Cada jabón, crema y aceite se elabora de forma artesanal, con tiempo y dedicación, buscando fórmulas sencillas y nobles.</p></article>
+          <article><span aria-hidden="true">03</span><h3>Cerca de ti</h3><p>Coordinamos cada pedido directamente contigo, para que tu pequeño ritual llegue a casa tal como lo imaginaste.</p></article>
+        </div>
+        <div class="story-dialog-actions">
+          <a class="button button-dark story-dialog-collection" href="#coleccion">Ver la colección <span aria-hidden="true">↗</span></a>
+          <a class="underlined-link" href="https://www.instagram.com/amankayorganic/" target="_blank" rel="noreferrer">Síguenos en Instagram <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog class="checkout-dialog" aria-labelledby="checkout-title">
+      <button class="icon-button checkout-close" type="button" aria-label="Cerrar checkout">×</button>
+      <div class="checkout-content">
+        <p class="eyebrow"><span class="eyebrow-line"></span> UN ÚLTIMO PASO</p>
+        <h2 id="checkout-title">Tus datos de entrega</h2>
+        <p class="checkout-intro">Al enviar, se abrirá WhatsApp para compartir estos datos con Amankay; no se guardan en este sitio. El pago en línea con Mercado Pago se habilitará cuando completemos su configuración.</p>
+        <form class="checkout-form">
+          <label>Nombre y apellido<input name="name" autocomplete="name" required maxlength="100"></label>
+          <label>Correo electrónico<input name="email" type="email" autocomplete="email" required maxlength="254"></label>
+          <label>Teléfono / WhatsApp<input name="phone" type="tel" autocomplete="tel" required maxlength="30"></label>
+          <label>Comuna o ciudad de entrega<input name="city" autocomplete="address-level2" required maxlength="100"></label>
+          <label>Dirección (opcional)<input name="address" autocomplete="street-address" maxlength="200"></label>
+          <div class="checkout-total"><span>Subtotal referencial</span><strong class="checkout-subtotal">$0</strong></div>
+          <p class="checkout-payment-note">El costo de envío y el total final se confirman antes del pago.</p>
+          <button class="button button-dark checkout-whatsapp" type="submit">Enviar pedido por WhatsApp <span aria-hidden="true">↗</span></button>
+          <button class="checkout-mercadopago" type="button" disabled>Pagar con Mercado Pago · próximamente</button>
+        </form>
+      </div>
+    </dialog>
     <div class="toast" role="status" aria-live="polite"></div>
   </body>
 </html>
