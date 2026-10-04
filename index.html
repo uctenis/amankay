@@ -18,9 +18,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20261003-5">
-    <script src="app.js?v=20261003-4" defer></script>
-    <script type="module" src="admin.js?v=20261003-4"></script>
+    <link rel="stylesheet" href="styles.css?v=20261004-2">
+    <script src="communes.js?v=20261004-1" defer></script>
+    <script src="app.js?v=20261004-2" defer></script>
+    <script type="module" src="admin.js?v=20261004-2"></script>
   </head>
   <body>
     <div class="announcement">
@@ -949,6 +950,20 @@
       </div>
     </dialog>
 
+    <dialog class="review-dialog" aria-labelledby="review-title">
+      <form class="checkout-content review-form">
+        <p class="eyebrow">TU EXPERIENCIA</p>
+        <h2 id="review-title">Cuéntanos cómo te fue</h2>
+        <p class="review-product"></p>
+        <label>Tu nombre<input name="name" required maxlength="100" autocomplete="given-name"></label>
+        <label>Tu comuna<input name="city" maxlength="100" autocomplete="address-level2"></label>
+        <label>Tu reseña<textarea name="text" required maxlength="400" rows="5"></textarea></label>
+        <label><input name="consent" type="checkbox" required> Autorizo a Amankay a publicar mi nombre, comuna y reseña.</label>
+        <p class="review-feedback" role="status"></p>
+        <button class="button button-dark" type="submit">Enviar reseña</button>
+        <button class="review-close" type="button">Cerrar</button>
+      </form>
+    </dialog>
     <dialog class="checkout-dialog" aria-labelledby="checkout-title">
       <button class="icon-button checkout-close" type="button" aria-label="Cerrar checkout">×</button>
       <div class="checkout-content">
@@ -960,7 +975,7 @@
           <label>Correo electrónico<input name="email" type="email" autocomplete="email" required maxlength="254"></label>
           <label>Teléfono / WhatsApp<input name="phone" type="tel" autocomplete="tel" required maxlength="30"></label>
           <label>Región de entrega<select name="region" required><option value="">Elige tu región</option><option value="retiro">Retiro en Villarrica (sin costo)</option><option value="La Araucanía">La Araucanía</option><option value="Los Ríos">Los Ríos</option><option value="Los Lagos">Los Lagos</option><option value="Biobío">Biobío</option><option value="Ñuble">Ñuble</option><option value="Maule">Maule</option><option value="O&#39;Higgins">O&#39;Higgins</option><option value="Metropolitana de Santiago">Metropolitana de Santiago</option><option value="Valparaíso">Valparaíso</option><option value="Coquimbo">Coquimbo</option><option value="Atacama">Atacama</option><option value="Antofagasta">Antofagasta</option><option value="Tarapacá">Tarapacá</option><option value="Arica y Parinacota">Arica y Parinacota</option><option value="Aysén">Aysén</option><option value="Magallanes">Magallanes</option></select></label>
-          <label>Comuna o ciudad de entrega<input name="city" autocomplete="address-level2" required maxlength="100"></label>
+          <label>Comuna de entrega<select name="city" autocomplete="address-level2" required disabled><option value="">Elige primero tu región</option></select></label>
           <label>Dirección (opcional)<input name="address" autocomplete="street-address" maxlength="200"></label>
           <div class="checkout-total"><span>Subtotal referencial</span><strong class="checkout-subtotal">$0</strong></div>
           <div class="checkout-total checkout-shipping"><span>Envío por pagar (referencial)</span><strong class="checkout-shipping-value">Elige tu región</strong></div>

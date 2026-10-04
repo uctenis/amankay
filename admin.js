@@ -297,8 +297,50 @@ onSnapshot(query(collection(db, "testimonials"), where("published", "==", true))
 
 window.amankayPaymentEndpoint = paymentEndpoint;
 
+const reviewToken = new URLSearchParams(location.search).get("opinar");
+if (reviewToken && /^[0-9a-f-]{36}$/.test(reviewToken)) {
+  const dialog = document.querySelector(".review-dialog");
+  const form = dialog.querySelector(".review-form");
+  const notice = dialog.querySelector(".review-feedback");
+  dialog.querySelector(".review-close").addEventListener("click", () => dialog.close());
+  getDoc(doc(db, "reviewInvites", reviewToken)).then(async (invite) => {
+    if (!invite.exists() || invite.data().expiresAt.toDate() <= new Date()) throw new Error("Este enlace venció o no existe.");
+    const product = await getDoc(doc(db, "catalog", invite.data().productId));
+    dialog.querySelector(".review-product").textContent = product.exists() ? `Producto: ${product.data().name}` : "Producto Amankay";
+    dialog.showModal();
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const submit = form.querySelector('[type="submit"]');
+      submit.disabled = true;
+      try {
+        const values = new FormData(form);
+        await setDoc(doc(db, "testimonials", reviewToken), {
+          name: String(values.get("name") || "").trim(),
+          city: String(values.get("city") || "").trim(),
+          text: String(values.get("text") || "").trim(),
+          productId: invite.data().productId,
+          published: false,
+          verifiedPurchase: true,
+          createdAt: serverTimestamp(),
+        });
+        form.querySelectorAll("label, button[type=submit]").forEach((element) => { element.hidden = true; });
+        notice.textContent = "Gracias. Recibimos tu reseña y la revisaremos antes de publicarla.";
+        history.replaceState(null, "", location.pathname + location.hash);
+      } catch (error) {
+        notice.textContent = error.code === "permission-denied" ? "Este enlace ya fue utilizado o el pedido aún no figura como entregado." : "No pudimos enviar la reseña. Inténtalo nuevamente.";
+        submit.disabled = false;
+      }
+    });
+  }).catch((error) => {
+    console.warn("No se pudo abrir la invitación de reseña.", error);
+    dialog.querySelector(".review-product").textContent = "Este enlace de reseña venció o no existe.";
+    form.querySelectorAll("label, button[type=submit]").forEach((element) => { element.hidden = true; });
+    dialog.showModal();
+  });
+}
+
 // Pedidos hechos desde la tienda: llegan al panel como "Nuevo" para confirmarlos.
-window.amankaySubmitOrder = (order) => addDoc(collection(db, "orders"), {
+window.amankaySubmitOrder = (order) => setDoc(doc(db, "orders", order.number), {
   ...order,
   status: "Nuevo",
   channel: "Web",
@@ -396,6 +438,12 @@ onAuthStateChanged(auth, async (user) => {
     return;
   }
   try {
+    const token = await user.getIdTokenResult();
+    if (token.signInProvider !== "google.com") {
+      await signOut(auth);
+      say(authNotice, "Accede con Google para administrar la tienda.", true);
+      return;
+    }
     if (!user.emailVerified) {
       await signOut(auth);
       say(authNotice, "La cuenta de Google no informó un correo verificado. Usa una cuenta Google con correo confirmado.");
@@ -410,6 +458,14 @@ onAuthStateChanged(auth, async (user) => {
       await signOut(auth);
       say(authNotice, `La cuenta ${user.email} todavía no está autorizada. Pídele a la propietaria que agregue tu perfil.`, true);
       return;
+    }
+    if (!owner && profile.data().uid && profile.data().uid !== user.uid) {
+      await signOut(auth);
+      say(authNotice, "Este perfil está vinculado a otra cuenta Google. Pide a la propietaria que revise el acceso.", true);
+      return;
+    }
+    if (!owner && !profile.data().uid) {
+      await updateDoc(doc(db, "adminUsers", user.email.toLowerCase()), { uid: user.uid });
     }
     currentUser = user;
     document.querySelector(".owner-only").hidden = !owner;
@@ -552,6 +608,15 @@ function renderOrders() {
     const orderId = escapeHtml(order.id);
     return `<tr><td>${escapeHtml(asDate(order.createdAt).toLocaleDateString("es-CL"))}<small>${escapeHtml(order.number || order.id.slice(0, 7))}</small>${sale ? `<small>${escapeHtml(sale)}</small>` : ""}</td><td>${escapeHtml(order.customer)}<small>${escapeHtml(order.phone)}</small>${order.email ? `<small>${escapeHtml(order.email)}</small>` : ""}${delivery ? `<small>${escapeHtml(delivery)}</small>` : ""}</td><td>${items.map((item) => `${escapeHtml(item.name)} × ${numberFormat.format(item.quantity)}`).join("<br>") || "—"}${order.discount ? `<small>Descuento ${money(order.discount)}</small>` : ""}${order.notes ? `<small>${escapeHtml(order.notes)}</small>` : ""}</td><td>${money(order.total)}</td><td><span class="admin-badge">${escapeHtml(order.status)}</span>${order.status === "Anulado" || order.paid === undefined ? "" : `<br><span class="admin-badge ${order.paid ? "is-paid" : "is-warning"}">${order.paid ? "Pagado" : "Por cobrar"}</span>`}</td><td><div class="admin-row-actions">${whatsapp ? `<a href="${whatsapp}" target="_blank" rel="noreferrer">WhatsApp</a>` : ""}${nextStatus.map((status) => `<button type="button" data-order-status="${escapeHtml(status)}" data-order-id="${orderId}">${escapeHtml(status)}</button>`).join("")}${order.status === "Anulado" ? "" : `<button type="button" data-order-paid="${orderId}">${order.paid ? "Quitar pago" : "Marcar pagado"}</button>`}${removable ? `<button type="button" data-order-delete="${orderId}">Eliminar</button>` : ""}</div></td></tr>`;
   }).join("");
+  document.querySelectorAll("#orders-table tr").forEach((row, index) => {
+    const order = orders[index];
+    if (order.status !== "Entregado" || !order.items?.some((item) => item.productId)) return;
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = "Pedir reseña";
+    button.dataset.orderReview = order.id;
+    row.querySelector(".admin-row-actions").append(button);
+  });
 }
 
 function customerList() {
@@ -932,9 +997,29 @@ document.querySelector("#orders-table").addEventListener("click", async (event) 
   const button = event.target.closest("[data-order-status]");
   const paidButton = event.target.closest("[data-order-paid]");
   const deleteButton = event.target.closest("[data-order-delete]");
+  const reviewButton = event.target.closest("[data-order-review]");
   if (button) changeOrderStatus(button.dataset.orderId, button.dataset.orderStatus);
   try {
-    if (paidButton) {
+    if (reviewButton) {
+      const order = data.orders.find((item) => item.id === reviewButton.dataset.orderReview);
+      if (order?.status !== "Entregado") return;
+      const products = order.items.filter((item) => item.productId);
+      const selection = products.length === 1 ? "1" : window.prompt(`¿Sobre qué producto pedir la reseña?\n${products.map((item, index) => `${index + 1}. ${item.name}`).join("\n")}`);
+      if (selection === null) return;
+      const product = products[Number(selection) - 1];
+      if (!product) { showAdminFeedback("Selecciona un producto de la lista.", true); return; }
+      const token = crypto.randomUUID();
+      await setDoc(doc(db, "reviewInvites", token), {
+        orderId: order.id,
+        productId: product.productId,
+        expiresAt: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+        createdAt: serverTimestamp(),
+        createdBy: currentUser.uid,
+      });
+      const link = `${location.origin}${location.pathname}?opinar=${token}`;
+      try { await navigator.clipboard.writeText(link); showAdminFeedback("Enlace de reseña copiado. Envíalo a la clienta; vence en 30 días."); }
+      catch { window.prompt("Copia el enlace y envíalo a la clienta:", link); }
+    } else if (paidButton) {
       const order = data.orders.find((item) => item.id === paidButton.dataset.orderPaid);
       if (!order) return;
       await updateDoc(doc(db, "orders", order.id), { paid: !order.paid, updatedAt: serverTimestamp() });

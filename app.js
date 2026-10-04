@@ -903,7 +903,19 @@ function updateShippingEstimate() {
   const estimate = getShippingEstimate(checkoutForm.elements.region.value);
   checkoutDialog.querySelector(".checkout-shipping-value").textContent = estimate ? estimate.text : "Elige tu región";
 }
-checkoutForm.elements.region.addEventListener("change", updateShippingEstimate);
+function updateCommunes() {
+  const region = checkoutForm.elements.region.value;
+  const city = checkoutForm.elements.city;
+  const communes = window.amankayCommunes?.[region] ?? [];
+  city.replaceChildren(new Option(region ? "Elige tu comuna" : "Elige primero tu región", ""));
+  for (const commune of communes) city.add(new Option(commune, commune));
+  city.disabled = !region;
+  if (region === "retiro") city.value = "Villarrica";
+}
+checkoutForm.elements.region.addEventListener("change", () => {
+  updateShippingEstimate();
+  updateCommunes();
+});
 
 function buildOrderMessage(customer) {
   const lines = cart.map(({ id, quantity }) => {
@@ -1067,7 +1079,7 @@ checkoutPay.addEventListener("click", async () => {
 // Regreso desde Mercado Pago: ?pago=aprobado|pendiente|rechazado&folio=AM-…
 const paymentReturn = new URLSearchParams(window.location.search);
 const paymentResults = {
-  aprobado: { eyebrow: "GRACIAS POR TU COMPRA", title: "¡Pago recibido!", text: "Recibimos tu pago. Prepararemos tu pedido y te contactaremos para coordinar la entrega." },
+  aprobado: { eyebrow: "PAGO EN VERIFICACIÓN", title: "Estamos verificando tu pago", text: "Volviste desde Mercado Pago. Confirmaremos el pago con Mercado Pago antes de preparar tu pedido y te contactaremos para coordinar la entrega." },
   pendiente: { eyebrow: "PAGO EN PROCESO", title: "Tu pago está en proceso", text: "Mercado Pago está procesando tu pago. Te avisaremos apenas se confirme." },
   rechazado: { eyebrow: "PAGO NO COMPLETADO", title: "No se completó el pago", text: "Tu pedido sigue registrado. Te contactaremos para coordinar otra forma de pago." },
 };
@@ -1122,6 +1134,8 @@ checkoutForm.addEventListener("submit", async (event) => {
     saveCart();
     updateCart();
     checkoutForm.reset();
+    updateCommunes();
+    updateShippingEstimate();
   }
 });
 checkoutDone.querySelector(".checkout-done-close").addEventListener("click", () => {
@@ -1519,7 +1533,7 @@ function testimonialCard(item, withProduct = true) {
   return `
     <figure class="testimonial">
       <blockquote>${escapeHtml(item.text)}</blockquote>
-      <figcaption><strong>${author}</strong>${product ? `<button type="button" data-detail="${escapeHtml(product.id)}">${escapeHtml(product.name)}</button>` : ""}</figcaption>
+      <figcaption><strong>${author}</strong>${item.verifiedPurchase ? '<small>Compra verificada</small>' : ""}${product ? `<button type="button" data-detail="${escapeHtml(product.id)}">${escapeHtml(product.name)}</button>` : ""}</figcaption>
     </figure>`;
 }
 

@@ -4,11 +4,13 @@ service cloud.firestore {
     function isAdmin() {
       return request.auth != null
         && request.auth.token.email_verified == true
+        && request.auth.token.firebase.sign_in_provider == 'google.com'
         && (
           request.auth.token.email == 'dsilvaroco@gmail.com'
           || (
             exists(/databases/$(database)/documents/adminUsers/$(request.auth.token.email))
             && get(/databases/$(database)/documents/adminUsers/$(request.auth.token.email)).data.email == request.auth.token.email
+            && get(/databases/$(database)/documents/adminUsers/$(request.auth.token.email)).data.get('uid', request.auth.uid) == request.auth.uid
           )
         );
     }
@@ -16,7 +18,8 @@ service cloud.firestore {
     function isOwner() {
       return request.auth != null
         && request.auth.token.email == 'dsilvaroco@gmail.com'
-        && request.auth.token.email_verified == true;
+        && request.auth.token.email_verified == true
+        && request.auth.token.firebase.sign_in_provider == 'google.com';
     }
 
     match /catalog/{productId} {
@@ -54,7 +57,7 @@ service cloud.firestore {
 
     match /orders/{orderId} {
       allow read, update, delete: if isAdmin();
-      allow create: if isAdmin() || isWebOrder();
+      allow create: if isAdmin() || (isWebOrder() && request.resource.data.number == orderId);
     }
 
     match /expenses/{expenseId} {
@@ -68,6 +71,25 @@ service cloud.firestore {
     match /testimonials/{testimonialId} {
       // Only published testimonials are visible in the shop; drafts stay with admins.
       allow read: if resource.data.published == true || isAdmin();
+      allow create: if isAdmin() || (
+        exists(/databases/$(database)/documents/reviewInvites/$(testimonialId))
+        && request.time < get(/databases/$(database)/documents/reviewInvites/$(testimonialId)).data.expiresAt
+        && get(/databases/$(database)/documents/orders/$(get(/databases/$(database)/documents/reviewInvites/$(testimonialId)).data.orderId)).data.status == 'Entregado'
+        && request.resource.data.keys().hasOnly(['name', 'city', 'productId', 'text', 'published', 'verifiedPurchase', 'createdAt'])
+        && request.resource.data.name is string && request.resource.data.name.size() > 0 && request.resource.data.name.size() <= 100
+        && request.resource.data.city is string && request.resource.data.city.size() <= 100
+        && request.resource.data.text is string && request.resource.data.text.size() > 0 && request.resource.data.text.size() <= 400
+        && request.resource.data.productId == get(/databases/$(database)/documents/reviewInvites/$(testimonialId)).data.productId
+        && request.resource.data.published == false
+        && request.resource.data.verifiedPurchase == true
+        && request.resource.data.createdAt == request.time
+      );
+      allow update, delete: if isAdmin();
+    }
+
+    match /reviewInvites/{token} {
+      allow get: if true;
+      allow list: if isAdmin();
       allow create, update, delete: if isAdmin();
     }
 
@@ -76,10 +98,21 @@ service cloud.firestore {
         || (
           request.auth != null
           && request.auth.token.email_verified == true
+          && request.auth.token.firebase.sign_in_provider == 'google.com'
           && request.auth.token.email == email
         );
       allow list: if isOwner();
-      allow create, update, delete: if isOwner();
+      allow create, delete: if isOwner();
+      allow update: if isOwner() || (
+        request.auth != null
+        && request.auth.token.email_verified == true
+        && request.auth.token.firebase.sign_in_provider == 'google.com'
+        && request.auth.token.email == email
+        && resource.data.email == email
+        && !('uid' in resource.data)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['uid'])
+        && request.resource.data.uid == request.auth.uid
+      );
     }
   }
 }

@@ -1,57 +1,35 @@
-# Activar el pago con Mercado Pago
+# Activar pagos en línea de Amankay
 
-La tienda ya tiene el recorrido completo: registra el pedido, muestra el botón **Pagar con Mercado Pago** y recibe a la clienta cuando vuelve del pago. Solo falta conectar tu cuenta. Mientras no lo hagas, la tienda registra el pedido y avisa que la contactarás para coordinar el pago.
+La tienda sigue registrando pedidos sin cobrar mientras `paymentEndpoint` esté vacío. **No actives el endpoint hasta terminar y probar todos los pasos.** El regreso del comprador desde Mercado Pago solo muestra que se está verificando el pago; el webhook es quien lo confirma en Firestore.
 
-Mercado Pago exige que el cobro se cree desde un servidor, porque usa una clave secreta que no puede estar en la página. Ese servidor es un Cloudflare Worker gratuito, y su código ya está en [mercadopago/worker.js](mercadopago/worker.js).
+## 1. Cuenta e integración
 
-## 1. Obtener la clave de Mercado Pago
+Usa la cuenta de Mercado Pago de la empresa. Crea una integración **Checkout Pro** y guarda el Access Token de producción como secreto `MP_ACCESS_TOKEN` del Cloudflare Worker. No guardes credenciales en el repositorio, en `firebase-config.js` ni en el navegador.
 
-1. Entra a <https://www.mercadopago.cl/developers/panel/app> con la cuenta de Mercado Pago de Amankay.
-2. Pulsa **Crear aplicación**. Nombre: `Amankay tienda`. Tipo de pago: **Pagos online**. Producto: **Checkout Pro**.
-3. Dentro de la aplicación, abre **Credenciales de producción** y copia el **Access Token** (empieza con `APP_USR-`).
+## 2. Acceso del Worker a Firestore
 
-El Access Token es como la clave del banco: no lo pegues en el código, en un chat ni en un correo. Solo va en el paso 2.
+En Google Cloud crea una **cuenta de servicio dedicada** para el Worker con acceso mínimo a Firestore (lectura de catálogo y pedidos; actualización del estado de pago de pedidos). Genera una clave JSON y guárdala completa como secreto `FIREBASE_SERVICE_ACCOUNT_JSON` del Worker. No uses la clave de una cuenta de servicio con permisos de propietario del proyecto. Restringe quién puede administrar el Worker y rota la clave si se expone.
 
-## 2. Crear el Worker en Cloudflare
+El Worker busca el documento `orders/{folio}`. La tienda ahora guarda los pedidos web con ese ID. Los pedidos web antiguos, guardados con ID aleatorio, deben cobrarse por el flujo manual.
 
-1. En <https://dash.cloudflare.com/> ve a **Compute (Workers) → Workers & Pages → Crear → Worker**.
-2. Nombre: `amankay-pagos`. Pulsa **Implementar**.
-3. Pulsa **Editar código**, borra el ejemplo, pega todo el contenido de `mercadopago/worker.js` y pulsa **Implementar**.
-4. Ve a **Configuración → Variables y secretos → Agregar**:
-   - Tipo: **Secreto**
-   - Nombre: `MP_ACCESS_TOKEN`
-   - Valor: el Access Token del paso 1
-5. Copia la dirección del Worker. Tiene esta forma: `https://amankay-pagos.TU-CUENTA.workers.dev`.
+## 3. Webhook
 
-## 3. Conectar la tienda
+Configura en Mercado Pago el evento **Pagos** hacia `https://TU-WORKER.workers.dev/webhook`. Guarda la clave secreta de la firma como secreto `MP_WEBHOOK_SECRET` del Worker. El Worker valida la firma, consulta el pago en la API de Mercado Pago y compara folio, moneda y monto con el pedido antes de marcarlo `paid: true`. Configura y prueba la URL de pruebas por separado de la de producción.
 
-En [firebase-config.js](firebase-config.js), pega la dirección del Worker:
+## 4. Conectar la tienda
+
+Publica el Worker y define en `firebase-config.js`:
 
 ```js
-export const paymentEndpoint = "https://amankay-pagos.TU-CUENTA.workers.dev";
+export const paymentEndpoint = "https://TU-WORKER.workers.dev";
 ```
 
-Publica el cambio. Desde ese momento el botón del checkout dice **Continuar al pago** y aparece **Pagar con Mercado Pago** al registrar el pedido.
+El Worker acepta los dominios de producción y el servidor local en puerto 8000. Si cambia el dominio, actualiza `ORIGINS` en `mercadopago/worker.js`.
 
-## 4. Probar antes de anunciarlo
+## 5. Comprobación antes de producción
 
-Haz una compra real de un producto barato con otra cuenta de Mercado Pago (no se puede pagar a uno mismo) y revisa que:
+Prueba al menos: pago aprobado, pendiente, rechazado, notificación repetida, folio inexistente, monto alterado y producto cuyo precio cambió tras registrar el pedido. Comprueba en el panel que **solo el webhook de un pago aprobado** cambie `paid` a `true`. El envío se coordina y cobra por separado, tal como se informa en el checkout.
 
-- llegas a Mercado Pago con el producto y el monto correctos;
-- al pagar vuelves a la tienda y ves **¡Pago recibido!** con el folio;
-- Mercado Pago te avisa del pago (correo y aplicación) con el folio como referencia;
-- el pedido está en el panel, en **Pedidos**.
+## Boleta
 
-Después puedes devolver el dinero desde Mercado Pago.
-
-## Cómo funciona el día a día
-
-1. La clienta paga. Mercado Pago te avisa con el **folio** del pedido (por ejemplo `AM-20261003-JKOO`).
-2. En el panel, busca ese folio en **Pedidos**, pulsa **Marcar pagado** y luego **Confirmado**.
-
-El pedido no se marca como pagado automáticamente: lo marcas tú al recibir el aviso. El envío no se cobra en línea; sigue siendo por pagar al recibir.
-
-## Seguridad
-
-- Los precios se leen del catálogo publicado, no de lo que envía el navegador: nadie puede pagar menos manipulando la página.
-- El Worker solo acepta pedidos desde `amankayorganic.cl`, `uctenis.github.io` y `localhost:8000`. Si cambias de dominio, actualiza la lista `ALLOWED_ORIGINS` al inicio de `worker.js`.
+Confirma con el contador cómo documentar las ventas cobradas por Mercado Pago y las transferencias, y cómo se reflejan en el Registro de Compras y Ventas del SII. La integración de pagos no emite por sí misma una boleta desde Amankay.
