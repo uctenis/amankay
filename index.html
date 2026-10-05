@@ -4,28 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#ffffff">
-    <meta name="description" content="Cosmética natural hecha con dedicación en Villarrica. Descubre el cuidado botánico de Amankay, inspirado en el sur de Chile.">
+    <meta name="description" content="Cosmética natural hecha en Villarrica y una selección de productos y oficios del sur de Chile: bienestar, cerámica, deco y sabores de pequeños productores.">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Amankay Organic">
-    <meta property="og:title" content="Amankay — Cosmética natural del sur de Chile">
-    <meta property="og:description" content="Cuidado natural hecho con cariño en Villarrica. Fórmulas sencillas, ingredientes nobles y pequeños momentos solo para ti.">
+    <meta property="og:title" content="Amankay — Natural y hecho en el sur de Chile">
+    <meta property="og:description" content="Cosmética natural hecha con cariño en Villarrica y una selección de productores y artesanos del sur de Chile.">
     <meta property="og:image" content="https://amankayorganic.cl/assets/branding/amankay-social-preview.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="Logotipo oficial de Amankay en ciruela sobre fondo malva claro">
     <meta name="twitter:card" content="summary_large_image">
-    <title>Amankay — Botánica viva del sur</title>
+    <title>Amankay — Natural y hecho en el sur</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css?v=20261004-2">
+    <link rel="stylesheet" href="styles.css?v=20261005-1">
     <script src="communes.js?v=20261004-1" defer></script>
-    <script src="app.js?v=20261004-2" defer></script>
-    <script type="module" src="admin.js?v=20261004-2"></script>
+    <script src="app.js?v=20261005-1" defer></script>
+    <script type="module" src="admin.js?v=20261005-1"></script>
   </head>
   <body>
     <div class="announcement">
-      <span>Cosmética natural · Hecha en Villarrica · Envíos a todo Chile</span>
+      <span>Cosmética natural y oficios del sur · Villarrica · Envíos a todo Chile</span>
     </div>
 
     <header class="site-header">
@@ -63,9 +63,9 @@
     <main>
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero-copy">
-          <p class="eyebrow"><span class="eyebrow-line"></span> BOTÁNICA COTIDIANA · VILLARRICA</p>
-          <h1 id="hero-title">La calma del sur,<br>en tu <em>piel.</em></h1>
-          <p class="hero-description">Cuidado natural hecho con cariño en el sur de Chile. Fórmulas sencillas, ingredientes nobles y pequeños momentos solo para ti.</p>
+          <p class="eyebrow"><span class="eyebrow-line"></span> NATURAL Y HECHO EN EL SUR · VILLARRICA</p>
+          <h1 id="hero-title">La calma del sur,<br>cerca de <em>ti.</em></h1>
+          <p class="hero-description">Cosmética natural hecha por nosotras en Villarrica y una selección de productores y artesanos del sur de Chile. Ingredientes nobles, manos cercanas y pequeños momentos solo para ti.</p>
           <a class="button button-dark" href="#coleccion">Descubrir Amankay <span aria-hidden="true">↗︎</span></a>
         </div>
         <div class="hero-visual">
@@ -79,7 +79,7 @@
         <span class="values-separator" aria-hidden="true">✳︎</span>
         <div><span class="value-icon">✳︎</span><span>Hecho con dedicación y amor</span></div>
         <span class="values-separator" aria-hidden="true">✳︎</span>
-        <div><span class="value-icon">✳︎</span><span>Un gesto amable con tu piel</span></div>
+        <div><span class="value-icon">✳︎</span><span>Elegido con cariño, uno a uno</span></div>
       </section>
 
       <section class="favorites section-wrap" id="favoritos" aria-labelledby="favorites-title">
@@ -117,13 +117,13 @@
             <p class="eyebrow"><span class="eyebrow-line"></span> BOTÁNICA PARA TUS MOMENTOS</p>
             <h2>Encuentra tu <em>ritual.</em></h2>
           </div>
-          <p class="section-intro">Explora una colección hecha con dedicación en el sur: pequeños rituales para acompañar tu cuidado cotidiano.</p>
+          <p class="section-intro">Explora nuestra cosmética hecha en Villarrica y una selección de productores y artesanos del sur, para tu cuidado y tu casa.</p>
         </div>
         <div class="collection-toolbar">
           <div class="collection-search-row">
             <div class="collection-search-copy">
               <p class="eyebrow"><span class="eyebrow-line"></span> ENCUENTRA TU FAVORITO</p>
-              <span>Busca por nombre o ingrediente</span>
+              <span>Busca por nombre, ingrediente o productor</span>
             </div>
             <label class="search-box">
               <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.5"/><path d="m16 16 4 4"/></svg>
@@ -131,21 +131,16 @@
             </label>
           </div>
           <div class="category-filter-section">
+            <div class="section-filters" id="section-filters" role="group" aria-label="Filtrar productos por sección" hidden></div>
             <div class="category-filter-heading">
               <p>Explora por categoría</p>
               <div class="category-filter-meta">
                 <span class="collection-results" aria-live="polite">42 opciones para explorar</span>
+                <button class="filter-button" id="origin-filter" type="button" aria-pressed="false" hidden>Hecho por Amankay</button>
                 <button class="filter-button is-active" type="button" data-filter="todos" aria-pressed="true">Ver todo <span class="filter-count">42</span></button>
               </div>
             </div>
-            <div class="category-filters" role="group" aria-label="Filtrar productos por categoría">
-              <button class="filter-button category-tile" type="button" data-filter="cabello" aria-pressed="false"><img src="assets/products/shampoo-romero-catalogo.jpg" alt="" loading="lazy"><span class="category-tile-label">Shampoos y cabello</span><span class="filter-count">0</span></button>
-              <button class="filter-button category-tile" type="button" data-filter="jabones" aria-pressed="false"><img src="assets/products/jabon-calendula-catalogo.jpg" alt="" loading="lazy"><span class="category-tile-label">Jabones</span><span class="filter-count">0</span></button>
-              <button class="filter-button category-tile" type="button" data-filter="rostro" aria-pressed="false"><img src="assets/products/crema-facial-maqui-catalogo.jpg" alt="" loading="lazy"><span class="category-tile-label">Rostro</span><span class="filter-count">0</span></button>
-              <button class="filter-button category-tile" type="button" data-filter="aceites" aria-pressed="false"><img src="assets/products/aceite-rosa-mosqueta-catalogo.jpg" alt="" loading="lazy"><span class="category-tile-label">Aceites</span><span class="filter-count">0</span></button>
-              <button class="filter-button category-tile" type="button" data-filter="cuerpo" aria-pressed="false"><img src="assets/products/pomada-calendula-catalogo.jpg" alt="" loading="lazy"><span class="category-tile-label">Cuerpo</span><span class="filter-count">0</span></button>
-              <button class="filter-button category-tile" type="button" data-filter="aromaterapia" aria-pressed="false"><img src="assets/products/roll-on-antiestres-catalogo.jpg" alt="" loading="lazy"><span class="category-tile-label">Aromaterapia</span><span class="filter-count">0</span></button>
-            </div>
+            <div class="category-filters" id="category-filters" role="group" aria-label="Filtrar productos por categoría"></div>
           </div>
         </div>
 
@@ -654,6 +649,7 @@
           <h2>Un poco de sur.<br>Un mundo de <em>cuidado.</em></h2>
           <p>Amankay nace para rescatar el uso de los recursos que nos ofrece generosamente el entorno del sur de Chile. Creamos cosmética natural con dedicación, inspirada en sus plantas, sus aromas y su manera de invitarnos a bajar el ritmo.</p>
           <p>Elaboramos jabones artesanales y cremas con cariño, buscando que cada pequeño ritual te acerque un poquito más a la naturaleza.</p>
+          <p>Y como el sur es generoso en oficios, sumamos a nuestra tienda una selección de productores y artesanos de la zona. Cada pieza lleva el nombre de quien la hizo.</p>
           <button class="underlined-link story-open" type="button" aria-haspopup="dialog">Conoce nuestra historia <span aria-hidden="true">↗︎</span></button>
           <span class="story-seal" aria-hidden="true"><span>DESDE EL SUR<br>CON AMOR</span><b>✳︎</b></span>
         </div>
@@ -676,7 +672,7 @@
       <section class="closing-banner">
         <img src="https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=1800&q=85" alt="" loading="lazy">
         <div class="closing-overlay"></div>
-        <div class="closing-content"><p class="eyebrow">AMANKAY · COSMÉTICA NATURAL</p><h2>Vuelve a lo <em>esencial.</em></h2><a class="button button-light" href="#coleccion">Descubrir la colección <span aria-hidden="true">↗︎</span></a></div>
+        <div class="closing-content"><p class="eyebrow">AMANKAY · NATURAL DEL SUR</p><h2>Vuelve a lo <em>esencial.</em></h2><a class="button button-light" href="#coleccion">Descubrir la colección <span aria-hidden="true">↗︎</span></a></div>
       </section>
     </main>
 
@@ -760,7 +756,7 @@
             <section class="admin-view" data-admin-panel="products">
               <div class="admin-heading"><div><p class="eyebrow">TIENDA ONLINE</p><h2>Productos y catálogo</h2></div><button class="admin-primary" id="admin-add-product" type="button">＋ Agregar producto</button></div>
               <p class="admin-intro">Aquí cambias los precios: pulsa “Editar” en el producto, modifica el precio unitario o mayorista y guarda. La tienda se actualiza al instante. Registra también el costo para ver el margen de cada producto.</p>
-              <div class="admin-toolbar"><label>Buscar producto <input id="product-admin-search" type="search" placeholder="Nombre o categoría"></label></div>
+              <div class="admin-toolbar"><label>Buscar producto <input id="product-admin-search" type="search" placeholder="Nombre, categoría o productor"></label></div>
               <div class="admin-card admin-table-wrap"><table><thead><tr><th>Producto</th><th>Precio CLP</th><th>Mayorista desde</th><th>Precio mayorista</th><th>Costo unitario</th><th>Margen</th><th>Descripción</th><th></th></tr></thead><tbody id="products-table"></tbody></table></div>
             </section>
 
@@ -776,7 +772,7 @@
               <form class="admin-card admin-expense-form" id="expense-form">
                 <h3>Registrar un gasto o compra</h3>
                 <label>Descripción<input name="description" required maxlength="120" placeholder="Ej. Insumos para cremas"></label>
-                <label>Categoría<select name="category"><option>Insumos y materias primas</option><option>Envases y etiquetado</option><option>Producción</option><option>Arriendo y servicios</option><option>Transporte y despacho</option><option>Marketing y ventas</option><option>Otros</option></select></label>
+                <label>Categoría<select name="category"><option>Insumos y materias primas</option><option>Productos para reventa</option><option>Envases y etiquetado</option><option>Producción</option><option>Arriendo y servicios</option><option>Transporte y despacho</option><option>Marketing y ventas</option><option>Otros</option></select></label>
                 <label>Proveedor<input name="supplier" maxlength="100" placeholder="Nombre del proveedor"></label>
                 <label>Monto CLP<input name="amount" type="number" min="1" step="1" required></label>
                 <label>Fecha<input name="date" type="date" required></label>
@@ -804,6 +800,7 @@
             <section class="admin-view" data-admin-panel="reports">
               <div class="admin-heading"><div><p class="eyebrow">NÚMEROS CLAROS, DECISIONES TRANQUILAS</p><h2>Informes y respaldo</h2></div><label class="admin-period">Período <select id="report-period"><option value="month">Este mes</option><option value="previous">Mes anterior</option><option value="year">Este año</option><option value="all">Todo el historial</option></select></label></div>
               <div class="admin-metrics admin-report-metrics"><article><span>Ventas confirmadas</span><strong id="report-sales">$0</strong></article><article><span>Gastos registrados</span><strong id="report-expenses">$0</strong></article><article><span>Resultado estimado</span><strong id="report-margin">$0</strong><small>Ventas menos costo de productos y gastos</small></article><article><span>Pedidos confirmados</span><strong id="report-orders">0</strong></article></div>
+              <section class="admin-card"><div class="admin-card-heading"><h3>Línea propia y productos seleccionados</h3><span>Venta · margen sobre el costo registrado · unidades</span></div><div class="admin-list" id="report-lines"></div></section>
               <p class="admin-intro">El resultado es orientativo: completa el costo de elaboración o compra de cada producto para estimar mejor la utilidad.</p>
               <div class="admin-card admin-backup-card"><h3>Tu información siempre respaldada</h3><p>Descarga productos, inventario, pedidos y gastos en un archivo JSON. Este respaldo no reemplaza Firebase; guárdalo en un lugar seguro.</p><button class="admin-primary" id="admin-export-data" type="button">Descargar respaldo del negocio</button></div>
             </section>
@@ -850,9 +847,15 @@
           <div class="admin-dialog-heading"><div><p class="eyebrow">CATÁLOGO</p><h2 id="admin-product-dialog-title">Nuevo producto</h2></div><button type="button" class="admin-dialog-close" aria-label="Cerrar">×</button></div>
           <label>Identificador (único, sin espacios)<input name="id" pattern="[a-z0-9-]+" required maxlength="48"></label>
           <label>Nombre<input name="name" required maxlength="100"></label>
-          <label>Categoría<select name="category"><option>Cabello</option><option>Jabones</option><option>Rostro</option><option>Aceites</option><option>Cuerpo</option><option>Aromaterapia</option></select></label>
+          <label>Sección de la tienda<select name="section"><option value="cuidado">Cuidado natural</option><option value="bienestar">Bienestar</option><option value="casa">Casa y deco</option><option value="despensa">Despensa</option></select></label>
+          <label>Categoría (elige una o escribe una nueva)<input name="category" list="admin-category-list" required maxlength="40" placeholder="Ej. Cerámica gres" autocomplete="off"><datalist id="admin-category-list"></datalist></label>
+          <label>Origen<select name="origin"><option value="propia">Hecho por Amankay</option><option value="seleccionado">Seleccionado, de otro productor</option></select></label>
+          <label>Productor o marca (si no es de Amankay)<input name="maker" maxlength="80" placeholder="Nombre del artesano, taller o marca"></label>
+          <label>Cómo se vende<select name="saleMode"><option value="online">Venta online</option><option value="vitrina">Solo vitrina: se muestra y se consulta por WhatsApp</option><option value="vendido">Vendido: pieza única que ya no está</option></select></label>
+          <label class="admin-check"><input name="pickupOnly" type="checkbox"> Solo retiro en tienda (frágil o pesado)</label>
+          <label>Peso con envase, en gramos (para calcular el envío)<input name="weight" type="number" min="0" step="1" placeholder="Ej. 450"></label>
           <label>Formato<input name="format" maxlength="50" placeholder="50 g · 30 ml"></label>
-          <label>Precio unitario CLP<input name="price" type="number" min="0" step="1" required></label>
+          <label>Precio unitario CLP (en vitrina, 0 muestra “Consultar valor”)<input name="price" type="number" min="0" step="1" required></label>
           <label>Costo unitario de elaboración o compra CLP<input name="costPrice" type="number" min="0" step="1"></label>
           <label>Mínimo mayorista<input name="wholesaleMinimum" type="number" min="0" step="1" value="0"></label>
           <label>Precio mayorista CLP<input name="wholesalePrice" type="number" min="0" step="1" value="0"></label>
@@ -874,7 +877,7 @@
         <div class="footer-column"><h3>Visítanos</h3><span>Galería Artesanal Huimpay</span><span>Local 37 · Villarrica</span><span>Todos los días · 11:00–23:00</span><a href="mailto:patriciarocoaraya@gmail.com">Escríbenos</a><a href="tel:+56953750504">+56 9 5375 0504</a></div>
         <div class="footer-note"><span class="footer-flower">✳︎</span><p>Hecho con dedicación<br>y cariño en el sur de Chile.</p><span class="footer-place">38° 44' S · 72° 13' O</span></div>
       </div>
-      <div class="footer-bottom"><span>© 2026 Amankay Organic</span><span>Cosmética natural con esencias del sur de Chile.</span><a href="#">Volver arriba ↑</a></div>
+      <div class="footer-bottom"><span>© 2026 Amankay Organic</span><span>Cosmética natural y oficios del sur de Chile.</span><a href="#">Volver arriba ↑</a></div>
     </footer>
 
     <dialog class="product-dialog" aria-labelledby="product-dialog-title">
@@ -888,6 +891,7 @@
             <p class="product-dialog-category"></p>
             <h2 id="product-dialog-title"></h2>
             <p class="product-dialog-price"></p>
+            <p class="product-dialog-origin"></p>
             <div class="product-dialog-wholesale" aria-live="polite" hidden></div>
             <div class="product-dialog-format"><span>COLECCIÓN Y FORMATO</span><strong></strong></div>
             <div class="product-purchase-row">
@@ -898,6 +902,7 @@
               </div>
               <button class="button button-dark product-dialog-add" type="button">Agregar a la bolsa <span aria-hidden="true">↗︎</span></button>
             </div>
+            <a class="button button-dark product-dialog-consult" href="#" target="_blank" rel="noopener noreferrer" hidden><span class="product-dialog-consult-label">Consultar por WhatsApp</span> <span aria-hidden="true">↗︎</span></a>
             <p class="product-dialog-note">Disponibilidad y valor final se confirman al coordinar el pedido.</p>
           </div>
         </div>
@@ -940,7 +945,7 @@
         <p class="story-dialog-lead">Amankay nace en Villarrica, ciudad a orillas del lago y a los pies del volcán del mismo nombre, en la Región de La Araucanía, al sur de Chile. Desde aquí cuidamos la piel con lo que la naturaleza del sur nos ofrece.</p>
         <div class="story-pillars">
           <article><span aria-hidden="true">01</span><h3>Del entorno a tu piel</h3><p>Trabajamos con ingredientes botánicos como maqui, rosa mosqueta, caléndula y canelo, protagonistas del paisaje que nos rodea.</p></article>
-          <article><span aria-hidden="true">02</span><h3>Hecho a mano</h3><p>Cada jabón, crema y aceite se elabora de forma artesanal, con tiempo y dedicación, buscando fórmulas sencillas y nobles.</p></article>
+          <article><span aria-hidden="true">02</span><h3>Hecho a mano</h3><p>Cada jabón, crema y aceite Amankay se elabora de forma artesanal, con tiempo y dedicación. Lo que no hacemos nosotras lo elegimos entre productores y artesanos del sur.</p></article>
           <article><span aria-hidden="true">03</span><h3>Envíos a todo Chile</h3><p>Despachamos desde Villarrica a cualquier rincón del país y coordinamos cada pedido directamente contigo.</p></article>
         </div>
         <div class="story-dialog-actions">
@@ -977,6 +982,7 @@
           <label>Región de entrega<select name="region" required><option value="">Elige tu región</option><option value="retiro">Retiro en Villarrica (sin costo)</option><option value="La Araucanía">La Araucanía</option><option value="Los Ríos">Los Ríos</option><option value="Los Lagos">Los Lagos</option><option value="Biobío">Biobío</option><option value="Ñuble">Ñuble</option><option value="Maule">Maule</option><option value="O&#39;Higgins">O&#39;Higgins</option><option value="Metropolitana de Santiago">Metropolitana de Santiago</option><option value="Valparaíso">Valparaíso</option><option value="Coquimbo">Coquimbo</option><option value="Atacama">Atacama</option><option value="Antofagasta">Antofagasta</option><option value="Tarapacá">Tarapacá</option><option value="Arica y Parinacota">Arica y Parinacota</option><option value="Aysén">Aysén</option><option value="Magallanes">Magallanes</option></select></label>
           <label>Comuna de entrega<select name="city" autocomplete="address-level2" required disabled><option value="">Elige primero tu región</option></select></label>
           <label>Dirección (opcional)<input name="address" autocomplete="street-address" maxlength="200"></label>
+          <p class="checkout-payment-note checkout-pickup-note" hidden>Tu bolsa incluye piezas que solo se entregan en nuestra tienda de Villarrica, por eso el pedido es con retiro.</p>
           <div class="checkout-total"><span>Subtotal referencial</span><strong class="checkout-subtotal">$0</strong></div>
           <div class="checkout-total checkout-shipping"><span>Envío por pagar (referencial)</span><strong class="checkout-shipping-value">Elige tu región</strong></div>
           <p class="checkout-payment-note">El envío no se suma al subtotal: se paga al recibir el pedido. El valor es una estimación según tarifas de courier; Amankay confirma el monto final contigo.</p>

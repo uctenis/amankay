@@ -53,7 +53,7 @@ async function createPayment(request, env, origin) {
       const p = products.get(i.id);
       const price = num(p?.price), minimum = num(p?.wholesaleMinimum), wholesale = num(p?.wholesalePrice);
       const unit = minimum > 0 && i.quantity >= minimum && wholesale > 0 ? wholesale : price;
-      if (!p || val(p.published) === false || !Number.isInteger(unit) || unit <= 0 || unit !== i.unitPrice) throw new Error("Precio o disponibilidad cambió.");
+      if (!p || val(p.published) === false || (val(p.saleMode) ?? "online") !== "online" ||!Number.isInteger(unit) || unit <= 0 || unit !== i.unitPrice) throw new Error("Precio o disponibilidad cambió.");
       return { id: i.id, title: val(p.name) || "Producto Amankay", quantity: i.quantity, unit_price: unit, currency_id: "CLP" };
     });
     if (checkoutItems.reduce((sum, i) => sum + i.quantity * i.unit_price, 0) !== num(order.fields?.total)) return result({ error: "El total no coincide." }, 409, origin);

@@ -722,14 +722,17 @@ function renderCatalog() {
   const inventory = new Map(data.inventory.map((item) => [item.id, item]));
   const search = document.querySelector("#product-admin-search").value.trim().toLocaleLowerCase("es");
   document.querySelector("#products-table").innerHTML = [...data.catalog]
-    .filter((product) => !search || `${product.name} ${product.category}`.toLocaleLowerCase("es").includes(search))
+    .filter((product) => !search || `${product.name} ${product.category} ${product.maker || ""}`.toLocaleLowerCase("es").includes(search))
     .sort((a, b) => a.name.localeCompare(b.name, "es"))
     .map((product) => {
       const cost = inventory.get(product.id)?.costPrice;
       const hasCost = Number.isSafeInteger(cost);
       const margin = hasCost && product.price > 0 ? Math.round((product.price - cost) / product.price * 100) : null;
+      const section = window.amankaySections[product.section] || window.amankaySections.cuidado;
+      const origin = product.origin === "seleccionado" ? `Seleccionado${product.maker ? ` · ${product.maker}` : ""}` : "Hecho por Amankay";
+      const sale = { vitrina: "Solo vitrina", vendido: "Vendido" }[product.saleMode] || (product.pickupOnly ? "Solo retiro" : "");
       return `<tr class="${product.published === false ? "is-unpublished" : ""}">
-      <td><strong>${escapeHtml(product.name)}</strong><small>${escapeHtml(product.id)} · ${escapeHtml(product.category)}</small></td>
+      <td><strong>${escapeHtml(product.name)}</strong><small>${escapeHtml(product.id)} · ${escapeHtml(section)} · ${escapeHtml(product.category)}</small><small>${escapeHtml(origin)}</small>${sale ? `<span class="admin-badge is-warning">${sale}</span>` : ""}</td>
       <td>${money(product.price)}</td><td>${product.wholesaleMinimum ? `${numberFormat.format(product.wholesaleMinimum)} unidades` : "—"}</td><td>${product.wholesalePrice ? money(product.wholesalePrice) : "—"}</td>
       <td>${hasCost ? money(cost) : "Sin registrar"}</td>
       <td>${margin === null ? "—" : `<span class="admin-badge ${margin < 40 ? "is-warning" : ""}">${margin}%</span>`}</td>
@@ -780,6 +783,21 @@ function renderReports() {
   document.querySelector("#report-expenses").textContent = money(expenses);
   document.querySelector("#report-margin").textContent = money(sales - costOfGoods - expenses);
   document.querySelector("#report-orders").textContent = numberFormat.format(orders.length);
+  // Cada producto vendido se suma a su línea según el origen que tiene hoy en el catálogo.
+  const lines = {
+    propia: { label: "Hecho por Amankay", sales: 0, cost: 0, units: 0 },
+    seleccionado: { label: "Seleccionados de otros productores", sales: 0, cost: 0, units: 0 },
+  };
+  orders.forEach((order) => (order.items || []).forEach((item) => {
+    const line = lines[currentCatalogProduct(item.productId)?.origin === "seleccionado" ? "seleccionado" : "propia"];
+    const quantity = Number(item.quantity) || 0;
+    line.units += quantity;
+    line.sales += (Number(item.unitPrice) || 0) * quantity;
+    line.cost += (Number(item.unitCost) || 0) * quantity;
+  }));
+  document.querySelector("#report-lines").innerHTML = Object.values(lines)
+    .map((line) => `<p><span>${line.label}</span><strong>${money(line.sales)} · margen ${money(line.sales - line.cost)} · ${numberFormat.format(line.units)} u</strong></p>`)
+    .join("");
 }
 document.querySelector("#report-period").addEventListener("change", renderReports);
 document.querySelector("#product-admin-search").addEventListener("input", renderCatalog);
@@ -1063,10 +1081,20 @@ function openProductForm(product) {
   productForm.reset();
   document.querySelector("#admin-product-dialog-title").textContent = product ? "Editar producto" : "Nuevo producto";
   productForm.elements.id.readOnly = Boolean(product);
+  document.querySelector("#admin-category-list").innerHTML =
+    [...new Set(data.catalog.map((item) => item.category).filter(Boolean))]
+      .sort((a, b) => a.localeCompare(b, "es"))
+      .map((category) => `<option value="${escapeHtml(category)}"></option>`).join("");
   if (product) {
     productForm.elements.id.value = product.id;
     productForm.elements.name.value = product.name;
     productForm.elements.category.value = product.category;
+    productForm.elements.section.value = window.amankaySections[product.section] ? product.section : "cuidado";
+    productForm.elements.origin.value = product.origin === "seleccionado" ? "seleccionado" : "propia";
+    productForm.elements.maker.value = product.maker || "";
+    productForm.elements.saleMode.value = ["vitrina", "vendido"].includes(product.saleMode) ? product.saleMode : "online";
+    productForm.elements.pickupOnly.checked = product.pickupOnly === true;
+    productForm.elements.weight.value = product.weight || "";
     productForm.elements.format.value = product.format || "";
     productForm.elements.price.value = product.price ?? "";
     productForm.elements.costPrice.value = data.inventory.find((item) => item.id === product.id)?.costPrice ?? "";
@@ -1124,11 +1152,32 @@ productForm.addEventListener("submit", async (event) => {
     showAdminFeedback("Completa tanto el mínimo como el precio mayorista, o deja ambos en cero.", true);
     return;
   }
+  const category = String(values.get("category") || "").trim();
+  const origin = String(values.get("origin"));
+  const maker = origin === "seleccionado" ? String(values.get("maker") || "").trim() : "";
+  const weight = Number(values.get("weight")) || 0;
+  if (!category) {
+    showAdminFeedback("Elige o escribe la categoría del producto.", true);
+    return;
+  }
+  if (!Number.isSafeInteger(weight) || weight < 0) {
+    showAdminFeedback("El peso debe ser un número entero de gramos.", true);
+    return;
+  }
+  // Una categoría ya existente se guarda con su misma escritura para que no se duplique en la tienda.
+  const sameCategory = data.catalog.map((item) => item.category)
+    .find((name) => name && name.localeCompare(category, "es", { sensitivity: "base" }) === 0);
   const existing = currentCatalogProduct(id);
   const product = {
     id,
     name: String(values.get("name")).trim(),
-    category: String(values.get("category")),
+    category: sameCategory || category,
+    section: String(values.get("section")),
+    origin,
+    maker,
+    saleMode: String(values.get("saleMode")),
+    pickupOnly: values.get("pickupOnly") === "on",
+    weight,
     format: String(values.get("format") || "").trim(),
     price: Number(values.get("price")),
     wholesaleMinimum,

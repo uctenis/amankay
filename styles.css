@@ -855,3 +855,21 @@ body { font-variant-emoji: text; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }
+
+/* Tienda abierta a otros productores: secciones, sello de origen y piezas de vitrina. */
+.section-filters { margin-bottom: 18px; display: flex; flex-wrap: wrap; gap: 8px; }
+.section-filters[hidden], #origin-filter[hidden], .product-tag[hidden], .product-purchase-row[hidden], .product-dialog-consult[hidden], .checkout-pickup-note[hidden] { display: none; }
+.collection-toolbar.is-searching .section-filters { display: none; }
+#origin-filter { min-height: 34px; padding: 0 13px; font-size: 12px; }
+.product-origin { margin: 7px 0 0; color: var(--clay); font-size: 10px; letter-spacing: .06em; }
+.product-origin.is-selected { color: #6f6471; }
+.product-card.is-sold .product-image img { opacity: .55; }
+.product-dialog-origin { margin: 9px 0 0; color: var(--clay); font-size: 11px; letter-spacing: .04em; }
+.product-dialog-consult { width: 100%; min-height: 50px; margin-top: 21px; justify-content: space-between; }
+.checkout-pickup-note { margin: 0; color: var(--forest); font-size: 11px; }
+.admin-dialog label.admin-check { display: flex; align-items: center; gap: 8px; }
+@media (max-width: 520px) {
+  .section-filters { gap: 7px; }
+  .section-filters .filter-button { min-height: 36px; padding: 0 11px; }
+  .category-filter-heading { flex-wrap: wrap; }
+}

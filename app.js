@@ -474,18 +474,65 @@ const productGroups = {
   },
 };
 
+// Secciones de la tienda: cada producto pertenece a una y dentro de ella a una categoría libre.
+const shopSections = {
+  cuidado: "Cuidado natural",
+  bienestar: "Bienestar",
+  casa: "Casa y deco",
+  despensa: "Despensa",
+};
+window.amankaySections = shopSections;
+// Foto y nombre de las categorías de la línea propia; las nuevas usan la foto de su primer producto.
+const categoryTiles = {
+  cabello: { label: "Shampoos y cabello", image: "assets/products/shampoo-romero-catalogo.jpg" },
+  jabones: { label: "Jabones", image: "assets/products/jabon-calendula-catalogo.jpg" },
+  rostro: { label: "Rostro", image: "assets/products/crema-facial-maqui-catalogo.jpg" },
+  aceites: { label: "Aceites", image: "assets/products/aceite-rosa-mosqueta-catalogo.jpg" },
+  cuerpo: { label: "Cuerpo", image: "assets/products/pomada-calendula-catalogo.jpg" },
+  aromaterapia: { label: "Aromaterapia", image: "assets/products/roll-on-antiestres-catalogo.jpg" },
+};
+let selectedSection = "todos";
+let selectedCategory = "todos";
+let onlyOwnProducts = false;
+let renderedFilters = "";
+
+function productSection(product) {
+  return Object.hasOwn(shopSections, product.section) ? product.section : "cuidado";
+}
+
+// Todo lo que no se marca como "seleccionado" es elaboración propia de Amankay.
+function isOwnProduct(product) {
+  return product.origin !== "seleccionado";
+}
+
+function originLabel(product) {
+  if (isOwnProduct(product)) return "Hecho por Amankay";
+  return product.maker ? `Seleccionado por Amankay · ${product.maker}` : "Seleccionado por Amankay";
+}
+
+// "vitrina" se muestra sin venta online; "vendido" es una pieza única que ya no está disponible.
+function productSaleMode(product) {
+  return ["vitrina", "vendido"].includes(product.saleMode) ? product.saleMode : "online";
+}
+
+function priceLabel(product) {
+  if (product.price === null) return "Precio por confirmar";
+  if (product.price === 0 && productSaleMode(product) !== "online") return "Consultar valor";
+  return formatPrice(product.price);
+}
+
 function normalizeSearch(value) {
   return value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("es");
 }
 
-function createProductGroup(category) {
+function createProductGroup(category, label = category) {
   const grid = document.querySelector("#product-grid");
   const existingGroup = grid.querySelector(`.product-group[data-group-category="${CSS.escape(category)}"]`);
   if (existingGroup) return existingGroup.querySelector(".product-group-grid");
 
   const groupInfo = productGroups[category] || {
-    title: category.replace(/-/g, " "),
-    description: "Explora esta selección de cuidado natural.",
+    title: label,
+    description: "Una selección con el sello del sur de Chile.",
   };
   const group = document.createElement("section");
   group.className = "product-group";
@@ -583,6 +630,43 @@ function renderCardWholesale(card, product) {
   note.innerHTML = product.wholesale
     ? `<span class="wholesale-badge">−${getWholesaleDiscount(product)}%</span><span>Desde ${product.wholesale.minimumQuantity} unidades · <strong>${formatPrice(product.wholesale.price)} c/u</strong></span>`
     : "";
+}
+
+// Sello de origen, etiqueta de disponibilidad y botón de la tarjeta según cómo se vende el producto.
+function renderCardState(card, product) {
+  let origin = card.querySelector(".product-origin");
+  if (!origin) {
+    origin = document.createElement("p");
+    origin.className = "product-origin";
+    card.querySelector(".product-meta").after(origin);
+  }
+  origin.textContent = originLabel(product);
+  origin.classList.toggle("is-selected", !isOwnProduct(product));
+  const mode = productSaleMode(product);
+  const tagText = mode === "vendido" ? "Vendido"
+    : mode === "vitrina" ? "Solo en tienda"
+    : product.pickupOnly ? "Retiro en tienda" : "";
+  let tag = card.querySelector(".product-tag");
+  if (tagText && !tag) {
+    tag = document.createElement("span");
+    tag.className = "product-tag";
+    card.querySelector(".product-image").prepend(tag);
+  }
+  if (tag) {
+    tag.textContent = tagText;
+    tag.hidden = !tagText;
+  }
+  card.classList.toggle("is-sold", mode === "vendido");
+  const button = card.querySelector(".text-add");
+  if (mode === "online") {
+    delete button.dataset.detail;
+    button.dataset.add = product.id;
+    button.innerHTML = 'Agregar a la bolsa <span aria-hidden="true">↗︎</span>';
+  } else {
+    delete button.dataset.add;
+    button.dataset.detail = product.id;
+    button.innerHTML = `${mode === "vendido" ? "Ver pieza" : "Ver y consultar"} <span aria-hidden="true">↗︎</span>`;
+  }
 }
 
 // Galería: cada producto puede sumar fotos extra en "images" (en uso, en la mano, detalle).
@@ -683,6 +767,7 @@ function updateCart() {
         <h3>${product.name}</h3>
         <span>${unitPrice}</span>
         ${wholesaleNote ? `<small class="cart-wholesale-note${item.quantity >= product.wholesale.minimumQuantity ? " is-applied" : ""}">${wholesaleNote}</small>` : ""}
+        ${product.pickupOnly ? '<small class="cart-wholesale-note">Solo retiro en tienda</small>' : ""}
         <div class="quantity-control" aria-label="Cantidad de ${product.name}">
           <button type="button" data-quantity="-1" data-id="${product.id}" aria-label="Quitar una unidad">−</button>
           <span>${item.quantity}</span>
@@ -728,6 +813,7 @@ function showToast(message) {
 }
 
 function addToCart(id, quantity = 1) {
+  if (productSaleMode(products[id]) !== "online") return;
   const existing = cart.find((item) => item.id === id);
   if (existing) existing.quantity += quantity;
   else cart.push({ id, quantity });
@@ -758,14 +844,28 @@ function openProductDialog(id, trigger) {
   );
   productDialogCategory.textContent = card.querySelector(".product-meta > span").textContent;
   productDialogTitle.textContent = product.name;
-  productDialogPrice.textContent = product.price === null
-    ? "Precio por confirmar"
-    : formatPrice(product.price);
+  productDialogPrice.textContent = priceLabel(product);
+  productDialog.querySelector(".product-dialog-origin").textContent = originLabel(product);
   productDialogLongDescription.textContent = product.detail;
   productDialogFormat.textContent = card.querySelector(".product-meta > span").textContent
     .replace(" · ", " / ");
   productDialogAdd.dataset.add = id;
   setDialogQuantity(1);
+  const mode = productSaleMode(product);
+  productDialog.querySelector(".product-purchase-row").hidden = mode !== "online";
+  if (mode !== "online") productDialogWholesale.hidden = true;
+  const consult = productDialog.querySelector(".product-dialog-consult");
+  consult.hidden = mode === "online";
+  consult.href = `https://wa.me/56953750504?text=${encodeURIComponent(`Hola, Amankay. Quiero consultar por ${product.name}.`)}`;
+  consult.querySelector(".product-dialog-consult-label").textContent =
+    mode === "vendido" ? "Consultar por piezas similares" : "Consultar por WhatsApp";
+  productDialog.querySelector(".product-dialog-note").textContent = mode === "vendido"
+    ? "Esta pieza ya encontró casa. Escríbenos si buscas algo parecido."
+    : mode === "vitrina"
+      ? "Pieza en exhibición: disponible en nuestra tienda de Villarrica, Galería Artesanal Huimpay, local 37."
+      : product.pickupOnly
+        ? "Este producto se entrega solo con retiro en nuestra tienda de Villarrica."
+        : "Disponibilidad y valor final se confirman al coordinar el pedido.";
   const accordions = productDialog.querySelectorAll(".product-detail-accordions details");
   accordions[0].open = true;
   accordions[1].open = false;
@@ -883,10 +983,27 @@ const shippingSizes = ["XS", "S", "M"];
 
 function getCartWeight() {
   const contents = cart.reduce((sum, { id, quantity }) => {
-    const unit = id.startsWith("pack-") ? 0.16 : unitWeights[products[id].category] ?? 0.15;
+    // El peso registrado en el producto (gramos) manda; si falta, se estima por categoría.
+    const unit = products[id].weight
+      ? products[id].weight / 1000
+      : id.startsWith("pack-") ? 0.16 : unitWeights[products[id].category] ?? 0.15;
     return sum + unit * quantity;
   }, 0);
   return contents + 0.1;
+}
+
+// Con piezas de solo retiro en la bolsa, el pedido completo se entrega en la tienda.
+function applyPickupRestriction() {
+  const pickupOnly = cart.some(({ id }) => products[id].pickupOnly);
+  const region = checkoutForm.elements.region;
+  [...region.options].forEach((option) => {
+    option.disabled = pickupOnly && option.value !== "" && option.value !== "retiro";
+  });
+  if (pickupOnly && region.value !== "retiro") {
+    region.value = "retiro";
+    updateCommunes();
+  }
+  checkoutDialog.querySelector(".checkout-pickup-note").hidden = !pickupOnly;
 }
 
 function getShippingEstimate(region) {
@@ -972,6 +1089,7 @@ document.querySelector(".checkout-button").addEventListener("click", (event) => 
     0,
   );
   checkoutSubtotal.textContent = hasUnpricedItems ? "Por confirmar" : formatPrice(subtotal);
+  applyPickupRestriction();
   updateShippingEstimate();
   checkoutForm.hidden = false;
   checkoutDialog.querySelector(".checkout-intro").hidden = false;
@@ -1143,31 +1261,91 @@ checkoutDone.querySelector(".checkout-done-close").addEventListener("click", () 
   closeDrawer();
 });
 
-document.querySelectorAll(".filter-button").forEach((button) => {
-  button.addEventListener("click", () => {
-    document.querySelectorAll(".filter-button").forEach((filter) => {
-      const active = filter === button;
-      filter.classList.toggle("is-active", active);
-      filter.setAttribute("aria-pressed", String(active));
-    });
-    filterProducts();
-    if (button.classList.contains("category-tile")) {
-      document.querySelector("#product-grid").scrollIntoView({ behavior: "smooth", block: "start" });
-    }
-  });
+document.querySelector(".category-filter-section").addEventListener("click", (event) => {
+  const sectionButton = event.target.closest("[data-section]");
+  const categoryButton = event.target.closest("[data-filter]");
+  const originButton = event.target.closest("#origin-filter");
+  if (sectionButton) {
+    selectedSection = sectionButton.dataset.section;
+    selectedCategory = "todos";
+  } else if (categoryButton) {
+    selectedCategory = categoryButton.dataset.filter;
+  } else if (originButton) {
+    onlyOwnProducts = !onlyOwnProducts;
+  } else {
+    return;
+  }
+  filterProducts();
+  if (categoryButton?.classList.contains("category-tile")) {
+    document.querySelector("#product-grid").scrollIntoView({ behavior: "smooth", block: "start" });
+  }
 });
 
 document.querySelector("#product-search").addEventListener("input", (event) => {
-  // La búsqueda recorre todo el catálogo, no solo la categoría elegida.
+  // La búsqueda recorre todo el catálogo, no solo la sección o categoría elegida.
   if (event.target.value.trim()) {
-    document.querySelectorAll(".filter-button").forEach((filter) => {
-      const active = filter.dataset.filter === "todos";
-      filter.classList.toggle("is-active", active);
-      filter.setAttribute("aria-pressed", String(active));
-    });
+    selectedSection = "todos";
+    selectedCategory = "todos";
+    onlyOwnProducts = false;
   }
   filterProducts();
 });
+
+// Secciones y categorías se arman con los productos publicados: una sección sin productos no se muestra.
+function renderFilters() {
+  const cards = productCards.filter((card) => products[card.dataset.product]?.published !== false);
+  const sectionCounts = new Map();
+  cards.forEach((card) => {
+    const section = productSection(products[card.dataset.product]);
+    sectionCounts.set(section, (sectionCounts.get(section) || 0) + 1);
+  });
+  if (!sectionCounts.has(selectedSection)) selectedSection = "todos";
+  const sectionCards = cards.filter((card) =>
+    selectedSection === "todos" || productSection(products[card.dataset.product]) === selectedSection);
+  const categories = new Map(Object.keys(categoryTiles).map((category) => [category, null]));
+  sectionCards.forEach((card) => {
+    const category = card.dataset.category;
+    const product = products[card.dataset.product];
+    const tile = categories.get(category) || {
+      label: categoryTiles[category]?.label || product.category,
+      image: categoryTiles[category]?.image || product.image,
+      count: 0,
+    };
+    tile.count += 1;
+    categories.set(category, tile);
+  });
+  if (!categories.get(selectedCategory)) selectedCategory = "todos";
+  const hasSelectedProducts = cards.some((card) => !isOwnProduct(products[card.dataset.product]));
+  if (!hasSelectedProducts) onlyOwnProducts = false;
+
+  const sections = [
+    ["todos", "Toda la tienda", cards.length],
+    ...Object.entries(shopSections)
+      .filter(([section]) => sectionCounts.has(section))
+      .map(([section, label]) => [section, label, sectionCounts.get(section)]),
+  ].map(([section, label, count]) =>
+    `<button class="filter-button${section === selectedSection ? " is-active" : ""}" type="button" data-section="${section}" aria-pressed="${section === selectedSection}">${label} <span class="filter-count">${count}</span></button>`,
+  ).join("");
+  const tiles = [...categories].filter(([, tile]) => tile).map(([category, tile]) =>
+    `<button class="filter-button category-tile${category === selectedCategory ? " is-active" : ""}" type="button" data-filter="${escapeHtml(category)}" aria-pressed="${category === selectedCategory}"><img src="${escapeHtml(tile.image)}" alt="" loading="lazy"><span class="category-tile-label">${escapeHtml(tile.label)}</span><span class="filter-count">${tile.count}</span></button>`,
+  ).join("");
+  const sectionBar = document.querySelector("#section-filters");
+  sectionBar.hidden = sectionCounts.size < 2;
+  // Solo se vuelve a dibujar si algo cambió: el catálogo de Firebase llega producto a producto.
+  if (renderedFilters !== sections + tiles) {
+    renderedFilters = sections + tiles;
+    sectionBar.innerHTML = sections;
+    document.querySelector("#category-filters").innerHTML = tiles;
+  }
+  const allButton = document.querySelector('.category-filter-meta [data-filter="todos"]');
+  allButton.classList.toggle("is-active", selectedCategory === "todos");
+  allButton.setAttribute("aria-pressed", String(selectedCategory === "todos"));
+  allButton.querySelector(".filter-count").textContent = String(sectionCards.length);
+  const originButton = document.querySelector("#origin-filter");
+  originButton.hidden = !hasSelectedProducts;
+  originButton.classList.toggle("is-active", onlyOwnProducts);
+  originButton.setAttribute("aria-pressed", String(onlyOwnProducts));
+}
 
 loadMoreProducts.addEventListener("click", () => {
   visibleProductLimit += 6;
@@ -1175,22 +1353,13 @@ loadMoreProducts.addEventListener("click", () => {
 });
 
 function filterProducts(resetVisibleLimit = true) {
-  const selectedCategory =
-    document.querySelector(".filter-button.is-active").dataset.filter;
   const searchValue = document.querySelector("#product-search").value.trim();
   const query = normalizeSearch(searchValue);
   document.querySelector(".collection-toolbar").classList.toggle("is-searching", searchValue !== "");
   document.querySelector(".category-filter-heading > p").textContent =
     searchValue ? "Resultados de tu búsqueda" : "Explora por categoría";
   const matchingCards = [];
-  document.querySelectorAll(".filter-button").forEach((button) => {
-    const category = button.dataset.filter;
-    const count = productCards.filter((card) =>
-      (category === "todos" || card.dataset.category === category) &&
-      products[card.dataset.product]?.published !== false,
-    ).length;
-    button.querySelector(".filter-count").textContent = String(count);
-  });
+  renderFilters();
   document.querySelectorAll(".product-group").forEach((group) => {
     const groupCards = [...group.querySelectorAll(".product-card")];
     const count = groupCards.filter((card) =>
@@ -1206,9 +1375,11 @@ function filterProducts(resetVisibleLimit = true) {
     const categoryMatches =
       selectedCategory === "todos" || card.dataset.category === selectedCategory;
     const product = products[card.dataset.product];
-    const searchableText = `${card.dataset.name} ${card.querySelector(".product-description").textContent} ${product?.detail ?? ""}`;
+    const sectionMatches = selectedSection === "todos" || (product && productSection(product) === selectedSection);
+    const originMatches = !onlyOwnProducts || (product && isOwnProduct(product));
+    const searchableText = `${card.dataset.name} ${card.querySelector(".product-description").textContent} ${product?.detail ?? ""} ${product?.category ?? ""} ${product?.maker ?? ""}`;
     const textMatches = normalizeSearch(searchableText).includes(query);
-    const matches = categoryMatches && textMatches && product?.published !== false;
+    const matches = categoryMatches && sectionMatches && originMatches && textMatches && product?.published !== false;
     card.hidden = !matches || (mobileCatalog.matches && matchingIndex >= visibleProductLimit);
     if (matches) {
       matchingCards.push(card);
@@ -1549,6 +1720,7 @@ productCards.forEach((card) => {
   const product = products[card.dataset.product];
   if (!product) return;
   renderCardWholesale(card, product);
+  renderCardState(card, product);
   setupGallery(card.querySelector(".product-image"), product);
 });
 filterProducts();
@@ -1596,28 +1768,41 @@ window.amankayApplyCatalogUpdate = (record) => {
     format: record.format || staticCopy.get(record.id)?.format || "",
     images: Array.isArray(record.images) ? record.images : staticCopy.get(record.id)?.images || [],
     published: record.published !== false,
+    section: record.section,
+    origin: record.origin,
+    maker: record.maker || "",
+    weight: Number(record.weight) > 0 ? Number(record.weight) : null,
+    saleMode: record.saleMode,
+    pickupOnly: record.pickupOnly === true,
   };
   products[product.id] = product;
+  // Un producto que pas\u00f3 a vitrina o se vendi\u00f3 no puede quedar en una bolsa guardada.
+  if (productSaleMode(product) !== "online" && cart.some((item) => item.id === product.id)) {
+    cart = cart.filter((item) => item.id !== product.id);
+    saveCart();
+    updateCart();
+  }
   const card = document.querySelector(`[data-product="${CSS.escape(product.id)}"]`);
+  const category = normalizeSearch(product.category).trim();
   if (!card && product.published) {
     const number = String(document.querySelectorAll(".product-card").length + 1).padStart(2, "0");
-    const category = product.category.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-    const categoryLabel = category.toLocaleUpperCase("es");
+    const categoryLabel = product.category.toLocaleUpperCase("es");
     const escaped = (value) => String(value).replace(/[&<>"']/g, (character) => ({
       "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;",
     })[character]);
-    createProductGroup(category).insertAdjacentHTML("beforeend", `
+    createProductGroup(category, product.category).insertAdjacentHTML("beforeend", `
       <article class="product-card" data-product="${escaped(product.id)}" data-category="${escaped(category)}" data-name="${escaped(product.name.toLocaleLowerCase("es"))}">
         <div class="product-image product-image-botanical">
           <button class="product-detail-trigger" type="button" data-detail="${escaped(product.id)}" aria-label="Ver detalles de ${escaped(product.name)}"><img src="${escaped(product.image)}" alt="${escaped(product.name)}" loading="lazy"></button>
         </div>
         <div class="product-meta"><span>${escaped(categoryLabel)}${product.format ? ` · ${escaped(product.format)}` : ""}</span><span class="product-number">${number}</span></div>
-        <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="${escaped(product.id)}">${escaped(product.name)}</button></h3><span class="product-price">${product.price === null ? "Precio por confirmar" : formatPrice(product.price)}</span></div>
+        <div class="product-title-row"><h3><button class="product-title-trigger" type="button" data-detail="${escaped(product.id)}">${escaped(product.name)}</button></h3><span class="product-price">${priceLabel(product)}</span></div>
         <p class="product-wholesale-note" ${product.wholesale ? "" : "hidden"}>${product.wholesale ? `Mayorista desde ${product.wholesale.minimumQuantity} unidades · ${formatPrice(product.wholesale.price)} c/u` : ""}</p>
         <p class="product-description">${escaped(product.detail)}</p>
         <button class="text-add" type="button" data-add="${escaped(product.id)}">Agregar a la bolsa <span aria-hidden="true">↗︎</span></button>
       </article>`);
     renderCardWholesale(document.querySelector(`[data-product="${CSS.escape(product.id)}"]`), product);
+    renderCardState(document.querySelector(`[data-product="${CSS.escape(product.id)}"]`), product);
     setupGallery(document.querySelector(`[data-product="${CSS.escape(product.id)}"] .product-image`), product);
     productCards = [...document.querySelectorAll(".product-card")];
     filterProducts();
@@ -1628,7 +1813,10 @@ window.amankayApplyCatalogUpdate = (record) => {
   card.dataset.catalogCloud = String(record._fromCloud === true || card.dataset.catalogCloud === "true");
   card.hidden = !product.published;
   card.dataset.name = product.name.toLocaleLowerCase("es");
-  card.dataset.category = product.category.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  card.dataset.category = category;
+  // Si la categor\u00eda cambi\u00f3 en el panel, la tarjeta se muda a su nuevo grupo.
+  const group = createProductGroup(category, product.category);
+  if (card.parentElement !== group) group.append(card);
   const image = card.querySelector(".product-image img");
   image.src = product.image;
   setupGallery(card.querySelector(".product-image"), product);
@@ -1637,9 +1825,9 @@ window.amankayApplyCatalogUpdate = (record) => {
     `${product.category.toLocaleUpperCase("es")}${product.format ? ` · ${product.format}` : ""}`;
   card.querySelector(".product-title-trigger").textContent = product.name;
   const titleRow = card.querySelector(".product-title-row");
-  titleRow.querySelector(".product-price").textContent =
-    product.price === null ? "Precio por confirmar" : formatPrice(product.price);
+  titleRow.querySelector(".product-price").textContent = priceLabel(product);
   renderCardWholesale(card, product);
+  renderCardState(card, product);
   const copy = staticCopy.get(product.id);
   card.querySelector(".product-description").textContent =
     copy?.summary && product.detail === copy.detail ? copy.summary : product.detail;
